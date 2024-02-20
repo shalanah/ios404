@@ -15,6 +15,7 @@ const getIOSSafariLacking = (canIUseData: any) => {
   const iosVersion = agents[ios_safari].version_list.at(-1).version;
   const safariDoesNotSupport = Object.entries(data)
     .filter(([k, v]) => {
+      if (["asm.js"].includes(v.title)) return false; // non-relevant features
       return (
         v.stats[ios_safari][iosVersion] === "n" &&
         v.stats[android_chrome][chromeVersion] !== "n"
@@ -36,8 +37,8 @@ export default function Features() {
   const [canIUseData, setData] = useState(false);
   const [hasError, setHasError] = useState(false);
   const iOSLacking = getIOSSafariLacking(canIUseData);
-  console.log(iOSLacking);
-  console.log(canIUseData);
+  // console.log(iOSLacking);
+  // console.log(canIUseData);
 
   // If Safari brings up that caniuse data isn't up-to-date...
   // Maybe they should work on that --- who do they really have to blame? That's part of their job, right? Right?
