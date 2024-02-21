@@ -1,22 +1,3 @@
-@font-face {
-  font-family: 'nimbus_sans_lregular_italic';
-  src: url('/fonts/NimbusSanL-RegIta-webfont.woff');
-  font-weight: normal;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'nimbus_sans_lregular';
-  src: url('/fonts/NimbusSanL-Reg-webfont.woff');
-  font-weight: normal;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'nimbus_sans_lbold';
-  src: url('/fonts/NimbusSanL-Bol-webfont.woff');
-  font-weight: normal;
-  font-style: normal;
-}
-
 * {
   box-sizing: border-box;
   padding: 0;
