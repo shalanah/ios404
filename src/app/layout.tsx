@@ -28,7 +28,7 @@ export default function RootLayout({
             position: 'absolute',
             width: '100%',
             height: '100%',
-            background: '#efefef',
+            // background: '#efefef',
             // zIndex: -1,
           }}
         >
