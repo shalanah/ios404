@@ -40,6 +40,10 @@ a {
   color: inherit;
   text-decoration: none;
 }
+a,
+button {
+  cursor: pointer !important;
+}
 
 main,
 main * {
