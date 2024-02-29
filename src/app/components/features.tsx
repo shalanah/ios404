@@ -18,6 +18,8 @@ const skipFeatures = [
   'do-not-track', // not adopted
   'filesystem', // might no longer be maintained but still supported in chrome
   'sql-storage', // deprecating maybe drop later?,
+  'battery-status', // remove because due to fingerprinting - really they should just limit the api some
+  'feature-policy', // deprecated
 ];
 
 const getIOSSafariLacking = (canIUseData: any) => {
@@ -28,13 +30,17 @@ const getIOSSafariLacking = (canIUseData: any) => {
   const safariDoesNotSupport = Object.entries(data)
     .filter(([k, v]) => {
       if (skipFeatures.includes(k)) return false; // non-relevant features
+      const iOSStatus = v.stats[ios_safari][iosVersion];
+      const androidChromeStatus = v.stats[android_chrome][chromeVersion];
+
       return (
-        v.stats[ios_safari][iosVersion].startsWith('n') &&
-        !v.stats[android_chrome][chromeVersion].startsWith('n')
+        (iOSStatus.startsWith('n') && !androidChromeStatus.startsWith('n')) ||
+        (iOSStatus.startsWith('a') && androidChromeStatus.startsWith('y'))
       );
     })
     .map(([k, v]) => {
       // find first time supported
+      // TODO: Make sure Android Chrome get credit for Chromium first parenting
       const firstSeen = Object.entries(v.stats).reduce(
         (acc, [browserKey, stat]) => {
           const firstY = Object.entries(stat).find(
@@ -44,8 +50,9 @@ const getIOSSafariLacking = (canIUseData: any) => {
             const date = agents[browserKey].version_list.find(
               (v) => v.version === firstY[0]
             ).release_date;
+            if (!date) return acc;
             // console.log(date, firstY);
-            return acc.length === 0 || date < acc[1]
+            return (acc.length === 0 || date < acc[1]) && browserKey !== 'baidu' // let chromium win over say Baidu
               ? [agents[browserKey].browser, date, firstY[0]]
               : acc;
           }
@@ -60,6 +67,9 @@ const getIOSSafariLacking = (canIUseData: any) => {
         safariStat: v.stats[ios_safari][iosVersion],
         chromeStat: v.stats[android_chrome][chromeVersion],
       };
+    })
+    .filter((v) => {
+      return v.firstSeen.length > 0;
     });
   return safariDoesNotSupport;
 };
@@ -106,18 +116,38 @@ export default function Features() {
               </a>
             </h2>
             <div>{v.description}</div>
-            {/* <div>{v.categories.join(', ')}</div> */}
-            {v.notes && <div>{v.notes}</div>}
-            {/* {v.keywords && <div>{v.keywords}</div>} */}
+            <div>{v.categories.join(', ')}</div>
+            {/* {v.notes && <div>{v.notes}</div>}
+            {v.keywords && <div>{v.keywords}</div>} */}
             <div>
-              Born: {date} {date ? <>({age} years old)</> : <></>}
+              Born: {date}{' '}
+              {date ? (
+                <>
+                  ({age} year{age > 1 ? 's' : ''} old)
+                </>
+              ) : (
+                <></>
+              )}
             </div>
             <div>
               Parents: {v.firstSeen?.[0] || ''} {v.firstSeen?.[2] || ''}
             </div>
             <div>
-              Status: <a href={v.spec}>{canIUseData.statuses[v.status]}</a>
+              Godparents: <a href={v.spec}>{canIUseData.statuses[v.status]}</a>
             </div>
+            <ul>
+              {Object.entries(v.notes_by_num).map(([num, note]) => {
+                if (
+                  !v.safariStat
+                    .replaceAll(' ', '')
+                    .replaceAll(/a|n|y/gi, '')
+                    .split('#')
+                    .includes(num)
+                )
+                  return null;
+                return <li key={num}>{note}</li>;
+              })}
+            </ul>
             {/* <div>
               {v.links.map(({ url, title }, k) => (
                 <span key={k}>

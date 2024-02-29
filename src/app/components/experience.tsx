@@ -12,24 +12,24 @@ import { Text } from './text';
 const bg = '#bad1df';
 
 export default function Experience() {
-  const controls = useControls({
-    htmlPosition: {
-      value: [0.1, 58, 51],
-      label: 'HTML Position',
-    },
-  });
+  // const controls = useControls({
+  //   htmlPosition: {
+  //     value: [0.1, 58, 51],
+  //     label: 'HTML Position',
+  //   },
+  // });
 
   return (
     <>
-      <Perf position="top-left" />
-      <axesHelper args={[200]} renderOrder={10} />
+      {/* <Perf position="top-left" /> */}
+
       <color attach="background" args={[bg]} />
       <Suspense fallback={null}>
         <Stage adjustCamera={1} shadows={'none'}>
           <PresentationControls
             enabled
             global={false}
-            cursor={true}
+            cursor={false}
             snap={false}
             zoom={1}
             rotation={[0, 0, 0]}
@@ -37,8 +37,14 @@ export default function Experience() {
             azimuth={[-Infinity, Infinity]}
             config={{ mass: 0.025, tension: 150, friction: 26 }} // Spring config
           >
+            <axesHelper args={[100]} renderOrder={5} />
+
             <Model />
-            <Text controls={controls} />
+            <Text
+              controls={{
+                htmlPosition: [0.1, 58, 51],
+              }}
+            />
           </PresentationControls>
         </Stage>
       </Suspense>
