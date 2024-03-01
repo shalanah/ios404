@@ -3,7 +3,7 @@
 'use client';
 
 import { Suspense } from 'react';
-import { Stage, PresentationControls } from '@react-three/drei';
+import { Stage, PresentationControls, Center, Html } from '@react-three/drei';
 import { useControls } from 'leva';
 import { Perf } from 'r3f-perf';
 import { Model } from './milkcarton';
@@ -31,7 +31,7 @@ export default function Experience() {
             global={false}
             cursor={false}
             snap={false}
-            zoom={1}
+            zoom={0.75}
             rotation={[0, 0, 0]}
             polar={[0, 0]}
             azimuth={[-Infinity, Infinity]}

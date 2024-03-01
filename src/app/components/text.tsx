@@ -14,7 +14,6 @@ export const Text = ({ controls }) => {
     >
       <div
         style={{
-          pointerEvents: 'none',
           width: 1000,
           height: 1150,
           scale: 4,
@@ -56,7 +55,6 @@ export const Text = ({ controls }) => {
           >
             Missing
           </div>
-
           <div
             style={{
               display: 'flex',
@@ -73,7 +71,6 @@ export const Text = ({ controls }) => {
                 height: 280,
               }}
             />
-
             <div>
               <div style={{ fontSize: 50, marginBottom: 15 }}>
                 Vibration API

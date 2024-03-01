@@ -1,3 +1,40 @@
+/* TODO: remove unused */
+@font-face {
+  font-family: 'aileron';
+  src: url('/fonts/aileron-regular.woff2') format('woff2'),
+    url('/fonts/aileron-regular.woff') format('woff');
+  font-weight: 400;
+  font-style: 400;
+}
+@font-face {
+  font-family: 'aileron';
+  src: url('/fonts/aileron-light.woff2') format('woff2'),
+    url('/fonts/aileron-light.woff') format('woff');
+  font-weight: 200;
+  font-style: 200;
+}
+@font-face {
+  font-family: 'aileron';
+  src: url('/fonts/aileron-ultralight.woff2') format('woff2'),
+    url('/fonts/aileron-ultralight.woff') format('woff');
+  font-weight: 100;
+  font-style: 100;
+}
+@font-face {
+  font-family: 'aileron';
+  src: url('/fonts/aileron-bold.woff2') format('woff2'),
+    url('/fonts/aileron-bold.woff') format('woff');
+  font-weight: 500;
+  font-style: 500;
+}
+@font-face {
+  font-family: 'aileron';
+  src: url('/fonts/aileron-black.woff2') format('woff2'),
+    url('/fonts/aileron-black.woff') format('woff');
+  font-weight: 600;
+  font-style: 600;
+}
+
 * {
   box-sizing: border-box;
   padding: 0;
@@ -7,12 +44,17 @@
 html,
 body {
   text-align: center;
-  font-family: 'nimbus_sans_lregular', sans-serif;
+  font-family: 'aileron', sans-serif;
   line-height: 1.4;
   font-weight: normal;
-  max-width: 100vw;
+  width: 100vw;
   height: 100%;
-  overflow-x: hidden;
+  /* height: 100dvh; */
+  overflow: hidden;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  background: linear-gradient(red, green);
 }
 h1,
 h2,
@@ -41,13 +83,25 @@ a {
   text-decoration: none;
 }
 a,
-button {
+button,
+a *,
+button * {
   cursor: pointer !important;
 }
 
-main,
-main * {
-  pointer-events: none !important;
+.pos-full-win {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  /* height: 100dvh; */
+  outline: 1px solid red;
+}
+.pos-top-left {
+  position: absolute;
+  left: 0;
+  top: 0;
 }
 
-/* TODO: Dark theme */
+/* TODO: Dark/light theme */
