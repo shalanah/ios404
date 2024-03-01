@@ -63,9 +63,8 @@ h4,
 h5,
 h6,
 .header {
-  font-family: 'nimbus_sans_lbold', sans-serif;
   letter-spacing: 0.01em;
-  font-weight: bold;
+  font-weight: 400;
 }
 
 body {
@@ -83,10 +82,12 @@ a {
   text-decoration: none;
 }
 a,
-button,
-a *,
-button * {
+button {
   cursor: pointer !important;
+}
+
+ul {
+  list-style: none;
 }
 
 .pos-full-win {

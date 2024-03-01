@@ -18,6 +18,7 @@ export default function Home() {
           overflowX: 'hidden',
           background: bg,
           outline: '1px solid black',
+          position: 'fixed',
         }}
       >
         <Canvas
@@ -41,18 +42,61 @@ export default function Home() {
         <div
           style={{
             pointerEvents: 'all',
-            padding: '1rem 1.5rem',
             textAlign: 'left',
             position: 'absolute',
             left: '23vw',
             width: '24vw',
-            top: '10dvh',
+            top: '0',
+
             zIndex: 1,
             outline: '1px solid black',
-            // background: 'green',
-            // height: '90dvh',
           }}
         >
+          <div
+            style={{
+              background: bg,
+              // height: 400,
+              position: 'sticky',
+              top: 0,
+              height: '42dvh',
+              display: 'flex',
+              flexDirection: 'column',
+              paddingBottom: '40px',
+            }}
+          >
+            <h1
+              style={{
+                fontWeight: 100,
+                fontSize: '3.75rem',
+                margin: 'auto 0 0',
+              }}
+            >
+              iOS
+              <span style={{ fontWeight: 500 }}>
+                4<span style={{ letterSpacing: '-.02em' }}>04</span>
+              </span>
+            </h1>
+            <div
+              style={{
+                lineHeight: 1.35,
+                fontSize: '.8rem',
+                fontWeight: 200,
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '.5em',
+                letterSpacing: '.03em',
+              }}
+            >
+              <p>
+                A collection of missing iOS web features collated from
+                caniuse.com data. (info icon)
+              </p>
+              <p>
+                This site has no affiliation with Apple, iOS, Webkit, Safari, or
+                caniuse.
+              </p>
+            </div>
+          </div>
           <Features />
         </div>
       </div>

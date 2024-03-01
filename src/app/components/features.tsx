@@ -5,22 +5,40 @@ import { ExternalLinkIcon } from '@radix-ui/react-icons';
 import useCanIUseContext from '../hooks/useCanIUseContext';
 
 export default function Features() {
-  const { iOSLacking } = useCanIUseContext();
+  const { iOSLacking, activeFeature } = useCanIUseContext();
   return (
-    <div>
-      {iOSLacking.map(({ key, ...v }) => {
+    <ul>
+      {iOSLacking.map(({ key, ...v }, i) => {
         // console.log(v);
         let date = v.firstSeen?.[1] ? new Date(v.firstSeen?.[1] * 1000) : '';
         date = date ? date.getFullYear() : '';
         const age = new Date().getFullYear() - date;
+        const active = i === activeFeature;
 
         return (
-          <div key={key} style={{ marginTop: 10, padding: 10 }}>
-            <h2>
+          <li key={key} style={{ padding: '.225em 0' }}>
+            <h2
+              style={
+                active
+                  ? {
+                      fontSize: '1.4rem',
+                      fontWeight: 500,
+                      textTransform: 'uppercase',
+                      lineHeight: 1.2,
+                      letterSpacing: '0em',
+                    }
+                  : {
+                      fontWeight: 100,
+                      letterSpacing: '.03em',
+                      lineHeight: 1.2,
+                      fontSize: '1.4rem',
+                    }
+              }
+            >
               {v.title}{' '}
-              <a href={`https://caniuse.com/${key}`} target="_blank">
+              {/* <a href={`https://caniuse.com/${key}`} target="_blank">
                 <ExternalLinkIcon />
-              </a>
+              </a> */}
             </h2>{' '}
             {/* <div>{v.description}</div>
             <div>{v.categories.join(', ')}</div> */}
@@ -65,9 +83,9 @@ export default function Features() {
             {/* <div>
               {v.safariStat} / {v.chromeStat}
             </div> */}
-          </div>
+          </li>
         );
       })}
-    </div>
+    </ul>
   );
 }
