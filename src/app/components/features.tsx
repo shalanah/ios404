@@ -2,10 +2,14 @@
 'use client';
 
 import { ExternalLinkIcon } from '@radix-ui/react-icons';
+import styles from './features.module.css';
+import classNames from 'classnames';
+
 import useCanIUseContext from '../hooks/useCanIUseContext';
+import { act } from 'react-dom/test-utils';
 
 export default function Features() {
-  const { iOSLacking, activeFeature } = useCanIUseContext();
+  const { iOSLacking, activeFeature, setActiveFeature } = useCanIUseContext();
   return (
     <ul>
       {iOSLacking.map(({ key, ...v }, i) => {
@@ -16,35 +20,35 @@ export default function Features() {
         const active = i === activeFeature;
 
         return (
-          <li key={key} style={{ padding: '.225em 0' }}>
-            <h2
-              style={
-                active
-                  ? {
-                      fontSize: '1.4rem',
-                      fontWeight: 500,
-                      textTransform: 'uppercase',
-                      lineHeight: 1.2,
-                      letterSpacing: '0em',
-                    }
-                  : {
-                      fontWeight: 100,
-                      letterSpacing: '.03em',
-                      lineHeight: 1.2,
-                      fontSize: '1.4rem',
-                    }
-              }
+          <li key={key}>
+            <button
+              onClick={() => setActiveFeature(i)}
+              style={{ padding: '.35em 0' }}
             >
-              {v.title}{' '}
-              {/* <a href={`https://caniuse.com/${key}`} target="_blank">
+              <h2
+                className={classNames(styles.h2, { [styles.h2active]: active })}
+                style={
+                  active
+                    ? {
+                        fontWeight: 700,
+                        // textTransform: 'uppercase',
+                      }
+                    : {
+                        fontWeight: 100,
+                        letterSpacing: '.025em',
+                      }
+                }
+              >
+                {v.title}{' '}
+                {/* <a href={`https://caniuse.com/${key}`} target="_blank">
                 <ExternalLinkIcon />
               </a> */}
-            </h2>{' '}
-            {/* <div>{v.description}</div>
+              </h2>{' '}
+              {/* <div>{v.description}</div>
             <div>{v.categories.join(', ')}</div> */}
-            {/* {v.notes && <div>{v.notes}</div>}
+              {/* {v.notes && <div>{v.notes}</div>}
             {v.keywords && <div>{v.keywords}</div>} */}
-            {/* <div>
+              {/* <div>
               Born: {date}{' '}
               {date ? (
                 <>
@@ -54,7 +58,7 @@ export default function Features() {
                 <></>
               )}
             </div> */}
-            {/* <div>
+              {/* <div>
               Parents: {v.firstSeen?.[0] || ''} {v.firstSeen?.[2] || ''}
             </div>
             <div>
@@ -73,16 +77,17 @@ export default function Features() {
                 return <li key={num}>{note}</li>;
               })}
             </ul> */}
-            {/* <div>
+              {/* <div>
               {v.links.map(({ url, title }, k) => (
                 <span key={k}>
                   {url} {title}
                 </span>
               ))}
             </div> */}
-            {/* <div>
+              {/* <div>
               {v.safariStat} / {v.chromeStat}
             </div> */}
+            </button>
           </li>
         );
       })}

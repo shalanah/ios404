@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter+Tight:wght@100..900&display=swap');
+
 /* TODO: remove unused */
 @font-face {
   font-family: 'aileron';
@@ -35,27 +37,37 @@
   font-style: 600;
 }
 
+a,
+button {
+  all: unset;
+  cursor: pointer;
+}
+
 * {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
+  -webkit-overflow-scrolling: touch;
+  -webkit-tap-highlight-color: transparent;
 }
 
 html,
 body {
   text-align: center;
-  font-family: 'aileron', sans-serif;
+  /* font-family: 'aileron', sans-serif; */
+  font-family: 'Inter Tight', sans-serif;
   line-height: 1.4;
   font-weight: normal;
-  width: 100vw;
+  width: 100%;
   height: 100%;
-  /* height: 100dvh; */
+  height: 100dvh;
   overflow: hidden;
-  position: absolute;
+  position: fixed;
   left: 0px;
   top: 0px;
-  background: linear-gradient(red, green);
+  /* background: linear-gradient(red, green); */
 }
+
 h1,
 h2,
 h3,

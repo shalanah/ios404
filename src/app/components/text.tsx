@@ -1,8 +1,12 @@
 // @ts-nocheck
 
 import { Html } from '@react-three/drei';
+import useCanIUseContext from '../hooks/useCanIUseContext';
 
-export const Text = ({ controls }) => {
+export const Text = ({ controls, index }) => {
+  const { iOSLacking } = useCanIUseContext();
+  if (iOSLacking.length === 0) return null;
+  const title = iOSLacking[index].title;
   return (
     <Html
       transform
@@ -72,9 +76,7 @@ export const Text = ({ controls }) => {
               }}
             />
             <div>
-              <div style={{ fontSize: 50, marginBottom: 15 }}>
-                Vibration API
-              </div>
+              <div style={{ fontSize: 50, marginBottom: 15 }}>{title}</div>
               <div style={{ fontSize: 32, lineHeight: '40px' }}>
                 Born:
                 <br />

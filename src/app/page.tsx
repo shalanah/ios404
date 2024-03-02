@@ -19,6 +19,7 @@ export default function Home() {
           background: bg,
           outline: '1px solid black',
           position: 'fixed',
+          overscrollBehavior: 'none',
         }}
       >
         <Canvas
@@ -47,21 +48,27 @@ export default function Home() {
             left: '23vw',
             width: '24vw',
             top: '0',
-
-            zIndex: 1,
+            paddingBottom: 30,
             outline: '1px solid black',
+            overscrollBehavior: 'contain',
+            paddingLeft: '1em',
           }}
         >
           <div
             style={{
-              background: bg,
+              background: `linear-gradient(180deg, ${bg} 89%, rgba(255,255,255,0) 100%)`,
               // height: 400,
               position: 'sticky',
               top: 0,
-              height: '42dvh',
+              marginLeft: '-1em',
+              paddingLeft: '1em',
+              height: '45dvh',
               display: 'flex',
+              width: 'calc(100% + 1em)',
               flexDirection: 'column',
-              paddingBottom: '40px',
+              paddingBottom: '50px',
+              zIndex: 1,
+              pointerEvents: 'none',
             }}
           >
             <h1
@@ -73,7 +80,12 @@ export default function Home() {
             >
               iOS
               <span style={{ fontWeight: 500 }}>
-                4<span style={{ letterSpacing: '-.02em' }}>04</span>
+                4
+                <span
+                // style={{ letterSpacing: '-.02em' }}
+                >
+                  04
+                </span>
               </span>
             </h1>
             <div
@@ -84,7 +96,7 @@ export default function Home() {
                 display: 'flex',
                 flexDirection: 'column',
                 gap: '.5em',
-                letterSpacing: '.03em',
+                // letterSpacing: '.03em',
               }}
             >
               <p>

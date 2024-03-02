@@ -8,17 +8,12 @@ import { useControls } from 'leva';
 import { Perf } from 'r3f-perf';
 import { Model } from './milkcarton';
 import { Text } from './text';
+import useCanIUseContext from '../hooks/useCanIUseContext';
 
 const bg = '#bad1df';
 
 export default function Experience() {
-  // const controls = useControls({
-  //   htmlPosition: {
-  //     value: [0.1, 58, 51],
-  //     label: 'HTML Position',
-  //   },
-  // });
-
+  const { activeFeature } = useCanIUseContext();
   return (
     <>
       {/* <Perf position="top-left" /> */}
@@ -38,9 +33,9 @@ export default function Experience() {
             config={{ mass: 0.025, tension: 150, friction: 26 }} // Spring config
           >
             <axesHelper args={[100]} renderOrder={5} />
-
             <Model />
             <Text
+              index={activeFeature}
               controls={{
                 htmlPosition: [0.1, 58, 51],
               }}
