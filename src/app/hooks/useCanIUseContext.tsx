@@ -7,13 +7,14 @@ import React, {
   ReactNode,
   useEffect,
 } from 'react';
+import { useHash } from './useHash';
 
 interface CanIUseContextInterface {
   loading: boolean;
   hasError: boolean;
   iOSLacking: any;
   activeFeature: number;
-  setActiveFeature: (n: number) => void;
+  updateHash: (hash: string) => void;
 }
 
 const dataLink =
@@ -99,9 +100,16 @@ export const CanIUseContextProvider = ({
   const [canIUseData, setData] = useState(false);
   const [hasError, setHasError] = useState(false);
   const iOSLacking = getIOSSafariLacking(canIUseData);
-  const [activeFeature, setActiveFeature] = useState(0);
 
-  console.log(canIUseData);
+  const [hash, updateHash] = useHash();
+  const activeFeature =
+    iOSLacking.length > 0 && hash
+      ? iOSLacking.findIndex((v) => v.key === hash)
+      : 0;
+
+  console.log({ activeFeature, hash });
+
+  // console.log(canIUseData);
   // console.log(iOSLacking);
   // console.log(canIUseData);
 
@@ -129,8 +137,9 @@ export const CanIUseContextProvider = ({
         loading,
         hasError,
         iOSLacking,
+        updateHash,
         activeFeature,
-        setActiveFeature,
+        statuses: canIUseData?.statuses,
       }}
     >
       {children}

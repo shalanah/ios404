@@ -5,6 +5,8 @@ import styles from './page.module.css';
 import Experience from './components/experience';
 import Features from './components/features';
 import { CanIUseContextProvider } from './hooks/useCanIUseContext';
+import { Intro } from './components/intro';
+import { GitHubLogoIcon, InfoCircledIcon } from '@radix-ui/react-icons';
 
 const bg = '#bad1df'; // TODO: Put onto HTML/Body instead
 
@@ -20,6 +22,8 @@ export default function Home() {
           outline: '1px solid black',
           position: 'fixed',
           overscrollBehavior: 'none',
+          scrollBehavior: 'smooth',
+          scrollPaddingBlockStart: '45vh',
         }}
       >
         <Canvas
@@ -49,67 +53,42 @@ export default function Home() {
             width: '24vw',
             top: '0',
             paddingBottom: 30,
+            padding: '0 1em',
             outline: '1px solid black',
             overscrollBehavior: 'contain',
-            paddingLeft: '1em',
           }}
         >
-          <div
-            style={{
-              background: `linear-gradient(180deg, ${bg} 89%, rgba(255,255,255,0) 100%)`,
-              // height: 400,
-              position: 'sticky',
-              top: 0,
-              marginLeft: '-1em',
-              paddingLeft: '1em',
-              height: '45dvh',
-              display: 'flex',
-              width: 'calc(100% + 1em)',
-              flexDirection: 'column',
-              paddingBottom: '50px',
-              zIndex: 1,
-              pointerEvents: 'none',
-            }}
-          >
-            <h1
-              style={{
-                fontWeight: 100,
-                fontSize: '3.75rem',
-                margin: 'auto 0 0',
-              }}
-            >
-              iOS
-              <span style={{ fontWeight: 500 }}>
-                4
-                <span
-                // style={{ letterSpacing: '-.02em' }}
-                >
-                  04
-                </span>
-              </span>
-            </h1>
-            <div
-              style={{
-                lineHeight: 1.35,
-                fontSize: '.8rem',
-                fontWeight: 200,
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '.5em',
-                // letterSpacing: '.03em',
-              }}
-            >
-              <p>
-                A collection of missing iOS web features collated from
-                caniuse.com data. (info icon)
-              </p>
-              <p>
-                This site has no affiliation with Apple, iOS, Webkit, Safari, or
-                caniuse.
-              </p>
-            </div>
-          </div>
+          <Intro bg={bg} />
           <Features />
+        </div>
+        <div
+          style={{
+            position: 'fixed',
+            top: 5,
+            left: 0,
+            width: '100%',
+            height: 40,
+            // background: 'yellow',
+            pointerEvents: 'none',
+            zIndex: 1,
+            display: 'flex',
+            alignItems: 'center',
+            fontSize: '.8rem',
+            justifyContent: 'flex-end',
+            paddingRight: 15,
+            lineHeight: 1,
+            gap: 5,
+          }}
+        >
+          <p style={{ marginRight: 2 }}>No affiliation with Apple or iOS.</p>
+          <InfoCircledIcon style={{ width: 25, height: 25 }} />
+          <a
+            href={'https://github.com/shalanah/ios404'}
+            style={{ pointerEvents: 'all' }}
+            target="_blank"
+          >
+            <GitHubLogoIcon style={{ width: 25, height: 25 }} />
+          </a>
         </div>
       </div>
     </CanIUseContextProvider>

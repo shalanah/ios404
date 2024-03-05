@@ -20,13 +20,12 @@ export default function Experience() {
 
       <color attach="background" args={[bg]} />
       <Suspense fallback={null}>
-        <Stage adjustCamera={1} shadows={'none'}>
+        <Stage adjustCamera={0.85} shadows={'none'}>
           <PresentationControls
             enabled
             global={false}
             cursor={false}
             snap={false}
-            zoom={0.75}
             rotation={[0, 0, 0]}
             polar={[0, 0]}
             azimuth={[-Infinity, Infinity]}

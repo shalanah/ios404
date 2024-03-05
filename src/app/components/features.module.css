@@ -8,9 +8,17 @@
   position: relative;
 }
 
-.h2active::before {
-  content: '•';
-  position: absolute;
-  bottom: 0;
-  left: -0.75em;
+.button {
+  display: block;
+  width: 100%;
+  padding: 0.35em 0.5em;
+  margin: 0 -0.5em;
+  outline: 2px dotted transparent;
+  outline-offset: 2px 4px;
+  transition: 0.3s;
+  border-radius: 10px;
+  margin-bottom: 2px;
+}
+.button:focus {
+  outline: 2px dotted black;
 }
