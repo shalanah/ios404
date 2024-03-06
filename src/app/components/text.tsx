@@ -8,7 +8,7 @@ import remarkGfm from 'remark-gfm';
 import styles from './text.module.css';
 import { ExternalLinkIcon } from '@radix-ui/react-icons';
 
-export const Text = ({ controls, index }) => {
+export const Text = ({ controls, index, rotation }) => {
   const { iOSLacking, statuses } = useCanIUseContext();
   if (iOSLacking.length === 0) return null;
   const {
@@ -27,6 +27,7 @@ export const Text = ({ controls, index }) => {
   const age = new Date().getFullYear() - date;
   return (
     <Html
+      rotation={rotation}
       transform
       wrapperClass="wrapper"
       distanceFactor={10}
@@ -40,21 +41,11 @@ export const Text = ({ controls, index }) => {
           pointerEvents: 'none',
           fontSmoothing: 'antialiased',
           height: 1150,
-          scale: 4,
+          // scale: 4,
+          transform: 'scale(4) translateZ(0)',
           position: 'relative',
         }}
       >
-        {/* <svg viewBox="0 0 4000 4600">
-          <rect
-            x="200"
-            y="200"
-            width="3600"
-            height="4200"
-            fill={'transparent'}
-            strokeWidth={80}
-            stroke={'#000'}
-          />
-        </svg> */}
         <div
           style={{
             position: 'absolute',
@@ -73,7 +64,8 @@ export const Text = ({ controls, index }) => {
         >
           <div
             style={{
-              fontSize: 225,
+              fontSize: 236,
+              marginLeft: -10,
               textTransform: 'uppercase',
               lineHeight: 1,
               marginBottom: 10,

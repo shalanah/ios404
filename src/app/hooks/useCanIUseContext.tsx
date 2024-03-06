@@ -1,4 +1,5 @@
 // @ts-nocheck
+'use client';
 
 import React, {
   useContext,
@@ -54,7 +55,7 @@ const getIOSSafariLacking = (canIUseData: any) => {
     .map(([k, v]) => {
       // find first time supported
       // TODO: Make sure Android Chrome get credit for Chromium first parenting
-      const firstSeen = Object.entries(v.stats).reduce(
+      let firstSeen = Object.entries(v.stats).reduce(
         (acc, [browserKey, stat]) => {
           const firstY = Object.entries(stat).find(
             ([_, status]) => status.startsWith('y') && _ !== 'TP' // come on we don't count TP
@@ -73,10 +74,40 @@ const getIOSSafariLacking = (canIUseData: any) => {
         },
         []
       );
+
+      let noBrowserFullSupport = false;
+
+      // maybe just kinda supported elsewhere
+      if (firstSeen.length === 0) {
+        firstSeen = Object.entries(v.stats).reduce(
+          (acc, [browserKey, stat]) => {
+            const firstY = Object.entries(stat).find(
+              ([_, status]) => status.startsWith('a') && _ !== 'TP' // come on we don't count TP
+            );
+            if (firstY) {
+              const date = agents[browserKey].version_list.find(
+                (v) => v.version === firstY[0]
+              ).release_date;
+              if (!date) return acc;
+              // console.log(date, firstY);
+              return (acc.length === 0 || date < acc[1]) &&
+                browserKey !== 'baidu' // let chromium win over say Baidu
+                ? [agents[browserKey].browser, date, firstY[0]]
+                : acc;
+            }
+            return acc;
+          },
+          []
+        );
+        if (firstSeen.length === 0) {
+          noBrowserFullSupport = true;
+        }
+      }
       return {
         ...v,
         key: k,
         firstSeen,
+        noBrowserFullSupport, // TODO: make a note that no browser full supports this feature
         safariStat: v.stats[ios_safari][iosVersion],
         chromeStat: v.stats[android_chrome][chromeVersion],
       };
@@ -107,7 +138,7 @@ export const CanIUseContextProvider = ({
       ? iOSLacking.findIndex((v) => v.key === hash)
       : 0;
 
-  console.log({ activeFeature, hash });
+  // console.log({ activeFeature, hash });
 
   // console.log(canIUseData);
   // console.log(iOSLacking);

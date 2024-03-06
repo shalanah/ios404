@@ -4,8 +4,7 @@
 import styles from './features.module.css';
 import classNames from 'classnames';
 import useCanIUseContext from '../hooks/useCanIUseContext';
-import { useEffect, useRef } from 'react';
-import { act } from 'react-dom/test-utils';
+import { useEffect } from 'react';
 
 const buttonClass = 'feature-list-button';
 export default function Features() {
@@ -55,6 +54,7 @@ export default function Features() {
         default:
           return;
       }
+      if (nextIndex === -1) return;
       e.preventDefault();
       updateHash(iOSLacking[nextIndex].key);
       document.querySelector(`button[data-index="${nextIndex}"]`).focus();

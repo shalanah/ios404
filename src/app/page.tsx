@@ -23,7 +23,7 @@ export default function Home() {
           position: 'fixed',
           overscrollBehavior: 'none',
           scrollBehavior: 'smooth',
-          scrollPaddingBlockStart: '45vh',
+          scrollPaddingBlockStart: '45dvh',
         }}
       >
         <Canvas
@@ -68,7 +68,6 @@ export default function Home() {
             left: 0,
             width: '100%',
             height: 40,
-            // background: 'yellow',
             pointerEvents: 'none',
             zIndex: 1,
             display: 'flex',
@@ -87,7 +86,7 @@ export default function Home() {
             style={{ pointerEvents: 'all' }}
             target="_blank"
           >
-            <GitHubLogoIcon style={{ width: 25, height: 25 }} />
+            <GitHubLogoIcon style={{ width: 23, height: 23 }} />
           </a>
         </div>
       </div>

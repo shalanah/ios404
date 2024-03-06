@@ -48,7 +48,7 @@ export const Intro = ({ bg }: { bg: string }) => {
           textWrap: 'balance',
         }}
       >
-        <p>Missing web features from caniuse.com</p>
+        <p>The missing web features of iOS.</p>
         <Filter />
       </div>
     </div>
