@@ -28,7 +28,7 @@ export const Intro = ({ bg }: { bg: string }) => {
         }}
       >
         iOS
-        <span style={{ fontWeight: 500 }}>
+        <span style={{ fontWeight: 700 }}>
           4
           <span
           // style={{ letterSpacing: '-.02em' }}

@@ -85,33 +85,31 @@ export const Text = ({ controls, index, rotation }) => {
             <div>
               <div
                 style={{
-                  // textAlign: 'center',
                   fontSize: 42,
                   marginBottom: 15,
                   textTransform: 'none',
                   lineHeight: 1.15,
                   fontWeight: 800,
                   textWrap: 'balance',
-                  display: 'flex',
-                  alignItems: 'baseline',
                 }}
               >
-                <span>{title}</span>
-                {/* <a
+                {title}
+                <a
                   href={`https://caniuse.com/${key}`}
                   target="_blank"
                   style={{ pointerEvents: 'all' }}
                 >
                   <ExternalLinkIcon
                     style={{
+                      marginLeft: 8,
                       position: 'relative',
                       top: 6,
                       fontSize: 100,
-                      width: 50,
-                      height: 50,
+                      width: 40,
+                      height: 40,
                     }}
                   />
-                </a> */}
+                </a>
               </div>
               <div
                 style={{

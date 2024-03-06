@@ -84,17 +84,9 @@ export default function Features() {
             >
               <h2
                 className={classNames(styles.h2, { [styles.h2active]: active })}
-                style={
-                  active
-                    ? {
-                        fontWeight: 700,
-                        // textTransform: 'uppercase',
-                      }
-                    : {
-                        fontWeight: 100,
-                        letterSpacing: '.025em',
-                      }
-                }
+                style={{
+                  fontWeight: active ? 700 : 100,
+                }}
               >
                 {v.title}{' '}
                 {/* <a href={`https://caniuse.com/${key}`} target="_blank">

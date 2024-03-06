@@ -33,6 +33,9 @@ export default function Experience() {
     }
   }
 
+  let mod = rotation.current % 4;
+  if (mod < 0) mod += 4;
+
   return (
     <>
       {/* <Perf position="top-left" /> */}
@@ -50,7 +53,7 @@ export default function Experience() {
           >
             <axesHelper args={[100]} renderOrder={5} />
             <Model />
-            {rotation.current % 4 === 1 && (
+            {mod === 1 && (
               <Text
                 rotation={[0, 0, 0]}
                 index={activeFeature}
@@ -59,7 +62,7 @@ export default function Experience() {
                 }}
               />
             )}
-            {rotation.current % 4 === 3 && (
+            {mod === 3 && (
               <Text
                 index={activeFeature}
                 rotation={[0, Math.PI, 0]}
@@ -68,7 +71,7 @@ export default function Experience() {
                 }}
               />
             )}
-            {rotation.current % 4 === 2 && (
+            {mod === 2 && (
               <Text
                 index={activeFeature}
                 rotation={[0, Math.PI / 2, 0]}
@@ -77,7 +80,7 @@ export default function Experience() {
                 }}
               />
             )}
-            {rotation.current % 4 === 0 && (
+            {mod === 0 && (
               <Text
                 index={activeFeature}
                 rotation={[0, (Math.PI * 3) / 2, 0]}

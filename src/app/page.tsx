@@ -7,6 +7,7 @@ import Features from './components/features';
 import { CanIUseContextProvider } from './hooks/useCanIUseContext';
 import { Intro } from './components/intro';
 import { GitHubLogoIcon, InfoCircledIcon } from '@radix-ui/react-icons';
+import { About } from './components/about';
 
 const bg = '#bad1df'; // TODO: Put onto HTML/Body instead
 
@@ -80,7 +81,13 @@ export default function Home() {
           }}
         >
           <p style={{ marginRight: 2 }}>No affiliation with Apple or iOS.</p>
-          <InfoCircledIcon style={{ width: 25, height: 25 }} />
+          <About
+            button={
+              <button style={{ pointerEvents: 'all' }}>
+                <InfoCircledIcon style={{ width: 25, height: 25 }} />
+              </button>
+            }
+          />
           <a
             href={'https://github.com/shalanah/ios404'}
             style={{ pointerEvents: 'all' }}
