@@ -7,8 +7,8 @@
 
 .DialogContent {
   text-align: left;
-  background-color: white;
-  border-radius: 6px;
+  background-color: var(--bg);
+  border-radius: 22px;
   box-shadow: hsl(206 22% 7% / 35%) 0px 10px 38px -10px,
     hsl(206 22% 7% / 20%) 0px 10px 20px -15px;
   position: fixed;
@@ -64,6 +64,11 @@
     opacity: 1;
     transform: translate(-50%, -50%) scale(1);
   }
+}
+
+.dl a {
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
 }
 
 .dl dt {

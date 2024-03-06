@@ -37,7 +37,6 @@ export const Text = ({ controls, index, rotation }) => {
       <div
         style={{
           width: 1000,
-          pointerEvents: 'none',
           fontSmoothing: 'antialiased',
           height: 1150,
           // scale: 4,

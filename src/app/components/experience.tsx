@@ -5,13 +5,11 @@
 import { Suspense, useRef } from 'react';
 import { Center } from '@react-three/drei';
 import PresentationControls from './PresentationControlsAltered';
-import { Perf } from 'r3f-perf';
-import { Model } from './milkcarton';
+// import { Perf } from 'r3f-perf';
+import { Model } from './milkcartonsnoart';
 import { Text } from './text';
 import useCanIUseContext from '../hooks/useCanIUseContext';
 import usePrevious from '../hooks/usePrevious';
-
-const bg = '#bad1df';
 
 export default function Experience() {
   const { activeFeature, iOSLacking } = useCanIUseContext();
@@ -72,7 +70,6 @@ export default function Experience() {
   return (
     <>
       {/* <Perf position="top-left" /> */}
-      <color attach="background" args={[bg]} />
       <Suspense fallback={null}>
         <Center>
           <PresentationControls

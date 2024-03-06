@@ -19,7 +19,7 @@ export default function Home() {
         style={{
           // overflowY: 'scroll',
           overflowX: 'hidden',
-          background: bg,
+          background: 'var(--bg)',
           outline: '1px solid black',
           position: 'fixed',
           overscrollBehavior: 'none',

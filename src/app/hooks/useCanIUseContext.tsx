@@ -9,7 +9,6 @@ import React, {
   useEffect,
 } from 'react';
 import { useHash } from './useHash';
-import usePrevious from './usePrevious';
 
 interface CanIUseContextInterface {
   loading: boolean;
@@ -17,6 +16,10 @@ interface CanIUseContextInterface {
   iOSLacking: any;
   activeFeature: number;
   updateHash: (hash: string) => void;
+  statusCounts: any;
+  statuses: any;
+  filters: any;
+  setFilters: (filters: any) => void;
 }
 
 const dataLink =
@@ -134,6 +137,23 @@ export const CanIUseContextProvider = ({
   const [canIUseData, setData] = useState(false);
   const [hasError, setHasError] = useState(false);
   const iOSLacking = getIOSSafariLacking(canIUseData);
+  const [filters, setFilters] = useState<{
+    statuses: { [k: string]: boolean };
+  }>({
+    statuses: {
+      cr: true,
+      ls: true,
+      other: true,
+      pr: true,
+      rec: true,
+      unoff: true,
+      wd: true,
+    },
+  });
+  const statusCounts = iOSLacking.reduce((acc, v) => {
+    acc[v.status] += 1;
+    return acc;
+  }, Object.fromEntries(Object.entries(canIUseData?.statuses || {}).map(([k, v]) => [k, 0])));
 
   const [hash, updateHash] = useHash();
   let activeFeature =
@@ -156,11 +176,11 @@ export const CanIUseContextProvider = ({
   //   }
   // }, [activeFeature, prevActiveFeature]);
 
-  console.log(activeFeature, hash);
+  // console.log(activeFeature, hash);
 
   // console.log({ activeFeature, hash });
   // console.log(canIUseData);
-  // console.log(iOSLacking);
+  console.log(iOSLacking, canIUseData?.statuses);
   // console.log(canIUseData);
 
   // If Safari brings up that caniuse data isn't up-to-date...
@@ -184,12 +204,15 @@ export const CanIUseContextProvider = ({
   return (
     <CanIUseContext.Provider
       value={{
+        statusCounts,
         loading,
         hasError,
         iOSLacking,
         updateHash,
         activeFeature,
         statuses: canIUseData?.statuses,
+        filters,
+        setFilters,
       }}
     >
       {children}

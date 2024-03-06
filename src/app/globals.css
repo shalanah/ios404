@@ -37,6 +37,25 @@
   font-style: 600;
 }
 
+:root {
+  --color: #000;
+  --bg: #bad1df;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color: #d8d8d8;
+    --bg: #000;
+  }
+}
+.light {
+  --color: #000;
+  --bg: #bad1df;
+}
+.dark {
+  --color: #d8d8d8;
+  --bg: #000;
+}
+
 a,
 button {
   all: unset;
@@ -53,6 +72,7 @@ button {
 
 html,
 body {
+  color: var(--color);
   text-align: center;
   /* font-family: 'aileron', sans-serif; */
   font-family: 'Inter Tight', sans-serif;
@@ -78,16 +98,6 @@ h6,
   font-weight: 400;
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
-}
-
 a {
   color: inherit;
   text-decoration: none;
@@ -107,13 +117,10 @@ ul {
   top: 0;
   width: 100%;
   height: 100%;
-  /* height: 100dvh; */
-  outline: 1px solid red;
+  height: 100dvh;
 }
 .pos-top-left {
   position: absolute;
   left: 0;
   top: 0;
 }
-
-/* TODO: Dark/light theme */

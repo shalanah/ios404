@@ -2,32 +2,35 @@ import React from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
 import { Cross2Icon } from '@radix-ui/react-icons';
 import styles from './about.module.css';
+import Markdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 const FAQ = [
   [
     'Is this site affiliated with Apple, iOS, or caniuse.com?',
-    'No. Absolutely not. Nada. Zilch. Zero. Nein. iOS404 is a pet project and not affiliated with any of those entities.',
+    'No. Absolutely not. Nada. Zilch. Zero. Nein. Null. Non.',
   ],
   [
     'What is your source data?',
-    'This site uses data from caniuse.com, which is an open-source project to collect and present data on web browser compatibility.',
+    'This site uses data from [caniuse.com](https://caniuse.com) ([caniuse github](https://github.com/Fyrd/caniuse/tree/main)), an open-source project to collect and present data on web browser compatibility.',
   ],
   [
     'How do you determine if something is not supported?',
-    'Android Chrome features are compared to iOS WebKit features. If Android Chrome supports a feature more than iOS WebKit, we consider that iOS feature lacking or missing.',
+    'If Android Chrome supports a feature more than iOS WebKit, that feature is consider missing with special note if "Partially supported".',
   ],
   [
     'Why is this iOS specific? Why not Android?',
-    'iOS WebKit is a monopoly engine on iPhones and iPads*. This means Chrome, Opera, Safari, Firefox or any other browser on an iPhone or iPad is still just WebKit. On the other hand, Android allows browser and engine competition. *EU residents may have other options in future due to DMCA.',
+    'iOS WebKit engine is a monopoly on iPhones and iPads. On the other hand, Android allows browser and engine competition. NOTE: EU residents might have other engine options in the future due to DMA.',
   ],
   [
     'Why did you make this site?',
-    "I have spent way too much time learning about what iOS does not support by testing websites + PWAs (Progressive Web Apps) on iPhones and iPads. I have lost a lot of my life to it - and I'll never ever get that time back. I wanted a place where I could see all the missing features in one place and others could as well.",
+    "I have spent a lot of time testing websites + PWAs (Progressive Web Apps) on iPhones and iPads. I have lost a lot of my life to it - and I'll never ever get that time back. I wanted a place where I could see all the missing features at once and others could as well.",
   ],
   [
     'Who are you?',
-    "Hi! 👋 So nice to meet you, and kind of you to ask! I'm Shalanah Dawson a frontend developer. I started making websites in 2000 to showcase my high school art and photography projects. I love coding, design, animation/interaction, and math. You can find me on LinkedIn, GitHub, and Twitter.",
+    "Hi! 👋 So nice to meet you! I'm Shalanah Dawson a frontend developer. I started making websites in 2000 to showcase my high school art and photography projects. I love coding, design, animation/interaction, and math. You can find me on [LinkedIn](https://linkedin.com/in/shalanah), [GitHub](https://github.com/shalanah), and [Twitter](https://twitter.com/shalanahfaith).",
   ],
+  ['iOS404', 'Copyright 2024. All Rights Reserved - Shalanah LLC'],
 ];
 
 export const About = ({ button }: { button: React.ReactNode }) => (
@@ -39,8 +42,12 @@ export const About = ({ button }: { button: React.ReactNode }) => (
         <dl className={styles.dl}>
           {FAQ.map(([question, answer], i) => (
             <React.Fragment key={i}>
-              <dt>{question}</dt>
-              <dd>{answer}</dd>
+              <dt>
+                <Markdown remarkPlugins={[remarkGfm]}>{question}</Markdown>
+              </dt>
+              <dd>
+                <Markdown remarkPlugins={[remarkGfm]}>{answer}</Markdown>
+              </dd>
             </React.Fragment>
           ))}
         </dl>

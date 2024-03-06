@@ -1,11 +1,11 @@
 import React from 'react';
-import { Filter } from './filter';
+import { Filters } from './filters';
 
 export const Intro = ({ bg }: { bg: string }) => {
   return (
     <div
       style={{
-        background: `linear-gradient(180deg, ${bg} 89%, rgba(255,255,255,0) 100%)`,
+        background: `linear-gradient(180deg, var(--bg) 89%, rgba(255,255,255,0) 100%)`,
         position: 'sticky',
         top: 0,
         height: '45dvh',
@@ -49,7 +49,7 @@ export const Intro = ({ bg }: { bg: string }) => {
         }}
       >
         <p>The missing web features of iOS.</p>
-        <Filter />
+        <Filters />
       </div>
     </div>
   );

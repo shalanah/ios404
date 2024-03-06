@@ -8,7 +8,8 @@ import { useEffect } from 'react';
 import { buttonClass } from '../hooks/useCanIUseContext';
 
 export default function Features() {
-  const { iOSLacking, activeFeature, updateHash } = useCanIUseContext();
+  const { iOSLacking, activeFeature, updateHash, filters } =
+    useCanIUseContext();
   const len = iOSLacking.length;
 
   // Just on first load
@@ -77,6 +78,7 @@ export default function Features() {
     <ul>
       {iOSLacking.map(({ key, ...v }, i) => {
         const active = i === activeFeature;
+        if (!filters.statuses[v.status]) return null;
         return (
           <li key={key}>
             <button
@@ -94,7 +96,7 @@ export default function Features() {
               <h2
                 className={classNames(styles.h2, { [styles.h2active]: active })}
                 style={{
-                  fontWeight: active ? 700 : 100,
+                  fontWeight: active ? 700 : 200,
                 }}
               >
                 {v.title}{' '}
