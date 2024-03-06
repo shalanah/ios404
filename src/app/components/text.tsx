@@ -10,7 +10,6 @@ import { ExternalLinkIcon } from '@radix-ui/react-icons';
 
 export const Text = ({ controls, index, rotation }) => {
   const { iOSLacking, statuses } = useCanIUseContext();
-  if (iOSLacking.length === 0) return null;
   const {
     title,
     description,

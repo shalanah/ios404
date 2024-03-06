@@ -6,6 +6,7 @@
 }
 
 .DialogContent {
+  text-align: left;
   background-color: white;
   border-radius: 6px;
   box-shadow: hsl(206 22% 7% / 35%) 0px 10px 38px -10px,
@@ -19,6 +20,7 @@
   max-height: 85vh;
   padding: 25px;
   animation: contentShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: auto;
 }
 .DialogContent:focus {
   outline: none;
@@ -62,4 +64,19 @@
     opacity: 1;
     transform: translate(-50%, -50%) scale(1);
   }
+}
+
+.dl dt {
+  line-height: 1.2;
+  font-size: 0.9rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+.dl dd {
+  line-height: 1.6;
+  font-size: 0.9rem;
+  margin-bottom: 25px;
+}
+.dl dd:last-child {
+  margin-bottom: 0px;
 }

@@ -5,21 +5,23 @@ import styles from './features.module.css';
 import classNames from 'classnames';
 import useCanIUseContext from '../hooks/useCanIUseContext';
 import { useEffect } from 'react';
+import { buttonClass } from '../hooks/useCanIUseContext';
 
-const buttonClass = 'feature-list-button';
 export default function Features() {
   const { iOSLacking, activeFeature, updateHash } = useCanIUseContext();
   const len = iOSLacking.length;
 
   // Just on first load
   useEffect(() => {
-    if (
-      activeFeature !== -1 &&
-      document.querySelector(`.${buttonClass}[data-index="${activeFeature}"]`)
-    ) {
-      document
-        .querySelector(`.${buttonClass}[data-index="${activeFeature}"]`)
-        .focus();
+    if (activeFeature !== -1) {
+      const el = document.querySelector(
+        `.${buttonClass}[data-index="${activeFeature}"]`
+      );
+      if (el && document.activeElement !== el) {
+        // scroll to element first
+        el.scrollIntoView({ behavior: 'instant', block: 'center' });
+        el.focus();
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeFeature !== -1]);
@@ -55,9 +57,12 @@ export default function Features() {
           return;
       }
       if (nextIndex === -1) return;
+      const el = document.querySelector(
+        `.${buttonClass}[data-index="${nextIndex}"]`
+      );
+      if (el && document.activeElement !== el) el.focus();
       e.preventDefault();
       updateHash(iOSLacking[nextIndex].key);
-      document.querySelector(`button[data-index="${nextIndex}"]`).focus();
     };
     document.addEventListener('keyup', onKeyUp);
     document.addEventListener('keydown', onKeyDown);
@@ -71,16 +76,20 @@ export default function Features() {
   return (
     <ul>
       {iOSLacking.map(({ key, ...v }, i) => {
-        // console.log(v);
         const active = i === activeFeature;
-
         return (
           <li key={key}>
             <button
               data-key={key}
               data-index={i}
               className={classNames(styles.button, buttonClass)}
-              onClick={() => updateHash(key)}
+              onClick={(e) => {
+                updateHash(key);
+                // Because Safari doesn't think buttons deserve focus... 🤷‍♀️ or something?
+                // Cannot believe I'm learning about this Apple-specific behavior in 2024
+                // - https://stackoverflow.com/questions/42758815/safari-focus-event-doesnt-work-on-button-element
+                e.currentTarget.focus();
+              }}
             >
               <h2
                 className={classNames(styles.h2, { [styles.h2active]: active })}
@@ -89,54 +98,10 @@ export default function Features() {
                 }}
               >
                 {v.title}{' '}
-                {/* <a href={`https://caniuse.com/${key}`} target="_blank">
-                <ExternalLinkIcon />
-              </a> */}
               </h2>{' '}
-              {/* {active && (
-                <div
-                  style={{
-                    margin: '10px 0',
-                    fontWeight: 200,
-                    fontSize: '.85rem',
-                    lineHeight: 1.5,
-                  }}
-                >
-                  {v.description}
-                </div>
-              )} */}
               {/* <div>{v.categories.join(', ')}</div> */}
               {/* {v.notes && <div>{v.notes}</div>}
             {v.keywords && <div>{v.keywords}</div>} */}
-              {/* <div>
-              Born: {date}{' '}
-              {date ? (
-                <>
-                  ({age} year{age > 1 ? 's' : ''} old)
-                </>
-              ) : (
-                <></>
-              )}
-            </div> */}
-              {/* <div>
-              Parents: {v.firstSeen?.[0] || ''} {v.firstSeen?.[2] || ''}
-            </div>
-            <div>
-              Godparents: <a href={v.spec}>{canIUseData.statuses[v.status]}</a>
-            </div>
-            <ul>
-              {Object.entries(v.notes_by_num).map(([num, note]) => {
-                if (
-                  !v.safariStat
-                    .replaceAll(' ', '')
-                    .replaceAll(/a|n|y/gi, '')
-                    .split('#')
-                    .includes(num)
-                )
-                  return null;
-                return <li key={num}>{note}</li>;
-              })}
-            </ul> */}
               {/* <div>
               {v.links.map(({ url, title }, k) => (
                 <span key={k}>

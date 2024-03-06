@@ -9,6 +9,7 @@ import React, {
   useEffect,
 } from 'react';
 import { useHash } from './useHash';
+import usePrevious from './usePrevious';
 
 interface CanIUseContextInterface {
   loading: boolean;
@@ -122,6 +123,8 @@ const getIOSSafariLacking = (canIUseData: any) => {
 export const CanIUseContext = createContext<CanIUseContextInterface | null>(
   null
 );
+export const buttonClass = 'feature-list-button';
+
 export const CanIUseContextProvider = ({
   children,
 }: {
@@ -133,13 +136,29 @@ export const CanIUseContextProvider = ({
   const iOSLacking = getIOSSafariLacking(canIUseData);
 
   const [hash, updateHash] = useHash();
-  const activeFeature =
-    iOSLacking.length > 0 && hash
-      ? iOSLacking.findIndex((v) => v.key === hash)
-      : 0;
+  let activeFeature =
+    iOSLacking.length > 0 ? iOSLacking.findIndex((v) => v.key === hash) : -1;
+  if (activeFeature === -1 && iOSLacking.length > 0) activeFeature = 0;
+
+  // on mount... if hash doesn't exist remove hash
+  useEffect(() => {
+    if (activeFeature === -1 && iOSLacking.length > 0 && hash) updateHash('');
+  }, [updateHash, activeFeature, iOSLacking.length, hash]);
+
+  // on mount... if hash doesn't exist remove hash
+  // useEffect(() => {
+  //   if (activeFeature !== -1 && prevActiveFeature === -1) {
+  //     // scroll element into view
+  //     const el = document.querySelector(
+  //       `.${buttonClass}[data-index="${activeFeature}"]`
+  //     );
+  //     if (el) el.scrollIntoView({ behavior: 'instant', block: 'center' });
+  //   }
+  // }, [activeFeature, prevActiveFeature]);
+
+  console.log(activeFeature, hash);
 
   // console.log({ activeFeature, hash });
-
   // console.log(canIUseData);
   // console.log(iOSLacking);
   // console.log(canIUseData);

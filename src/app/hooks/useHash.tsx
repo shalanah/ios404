@@ -1,4 +1,4 @@
-import { useEffect, useCallback, useState } from 'react';
+import { useEffect, useCallback, useState, use } from 'react';
 
 // Source: https://www.30secondsofcode.org/react/s/use-hash/
 export const useHash = () => {

@@ -18,7 +18,7 @@ const FAQ = [
   ],
   [
     'Why is this iOS specific? Why not Android?',
-    'iOS WebKit is a monopoly engine on iPhones and iPads everywhere*. This means Chrome, Opera, Safari or any other browser on an iPhone or iPad is still WebKit with window dressing. On the other hand, Android allows browser and engine competition. *EU residents may have other options in future due to DMCA.',
+    'iOS WebKit is a monopoly engine on iPhones and iPads*. This means Chrome, Opera, Safari, Firefox or any other browser on an iPhone or iPad is still just WebKit. On the other hand, Android allows browser and engine competition. *EU residents may have other options in future due to DMCA.',
   ],
   [
     'Why did you make this site?',
@@ -26,7 +26,7 @@ const FAQ = [
   ],
   [
     'Who are you?',
-    "Hi! 👋 So nice to meet you and kind of you to ask! I'm Shalanah Dawson a frontend developer. I started making websites in 2000 for high school and personal projects - mostly to showcase photography and art. I love design, animation/interaction, and math. You can find me on LinkedIn, GitHub, and Twitter.",
+    "Hi! 👋 So nice to meet you, and kind of you to ask! I'm Shalanah Dawson a frontend developer. I started making websites in 2000 to showcase my high school art and photography projects. I love coding, design, animation/interaction, and math. You can find me on LinkedIn, GitHub, and Twitter.",
   ],
 ];
 
@@ -36,8 +36,7 @@ export const About = ({ button }: { button: React.ReactNode }) => (
     <Dialog.Portal>
       <Dialog.Overlay className={styles.DialogOverlay} />
       <Dialog.Content className={styles.DialogContent}>
-        <h2>FAQ</h2>
-        <dl>
+        <dl className={styles.dl}>
           {FAQ.map(([question, answer], i) => (
             <React.Fragment key={i}>
               <dt>{question}</dt>
@@ -45,7 +44,6 @@ export const About = ({ button }: { button: React.ReactNode }) => (
             </React.Fragment>
           ))}
         </dl>
-
         {/* TODO: FAQ */}
         <Dialog.Close asChild>
           <button className={styles.IconButton} aria-label="Close">

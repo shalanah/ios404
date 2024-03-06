@@ -14,7 +14,7 @@ export const Intro = ({ bg }: { bg: string }) => {
         flexDirection: 'column',
 
         zIndex: 1,
-        pointerEvents: 'none',
+        pointerEvents: 'all',
         margin: '0 -1em',
         padding: '0 1em',
         paddingBottom: '50px',
