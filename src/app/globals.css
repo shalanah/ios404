@@ -37,21 +37,31 @@
   font-style: 600;
 }
 
-:root {
-  --color: #000;
-  --bg: #bad1df;
-}
 @media (prefers-color-scheme: dark) {
   :root {
+    --modalShadow: #000;
+    --modalBg: #333;
     --color: #d8d8d8;
     --bg: #000;
   }
 }
+@media (prefers-color-scheme: light) {
+  :root {
+    --modalBg: #fff;
+    --modalShadow: rgba(0, 0, 0, 0.5);
+    --color: #000;
+    --bg: #bad1df;
+  }
+}
 .light {
+  --modalBg: #fff;
+  --modalShadow: rgba(0, 0, 0, 0.5);
   --color: #000;
   --bg: #bad1df;
 }
 .dark {
+  --modalShadow: #000;
+  --modalBg: #333;
   --color: #d8d8d8;
   --bg: #000;
 }

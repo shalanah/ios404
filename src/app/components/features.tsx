@@ -8,15 +8,15 @@ import { useEffect } from 'react';
 import { buttonClass } from '../hooks/useCanIUseContext';
 
 export default function Features() {
-  const { iOSLacking, activeFeature, updateHash, filters } =
+  const { iOSLacking, activeIndex, updateHash, filteredData } =
     useCanIUseContext();
-  const len = iOSLacking.length;
+  const len = filteredData.length;
 
   // Just on first load
   useEffect(() => {
-    if (activeFeature !== -1) {
+    if (activeIndex !== -1) {
       const el = document.querySelector(
-        `.${buttonClass}[data-index="${activeFeature}"]`
+        `.${buttonClass}[data-index="${activeIndex}"]`
       );
       if (el && document.activeElement !== el) {
         // scroll to element first
@@ -25,7 +25,7 @@ export default function Features() {
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeFeature !== -1]);
+  }, [activeIndex !== -1]);
 
   useEffect(() => {
     const onKeyDown = (e) => {
@@ -43,8 +43,10 @@ export default function Features() {
       const hasFocus = Array.from(els).some(
         (el) => el === document.activeElement
       );
-      if (!hasFocus) return;
-      const index = Number(document.activeElement.getAttribute('data-index'));
+      if (!hasFocus || len <= 1) return;
+      const index = Number(
+        document.activeElement.getAttribute('data-filteredIndex')
+      );
       let nextIndex = -1;
       switch (e.key) {
         case 'ArrowDown':
@@ -59,11 +61,12 @@ export default function Features() {
       }
       if (nextIndex === -1) return;
       const el = document.querySelector(
-        `.${buttonClass}[data-index="${nextIndex}"]`
+        `.${buttonClass}[data-filteredIndex="${nextIndex}"]`
       );
       if (el && document.activeElement !== el) el.focus();
+      const nextActiveIndex = Number(el?.getAttribute('data-index') || -1);
       e.preventDefault();
-      updateHash(iOSLacking[nextIndex].key);
+      updateHash(iOSLacking[nextActiveIndex].key);
     };
     document.addEventListener('keyup', onKeyUp);
     document.addEventListener('keydown', onKeyDown);
@@ -73,22 +76,20 @@ export default function Features() {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [len]);
-
   return (
     <ul>
-      {iOSLacking.map(({ key, ...v }, i) => {
-        const active = i === activeFeature;
-        if (!filters.statuses[v.status]) return null;
+      {filteredData.map(({ key, index, ...v }, i) => {
+        const active = index === activeIndex;
         return (
           <li key={key}>
             <button
+              data-filteredIndex={i}
               data-key={key}
-              data-index={i}
+              data-index={index}
               className={classNames(styles.button, buttonClass)}
               onClick={(e) => {
                 updateHash(key);
-                // Because Safari doesn't think buttons deserve focus... 🤷‍♀️ or something?
-                // Cannot believe I'm learning about this Apple-specific behavior in 2024
+                // Safari doesn't think buttons deserve focus... 🤷‍♀️?
                 // - https://stackoverflow.com/questions/42758815/safari-focus-event-doesnt-work-on-button-element
                 e.currentTarget.focus();
               }}
@@ -110,9 +111,6 @@ export default function Features() {
                   {url} {title}
                 </span>
               ))}
-            </div> */}
-              {/* <div>
-              {v.safariStat} / {v.chromeStat}
             </div> */}
             </button>
           </li>

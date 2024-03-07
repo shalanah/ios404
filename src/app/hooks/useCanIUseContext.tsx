@@ -9,17 +9,21 @@ import React, {
   useEffect,
 } from 'react';
 import { useHash } from './useHash';
+import usePrefersColorScheme from 'use-prefers-color-scheme';
 
 interface CanIUseContextInterface {
   loading: boolean;
   hasError: boolean;
   iOSLacking: any;
-  activeFeature: number;
+  activeIndex: number;
   updateHash: (hash: string) => void;
   statusCounts: any;
   statuses: any;
   filters: any;
   setFilters: (filters: any) => void;
+  isDarkMode: boolean;
+  setColorScheme: (mode: string) => void;
+  filteredData: any;
 }
 
 const dataLink =
@@ -118,6 +122,9 @@ const getIOSSafariLacking = (canIUseData: any) => {
     })
     .filter((v) => {
       return v.firstSeen.length > 0;
+    })
+    .map((v, i) => {
+      return { ...v, index: i };
     });
   return safariDoesNotSupport;
 };
@@ -154,31 +161,48 @@ export const CanIUseContextProvider = ({
     acc[v.status] += 1;
     return acc;
   }, Object.fromEntries(Object.entries(canIUseData?.statuses || {}).map(([k, v]) => [k, 0])));
+  const prefersColorScheme = usePrefersColorScheme();
+  const [mode, setColorScheme] = useState(prefersColorScheme);
+  const isDarkMode = mode === 'dark';
+  useEffect(() => {
+    setColorScheme(prefersColorScheme);
+  }, [prefersColorScheme]);
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add('dark');
+      document.documentElement.classList.remove('light');
+    } else {
+      document.documentElement.classList.remove('dark');
+      document.documentElement.classList.add('light');
+    }
+  }, [isDarkMode]);
 
   const [hash, updateHash] = useHash();
-  let activeFeature =
+  let activeIndex =
     iOSLacking.length > 0 ? iOSLacking.findIndex((v) => v.key === hash) : -1;
-  if (activeFeature === -1 && iOSLacking.length > 0) activeFeature = 0;
+  if (activeIndex === -1 && iOSLacking.length > 0) activeIndex = 0;
 
   // on mount... if hash doesn't exist remove hash
   useEffect(() => {
-    if (activeFeature === -1 && iOSLacking.length > 0 && hash) updateHash('');
-  }, [updateHash, activeFeature, iOSLacking.length, hash]);
+    if (activeIndex === -1 && iOSLacking.length > 0 && hash) updateHash('');
+  }, [updateHash, activeIndex, iOSLacking.length, hash]);
+
+  console.log({ iOSLacking, canIUseData });
 
   // on mount... if hash doesn't exist remove hash
   // useEffect(() => {
-  //   if (activeFeature !== -1 && prevActiveFeature === -1) {
+  //   if (activeIndex !== -1 && prevActiveIndex === -1) {
   //     // scroll element into view
   //     const el = document.querySelector(
-  //       `.${buttonClass}[data-index="${activeFeature}"]`
+  //       `.${buttonClass}[data-index="${activeIndex}"]`
   //     );
   //     if (el) el.scrollIntoView({ behavior: 'instant', block: 'center' });
   //   }
-  // }, [activeFeature, prevActiveFeature]);
+  // }, [activeIndex, prevActiveIndex]);
 
-  // console.log(activeFeature, hash);
+  // console.log(activeIndex, hash);
 
-  // console.log({ activeFeature, hash });
+  // console.log({ activeIndex, hash });
   // console.log(canIUseData);
   console.log(iOSLacking, canIUseData?.statuses);
   // console.log(canIUseData);
@@ -209,10 +233,13 @@ export const CanIUseContextProvider = ({
         hasError,
         iOSLacking,
         updateHash,
-        activeFeature,
+        activeIndex,
         statuses: canIUseData?.statuses,
         filters,
+        filteredData: iOSLacking.filter((v) => filters.statuses[v.status]),
         setFilters,
+        isDarkMode,
+        setColorScheme,
       }}
     >
       {children}

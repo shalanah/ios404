@@ -6,8 +6,13 @@ import Experience from './components/experience';
 import Features from './components/features';
 import { CanIUseContextProvider } from './hooks/useCanIUseContext';
 import { Intro } from './components/intro';
-import { GitHubLogoIcon, InfoCircledIcon } from '@radix-ui/react-icons';
+import {
+  GitHubLogoIcon,
+  InfoCircledIcon,
+  SunIcon,
+} from '@radix-ui/react-icons';
 import { About } from './components/about';
+import { DarkModeToggle } from './components/darkModeToggle';
 
 const bg = '#bad1df'; // TODO: Put onto HTML/Body instead
 
@@ -77,17 +82,11 @@ export default function Home() {
             justifyContent: 'flex-end',
             paddingRight: 15,
             lineHeight: 1,
-            gap: 5,
+            gap: 10,
           }}
         >
           <p style={{ marginRight: 2 }}>No affiliation with Apple or iOS.</p>
-          <About
-            button={
-              <button style={{ pointerEvents: 'all' }}>
-                <InfoCircledIcon style={{ width: 25, height: 25 }} />
-              </button>
-            }
-          />
+          <DarkModeToggle />
           <a
             href={'https://github.com/shalanah/ios404'}
             style={{ pointerEvents: 'all' }}
@@ -95,6 +94,13 @@ export default function Home() {
           >
             <GitHubLogoIcon style={{ width: 23, height: 23 }} />
           </a>
+          <About
+            button={
+              <button style={{ pointerEvents: 'all' }}>
+                <InfoCircledIcon style={{ width: 25, height: 25 }} />
+              </button>
+            }
+          />
         </div>
       </div>
     </CanIUseContextProvider>

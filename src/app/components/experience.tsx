@@ -12,19 +12,19 @@ import useCanIUseContext from '../hooks/useCanIUseContext';
 import usePrevious from '../hooks/usePrevious';
 
 export default function Experience() {
-  const { activeFeature, iOSLacking } = useCanIUseContext();
+  const { activeIndex, iOSLacking } = useCanIUseContext();
   const len = iOSLacking.length;
   const quarterTurns = useRef(0);
-  const prevActiveFeature = usePrevious(activeFeature);
+  const prevActiveIndex = usePrevious(activeIndex);
 
-  if (prevActiveFeature < activeFeature) {
-    if (activeFeature === len - 1 && prevActiveFeature === 0) {
+  if (prevActiveIndex < activeIndex) {
+    if (activeIndex === len - 1 && prevActiveIndex === 0) {
       quarterTurns.current -= 1;
     } else {
       quarterTurns.current += 1;
     }
-  } else if (prevActiveFeature > activeFeature) {
-    if (activeFeature === 0 && prevActiveFeature === len - 1) {
+  } else if (prevActiveIndex > activeIndex) {
+    if (activeIndex === 0 && prevActiveIndex === len - 1) {
       quarterTurns.current += 1;
     } else {
       quarterTurns.current -= 1;
@@ -65,7 +65,7 @@ export default function Experience() {
       break;
   }
 
-  if (len === 0 || activeFeature === -1) return null;
+  if (len === 0 || activeIndex === -1) return null;
 
   return (
     <>
@@ -83,9 +83,9 @@ export default function Experience() {
             <axesHelper args={[100]} renderOrder={5} />
             <Model />
             <Text
-              key={activeFeature}
+              key={activeIndex}
               rotation={rotation}
-              index={activeFeature}
+              index={activeIndex}
               controls={controls}
             />
           </PresentationControls>

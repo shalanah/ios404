@@ -23,7 +23,7 @@ export const Intro = ({ bg }: { bg: string }) => {
       <h1
         style={{
           fontWeight: 100,
-          fontSize: '3.75rem',
+          fontSize: '4.5vw',
           margin: 'auto 0 0',
         }}
       >
