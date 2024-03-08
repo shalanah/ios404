@@ -107,6 +107,7 @@ export const Filters = () => {
   return (
     <div
       style={{
+        height: 35,
         marginTop: 10,
         display: 'flex',
         gap: 5,

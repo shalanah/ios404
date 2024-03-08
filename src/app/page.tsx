@@ -9,22 +9,19 @@ import { GitHubLogoIcon, InfoCircledIcon } from '@radix-ui/react-icons';
 import { About } from './components/about';
 import { DarkModeToggle } from './components/darkModeToggle';
 
-const bg = '#bad1df'; // TODO: Put onto HTML/Body instead
-
 export default function Home() {
   return (
     <CanIUseContextProvider>
       <div
         className={'pos-full-win'}
         style={{
-          // overflowY: 'scroll',
           overflowX: 'hidden',
           background: 'var(--bg)',
           outline: '1px solid black',
           position: 'fixed',
           overscrollBehavior: 'none',
           scrollBehavior: 'smooth',
-          scrollPaddingBlockStart: '45dvh',
+          scrollPaddingBlockStart: '43dvh',
         }}
       >
         <Canvas
@@ -57,10 +54,27 @@ export default function Home() {
             padding: '0 1em',
             outline: '1px solid black',
             overscrollBehavior: 'contain',
+            paddingTop: '43dvh',
           }}
         >
-          <Intro bg={bg} />
           <Features />
+        </div>
+        <div
+          style={{
+            pointerEvents: 'all',
+            textAlign: 'left',
+            position: 'fixed',
+            left: '23vw',
+            width: '24vw',
+            top: '0',
+            height: '43dvh',
+            paddingBottom: 30,
+            padding: '0 1em',
+            outline: '1px solid black',
+            overscrollBehavior: 'contain',
+          }}
+        >
+          <Intro />
         </div>
         <div
           style={{

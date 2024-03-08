@@ -3,11 +3,10 @@ import { Filters } from './filters';
 import styled from 'styled-components';
 
 const Div = styled.div`
-  position: sticky;
-  top: 0;
-  height: 43dvh;
   display: flex;
+  position: relative;
   width: calc(100% + 2em);
+  height: 100%;
   flex-direction: column;
   z-index: 1;
   gap: 5px;
@@ -53,12 +52,7 @@ export const Intro = () => {
       >
         iOS
         <span style={{ fontWeight: 700 }}>
-          4
-          <span
-          // style={{ letterSpacing: '-.02em' }}
-          >
-            04
-          </span>
+          4<span>04</span>
         </span>
       </h1>
       <div
