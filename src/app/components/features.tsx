@@ -69,7 +69,7 @@ export default function Features() {
       );
       if (!hasFocus || len <= 1) return;
       const index = Number(
-        document.activeElement.getAttribute('data-filteredIndex')
+        document.activeElement.getAttribute('data-filteredindex')
       );
       let nextIndex = -1;
       switch (e.key) {
@@ -85,7 +85,7 @@ export default function Features() {
       }
       if (nextIndex === -1) return;
       const el = document.querySelector(
-        `.${buttonClass}[data-filteredIndex="${nextIndex}"]`
+        `.${buttonClass}[data-filteredindex="${nextIndex}"]`
       );
       if (el && document.activeElement !== el) el.focus();
       const nextActiveIndex = Number(el?.getAttribute('data-index') || -1);
@@ -107,7 +107,7 @@ export default function Features() {
         return (
           <li key={key}>
             <button
-              data-filteredIndex={i}
+              data-filteredindex={i}
               data-key={key}
               data-index={index}
               className={buttonClass}

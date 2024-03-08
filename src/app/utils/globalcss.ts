@@ -24,7 +24,7 @@ const theme = {
     modalHr: '#ccc',
     modalShadow: 'rgba(0, 0, 0, 0.5)',
     color: '#555',
-    bg: '#bad1df',
+    bg: '#cce9f4',
     badgeBg: 'rgb(0, 114, 245)',
     badgeColor: '#fff',
     badgeBorder: 'rgb(56, 144, 245)',

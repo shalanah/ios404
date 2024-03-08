@@ -6,7 +6,7 @@ const inter = Inter({ subsets: ['latin'] }); // use for our google font?
 
 export const metadata: Metadata = {
   title: 'iOS404',
-  description: 'The missing web features of iOS.',
+  description: 'The missing web features of iOS',
 };
 
 export default function RootLayout({

@@ -22,8 +22,8 @@ const CheckboxRoot = styled(CB.Root)`
 `;
 
 const CheckboxIndicator = styled(CB.Indicator)`
-  color: var(--radioColor);
   svg {
+    color: var(--radioColor);
     animation: 0.1s slideUpAndFadeMore;
   }
 `;

@@ -153,7 +153,7 @@ export const Filters = () => {
             {[
               {
                 title: 'W3C',
-                description: 'Creating protocols and guidelines since 1994',
+                description: 'Protocols and guidelines since 1994',
                 filterFn: (v: string) => {
                   return !v.startsWith('W3C');
                 },
@@ -167,7 +167,7 @@ export const Filters = () => {
               },
               {
                 title: 'WHATWG',
-                description: 'Working on evolving standards since 2004',
+                description: 'Evolving standards + specs since 2004',
                 filterFn: (v: string) => {
                   return !v.startsWith('WHATWG');
                 },

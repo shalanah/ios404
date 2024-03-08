@@ -17,7 +17,7 @@ export default function Home() {
         style={{
           overflowX: 'hidden',
           background: 'var(--bg)',
-          outline: '1px solid black',
+          // outline: '1px solid black',
           position: 'fixed',
           overscrollBehavior: 'none',
           scrollBehavior: 'smooth',
@@ -52,7 +52,7 @@ export default function Home() {
             top: '0',
             paddingBottom: 30,
             padding: '0 1em',
-            outline: '1px solid black',
+            // outline: '1px solid black',
             overscrollBehavior: 'contain',
             paddingTop: '43dvh',
           }}
@@ -70,7 +70,7 @@ export default function Home() {
             height: '43dvh',
             paddingBottom: 30,
             padding: '0 1em',
-            outline: '1px solid black',
+            // outline: '1px solid black',
             overscrollBehavior: 'contain',
           }}
         >

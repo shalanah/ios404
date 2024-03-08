@@ -39,7 +39,7 @@ const Div = styled.div`
   .stats p {
     color: var(--alternateTitle);
     font-size: 28px;
-    font-weight: 600;
+    font-weight: 700;
   }
 `;
 
