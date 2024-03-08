@@ -1,3 +1,5 @@
+import { a } from '@react-spring/three';
+
 const theme = {
   dark: {
     modalShadow: '#000',
@@ -8,24 +10,32 @@ const theme = {
     badgeBg: 'rgb(0, 114, 245)',
     badgeColor: '#fff',
     badgeBorder: 'rgb(56, 144, 245)',
+    codeBg: '#000',
+    codeColor: '#eee',
+    codeBorder: '#222',
     radioBg: '#fff',
     radioColor: 'var(--bg)',
     radioEmptyBg: 'var(--bg)',
     radioOutline: '#fff',
+    alternateTitle: '#fff',
   },
   light: {
     modalBg: '#fff',
     modalHr: '#ccc',
     modalShadow: 'rgba(0, 0, 0, 0.5)',
-    color: '#000',
+    color: '#555',
     bg: '#bad1df',
     badgeBg: 'rgb(0, 114, 245)',
     badgeColor: '#fff',
     badgeBorder: 'rgb(56, 144, 245)',
+    codeBg: '#e6e6e6',
+    codeColor: '#000',
+    codeBorder: 'rgb(0,0,0,0.2)',
     radioBg: '#fff',
     radioColor: 'var(--color)',
     radioEmptyBg: '#eee',
     radioOutline: '#ccc',
+    alternateTitle: '#333',
   },
 };
 
@@ -141,6 +151,7 @@ button {
   all: unset;
   cursor: pointer;
   box-sizing: border-box;
+  color: currentColor;
 }
 
 * {
@@ -169,13 +180,19 @@ body {
   /* background: linear-gradient(red, green); */
 }
 
+svg {
+  color:var(--alternateTitle)
+}
+
 h1,
 h2,
 h3,
 h4,
 h5,
 h6,
+strong,
 .header {
+  color: var(--alternateTitle);
   font-weight: 400;
 }
 

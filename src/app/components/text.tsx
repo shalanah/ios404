@@ -10,32 +10,36 @@ import styled from 'styled-components';
 
 const Div = styled.div`
   .description code {
-    background: rgba(255, 255, 255, 0.3);
+    background: var(--codeBg);
+    color: var(--codeColor);
+    outline: 1px solid var(--codeOutline);
     font-size: 0.75em;
     padding: 0.1em 0.4em;
     border-radius: 0.4em;
   }
   .stats {
-    font-size: 50px;
-    line-height: 1.1;
+    width: 450px;
   }
   .stats > div {
-    margin: 0px 0 20px;
+    width: 100%;
+    border-bottom: 1px solid var(--modalHr);
+    padding: 10px 0px;
     display: flex;
-    gap: 20px;
+    gap: 25px;
+    align-items: baseline;
+    justify-content: space-between;
   }
   .stats h3 {
-    text-align: right;
-    padding-top: 7.5px;
+    font-size: 25px;
+    text-transform: uppercase;
     width: 100px;
     flex-shrink: 0;
     opacity: 0.5;
-    font-size: 25px;
-    font-weight: 500;
-    margin-bottom: 8px;
+    font-weight: 600;
   }
   .stats p {
-    font-size: 34px;
+    color: var(--alternateTitle);
+    font-size: 30px;
     font-weight: 600;
   }
 `;
@@ -92,19 +96,19 @@ export const Text = ({ controls, index, rotation }) => {
             flexDirection: 'column',
           }}
         >
-          <div
+          <h1
             style={{
+              fontWeight: 'bold',
               fontSize: 236,
               marginLeft: -10,
               textTransform: 'uppercase',
               lineHeight: 1,
               marginBottom: 10,
               alignSelf: 'stretch',
-              // textAlign: 'center',
             }}
           >
             Missing
-          </div>
+          </h1>
           <div
             style={{
               display: 'flex',
@@ -113,7 +117,7 @@ export const Text = ({ controls, index, rotation }) => {
             }}
           >
             <div>
-              <div
+              <h2
                 style={{
                   fontSize: 42,
                   marginBottom: 15,
@@ -140,7 +144,7 @@ export const Text = ({ controls, index, rotation }) => {
                     }}
                   />
                 </a>
-              </div>
+              </h2>
               <div
                 style={{
                   textAlign: 'left',
@@ -195,7 +199,6 @@ export const Text = ({ controls, index, rotation }) => {
                   background: '#000',
                   height: 450,
                   display: 'flex',
-                  outline: '1px solid red',
                 }}
               >
                 <Image
@@ -216,47 +219,45 @@ export const Text = ({ controls, index, rotation }) => {
                   flexDirection: 'column',
                   justifyContent: 'space-between',
                   height: '100%',
-                  outline: '1px solid black',
                 }}
               >
                 <div className={'stats'}>
                   <div>
-                    {/* <h3>Support</h3> */}
+                    <h3>Support</h3>
                     <p>
                       {safariStat.startsWith('a') || safariStat.startsWith('y')
-                        ? 'Partially supported'
-                        : 'No support'}
+                        ? 'Partial'
+                        : 'Nones'}
                     </p>
                   </div>
                   <div>
-                    {/* <h3>Age </h3> */}
+                    <h3>Age </h3>
                     <p>
                       {age} yr{age > 1 ? 's' : ''} old ({date})
                     </p>
                   </div>
                   <div>
-                    {/* <h3>Parents</h3> */}
+                    <h3>Parents</h3>
                     <p>
-                      {firstSeen?.[0] || ''} {firstSeen?.[2] || ''} (First seen)
+                      {firstSeen?.[0] || ''} {firstSeen?.[2] || ''}
                     </p>
                   </div>
                   <div>
-                    {/* <h3>Spec</h3> */}
-                    <a
-                      href={spec}
-                      target="_blank"
-                      style={{
-                        position: 'relative',
-                        top: 5,
-                        pointerEvents: 'all',
-                      }}
-                    >
+                    <h3>Spec</h3>
+                    <a href={spec} target="_blank">
                       <p>
                         {statuses[status]
                           .replace('Candidate Recommendation', 'Candidate')
                           .replace('Working Draft', 'Draft')}
                         <ExternalLinkIcon
-                          style={{ width: 35, height: 35, marginLeft: 15 }}
+                          style={{
+                            lineHeight: 0,
+                            width: 35,
+                            height: 35,
+                            marginLeft: 15,
+                            position: 'relative',
+                            top: 5,
+                          }}
                         />
                       </p>
                     </a>

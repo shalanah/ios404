@@ -11,6 +11,7 @@ const Dl = styled.dl`
     text-underline-offset: 0.2em;
   }
   dt {
+    color: var(--alternateTitle);
     line-height: 1.2;
     font-size: 0.9rem;
     font-weight: 700;

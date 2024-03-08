@@ -57,6 +57,7 @@ export const Intro = () => {
       </h1>
       <div
         style={{
+          color: 'var(--alternateTitle)',
           lineHeight: 1.35,
           fontSize: '.95rem',
           fontWeight: 400,

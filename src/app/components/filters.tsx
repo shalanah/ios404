@@ -107,6 +107,7 @@ export const Filters = () => {
         gap: 5,
         alignItems: 'center',
         marginBottom: 20,
+        color: 'var(--alternateTitle)',
       }}
     >
       <Popover.Root
@@ -121,7 +122,15 @@ export const Filters = () => {
         </Popover.Trigger>
         <Popover.Portal>
           <PopoverContent sideOffset={5}>
-            <div>Filters</div>
+            <h2
+              style={{
+                fontSize: '.8rem',
+                textTransform: 'uppercase',
+                fontWeight: 700,
+              }}
+            >
+              Filters
+            </h2>
             <div style={{ padding: '15px 0' }}>
               <Checkbox
                 switchOrder
@@ -185,6 +194,7 @@ export const Filters = () => {
                   {title && description && (
                     <div
                       style={{
+                        color: 'var(--alternateTitle)',
                         width: '100%',
                         flexShrink: 0,
                         display: 'flex',
