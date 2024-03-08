@@ -4,9 +4,9 @@
 
 import { Suspense, useRef } from 'react';
 import { Center } from '@react-three/drei';
-import PresentationControls from './PresentationControlsAltered';
+import AnimateRotation from './animateRotation';
 // import { Perf } from 'r3f-perf';
-import { Model } from './milkcartonsnoart';
+import { Model } from './milkcarton';
 import { Text } from './text';
 import useCanIUseContext from '../hooks/useCanIUseContext';
 import usePrevious from '../hooks/usePrevious';
@@ -72,7 +72,7 @@ export default function Experience() {
       {/* <Perf position="top-left" /> */}
       <Suspense fallback={null}>
         <Center>
-          <PresentationControls
+          <AnimateRotation
             rotation={[
               0,
               (quarterTurns.current * -Math.PI) / 2 - Math.PI / 10,
@@ -88,7 +88,7 @@ export default function Experience() {
               index={activeIndex}
               controls={controls}
             />
-          </PresentationControls>
+          </AnimateRotation>
         </Center>
       </Suspense>
     </>

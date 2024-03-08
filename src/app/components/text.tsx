@@ -5,8 +5,40 @@ import useCanIUseContext from '../hooks/useCanIUseContext';
 import Image from 'next/image';
 import Markdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import styles from './text.module.css';
 import { ExternalLinkIcon } from '@radix-ui/react-icons';
+import styled from 'styled-components';
+
+const Div = styled.div`
+  .description code {
+    background: rgba(255, 255, 255, 0.3);
+    font-size: 0.75em;
+    padding: 0.1em 0.4em;
+    border-radius: 0.4em;
+  }
+  .stats {
+    font-size: 50px;
+    line-height: 1.1;
+  }
+  .stats > div {
+    margin: 0px 0 20px;
+    display: flex;
+    gap: 20px;
+  }
+  .stats h3 {
+    text-align: right;
+    padding-top: 7.5px;
+    width: 100px;
+    flex-shrink: 0;
+    opacity: 0.5;
+    font-size: 25px;
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+  .stats p {
+    font-size: 34px;
+    font-weight: 600;
+  }
+`;
 
 export const Text = ({ controls, index, rotation }) => {
   const { iOSLacking, statuses } = useCanIUseContext();
@@ -34,7 +66,7 @@ export const Text = ({ controls, index, rotation }) => {
       occlude={'raycast'}
       // side={THREE.FrontSide} // Required
     >
-      <div
+      <Div
         style={{
           width: 1000,
           fontSmoothing: 'antialiased',
@@ -119,7 +151,7 @@ export const Text = ({ controls, index, rotation }) => {
                   fontWeight: 500,
                   textWrap: 'balance',
                 }}
-                className={styles.description}
+                className={'description'}
               >
                 {Object.entries(notes_by_num).length > 0 && (
                   <ul style={{ marginBottom: 15, fontWeight: 700 }}>
@@ -187,7 +219,7 @@ export const Text = ({ controls, index, rotation }) => {
                   outline: '1px solid black',
                 }}
               >
-                <div className={styles.stats}>
+                <div className={'stats'}>
                   <div>
                     {/* <h3>Support</h3> */}
                     <p>
@@ -246,7 +278,7 @@ export const Text = ({ controls, index, rotation }) => {
         >
           Contact caniuse if you have any information regarding this feature.
         </div>
-      </div>
+      </Div>
     </Html>
   );
 };

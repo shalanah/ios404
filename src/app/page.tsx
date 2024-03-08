@@ -1,16 +1,11 @@
 'use client';
 
 import { Canvas } from '@react-three/fiber';
-import styles from './page.module.css';
 import Experience from './components/experience';
 import Features from './components/features';
 import { CanIUseContextProvider } from './hooks/useCanIUseContext';
 import { Intro } from './components/intro';
-import {
-  GitHubLogoIcon,
-  InfoCircledIcon,
-  SunIcon,
-} from '@radix-ui/react-icons';
+import { GitHubLogoIcon, InfoCircledIcon } from '@radix-ui/react-icons';
 import { About } from './components/about';
 import { DarkModeToggle } from './components/darkModeToggle';
 

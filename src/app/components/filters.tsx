@@ -1,8 +1,73 @@
-import React, { use, useEffect, useId, useRef, useState } from 'react';
+import React, { useEffect, useId, useRef, useState } from 'react';
 import * as Popover from '@radix-ui/react-popover';
 import { MixerVerticalIcon, Cross2Icon } from '@radix-ui/react-icons';
-import styles from './filters.module.css';
 import useCanIUseContext from '../hooks/useCanIUseContext';
+import styled from 'styled-components';
+
+const Button = styled.button`
+  font-family: inherit;
+  border-radius: 100%;
+  height: 30px;
+  width: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+  color: var(--color);
+  margin-left: -8px;
+  &:hover {
+    transition: 0.15s;
+
+    background: var(--modalBg);
+  }
+`;
+
+const PopoverContent = styled(Popover.Content)`
+  border-radius: 20px;
+  padding: 20px;
+  width: 260px;
+  background-color: var(--modalBg);
+  box-shadow: var(--modalShadow) 0px 10px 38px -10px,
+    var(--modalShadow) 0px 10px 20px -15px;
+  animation-duration: 400ms;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity;
+  text-align: left;
+  &[data-state='open'][data-side='top'] {
+    animation-name: slideDownAndFade;
+  }
+  &[data-state='open'][data-side='right'] {
+    animation-name: slideLeftAndFade;
+  }
+  &[data-state='open'][data-side='bottom'] {
+    animation-name: slideUpAndFade;
+  }
+  &[data-state='open'][data-side='left'] {
+    animation-name: slideRightAndFade;
+  }
+  .PopoverArrow {
+    fill: var(--modalBg);
+  }
+  .PopoverClose {
+    font-family: inherit;
+    border-radius: 100%;
+    height: 25px;
+    width: 25px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: orange;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+  }
+  .PopoverClose:hover {
+    background-color: green;
+  }
+  .PopoverClose:focus {
+    box-shadow: 0 0 0 2px yellow;
+  }
+`;
 
 export const Filters = () => {
   const {
@@ -29,11 +94,9 @@ export const Filters = () => {
   const allChecked = numChecked === len;
   const checked = allChecked || (numChecked < len / 2 && numChecked > 0);
 
-  console.log({ notAllChecked, allChecked, nonEmptyStatusFilters });
-
   let count =
     filteredData.length === iOSLacking.length
-      ? `${iOSLacking.length} features total`
+      ? `${iOSLacking.length} missing features`
       : `${filteredData.length} found of ${iOSLacking.length}`;
   if (filteredData.length === 0) count = 'No matches';
 
@@ -44,10 +107,11 @@ export const Filters = () => {
   return (
     <div
       style={{
-        marginTop: 30,
+        marginTop: 10,
         display: 'flex',
         gap: 5,
         alignItems: 'center',
+        marginBottom: 20,
       }}
     >
       <Popover.Root
@@ -56,12 +120,12 @@ export const Filters = () => {
         open={open}
       >
         <Popover.Trigger asChild>
-          <button className={styles.IconButton} aria-label="Update dimensions">
+          <Button className={'IconButton'} aria-label="Update dimensions">
             <MixerVerticalIcon />
-          </button>
+          </Button>
         </Popover.Trigger>
         <Popover.Portal>
-          <Popover.Content className={styles.PopoverContent} sideOffset={5}>
+          <PopoverContent sideOffset={5}>
             <div>Filter by Spec</div>
             <div>
               <input
@@ -111,17 +175,16 @@ export const Filters = () => {
                 </div>
               );
             })}
-            <Popover.Close className={styles.PopoverClose} aria-label="Close">
+            <Popover.Close className={'PopoverClose'} aria-label="Close">
               <Cross2Icon />
             </Popover.Close>
-            <Popover.Arrow className={styles.PopoverArrow} />
-          </Popover.Content>
+            <Popover.Arrow className={'PopoverArrow'} />
+          </PopoverContent>
         </Popover.Portal>
       </Popover.Root>
       <div
         style={{
           width: '12ch',
-          marginLeft: 5,
           whiteSpace: 'nowrap',
           fontVariantNumeric: 'tabular-nums',
         }}

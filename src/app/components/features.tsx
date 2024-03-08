@@ -1,11 +1,35 @@
 // @ts-nocheck
 'use client';
 
-import styles from './features.module.css';
-import classNames from 'classnames';
 import useCanIUseContext from '../hooks/useCanIUseContext';
 import { useEffect } from 'react';
 import { buttonClass } from '../hooks/useCanIUseContext';
+import styled from 'styled-components';
+
+const Ul = styled.ul`
+  h2 {
+    font-size: 1.15rem;
+    line-height: 1.2;
+    transition: 0.05s color ease-out;
+  }
+  h2.active {
+    position: relative;
+  }
+  button {
+    display: block;
+    width: 100%;
+    padding: 0.45em 0.5em;
+    margin: 0 -0.5em;
+    outline: 2px dotted transparent;
+    outline-offset: 2px 4px;
+    transition: 0.3s;
+    border-radius: 10px;
+    margin-bottom: 2px;
+  }
+  button:focus {
+    outline: 2px dotted currentColor;
+  }
+`;
 
 export default function Features() {
   const { iOSLacking, activeIndex, updateHash, filteredData } =
@@ -77,7 +101,7 @@ export default function Features() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [len]);
   return (
-    <ul>
+    <Ul>
       {filteredData.map(({ key, index, ...v }, i) => {
         const active = index === activeIndex;
         return (
@@ -86,7 +110,7 @@ export default function Features() {
               data-filteredIndex={i}
               data-key={key}
               data-index={index}
-              className={classNames(styles.button, buttonClass)}
+              className={buttonClass}
               onClick={(e) => {
                 updateHash(key);
                 // Safari doesn't think buttons deserve focus... 🤷‍♀️?
@@ -95,7 +119,7 @@ export default function Features() {
               }}
             >
               <h2
-                className={classNames(styles.h2, { [styles.h2active]: active })}
+                className={active ? 'active' : ''}
                 style={{
                   fontWeight: active ? 700 : 200,
                 }}
@@ -116,6 +140,6 @@ export default function Features() {
           </li>
         );
       })}
-    </ul>
+    </Ul>
   );
 }

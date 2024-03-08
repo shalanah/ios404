@@ -1,17 +1,17 @@
 import { useEffect } from 'react';
 import { a, useSpring } from '@react-spring/three';
 
-export type PresentationControlProps = {
+export type AnimateRotationProps = {
   rotation?: [number, number, number];
   config?: any;
   children?: React.ReactNode;
 };
 
-export default function PresentationControls({
+export default function AnimateRotation({
   children,
   rotation = [0, 0, 0],
   config = { mass: 1, tension: 170, friction: 26 },
-}: PresentationControlProps) {
+}: AnimateRotationProps) {
   const [spring, api] = useSpring(() => ({
     rotation,
     config,

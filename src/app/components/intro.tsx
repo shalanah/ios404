@@ -1,29 +1,53 @@
 import React from 'react';
 import { Filters } from './filters';
+import styled from 'styled-components';
 
-export const Intro = ({ bg }: { bg: string }) => {
+const Div = styled.div`
+  position: sticky;
+  top: 0;
+  height: 43dvh;
+  display: flex;
+  width: calc(100% + 2em);
+  flex-direction: column;
+  z-index: 1;
+  gap: 5px;
+  pointer-events: all;
+  margin: 0 -1em;
+  padding: 0 1em;
+  padding-bottom: 10px;
+`;
+
+export const Intro = () => {
   return (
-    <div
-      style={{
-        background: `linear-gradient(180deg, var(--bg) 89%, rgba(255,255,255,0) 100%)`,
-        position: 'sticky',
-        top: 0,
-        height: '45dvh',
-        display: 'flex',
-        width: 'calc(100% + 2em)',
-        flexDirection: 'column',
-
-        zIndex: 1,
-        pointerEvents: 'all',
-        margin: '0 -1em',
-        padding: '0 1em',
-        paddingBottom: '50px',
-      }}
-    >
+    <Div>
+      <div
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: 'calc(100% - 30px)',
+          background: 'var(--bg)',
+          zIndex: -1,
+        }}
+      />
+      <div
+        style={{
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          width: '100%',
+          height: 40,
+          background:
+            'linear-gradient(180deg, var(--bg) 30%, rgba(255,255,255,0) 100%)',
+          zIndex: -1,
+        }}
+      />
       <h1
         style={{
+          lineHeight: 1,
           fontWeight: 100,
-          fontSize: '4.5vw',
+          fontSize: '4.7rem',
           margin: 'auto 0 0',
         }}
       >
@@ -51,6 +75,6 @@ export const Intro = ({ bg }: { bg: string }) => {
         <p>The missing web features of iOS.</p>
         <Filters />
       </div>
-    </div>
+    </Div>
   );
 };
