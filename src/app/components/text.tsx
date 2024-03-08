@@ -22,7 +22,7 @@ const Div = styled.div`
   }
   .stats > div {
     width: 100%;
-    border-bottom: 1px solid var(--modalHr);
+    border-bottom: 1px solid currentColor;
     padding: 10px 0px;
     display: flex;
     gap: 25px;
@@ -34,12 +34,11 @@ const Div = styled.div`
     text-transform: uppercase;
     width: 100px;
     flex-shrink: 0;
-    opacity: 0.5;
-    font-weight: 600;
+    font-weight: 400;
   }
   .stats p {
     color: var(--alternateTitle);
-    font-size: 30px;
+    font-size: 28px;
     font-weight: 600;
   }
 `;
@@ -183,7 +182,7 @@ export const Text = ({ controls, index, rotation }) => {
               style={{
                 display: 'flex',
                 flexDirection: 'column',
-                gap: 20,
+                gap: 5,
                 width: 450,
                 flexShrink: 0,
                 alignItems: 'flex-start',
@@ -227,7 +226,7 @@ export const Text = ({ controls, index, rotation }) => {
                     <p>
                       {safariStat.startsWith('a') || safariStat.startsWith('y')
                         ? 'Partial'
-                        : 'Nones'}
+                        : 'None'}
                     </p>
                   </div>
                   <div>
@@ -254,7 +253,7 @@ export const Text = ({ controls, index, rotation }) => {
                             lineHeight: 0,
                             width: 35,
                             height: 35,
-                            marginLeft: 15,
+                            marginLeft: 5,
                             position: 'relative',
                             top: 5,
                           }}
