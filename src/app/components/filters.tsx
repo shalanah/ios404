@@ -161,6 +161,7 @@ export const Filters = () => {
                   return v
                     .replace('W3C ', '')
                     .replace('Candidate Recommendation', 'Candidate')
+                    .replace('Proposed Recommendation', 'Proposed')
                     .replace('Working Draft', 'Draft');
                 },
               },

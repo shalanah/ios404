@@ -25,7 +25,7 @@ const Div = styled.div`
     border-bottom: 1px solid currentColor;
     padding: 10px 0px;
     display: flex;
-    gap: 25px;
+    gap: 5px;
     align-items: baseline;
     justify-content: space-between;
   }
@@ -247,7 +247,10 @@ export const Text = ({ controls, index, rotation }) => {
                       <p>
                         {statuses[status]
                           .replace('Candidate Recommendation', 'Candidate')
-                          .replace('Working Draft', 'Draft')}
+                          .replace('Proposed Recommendation', 'Proposed')
+                          .replace('Recommendation', 'Rec')
+                          .replace('Working Draft', 'Draft')
+                          .replace('Living Standard', 'LS')}
                         <ExternalLinkIcon
                           style={{
                             lineHeight: 0,
@@ -255,7 +258,7 @@ export const Text = ({ controls, index, rotation }) => {
                             height: 35,
                             marginLeft: 5,
                             position: 'relative',
-                            top: 5,
+                            top: 6,
                           }}
                         />
                       </p>
