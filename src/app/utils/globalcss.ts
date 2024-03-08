@@ -1,35 +1,64 @@
+const theme = {
+  dark: {
+    modalShadow: '#000',
+    modalBg: 'rgb(41, 41, 41)',
+    modalHr: 'rgba(255, 255, 255, 0.2)',
+    color: '#d8d8d8',
+    bg: 'rgb(26, 26, 26)',
+    badgeBg: 'rgb(0, 114, 245)',
+    badgeColor: '#fff',
+    badgeBorder: 'rgb(56, 144, 245)',
+    radioBg: '#fff',
+    radioColor: 'var(--bg)',
+    radioEmptyBg: 'var(--bg)',
+    radioOutline: '#fff',
+  },
+  light: {
+    modalBg: '#fff',
+    modalHr: '#ccc',
+    modalShadow: 'rgba(0, 0, 0, 0.5)',
+    color: '#000',
+    bg: '#bad1df',
+    badgeBg: 'rgb(0, 114, 245)',
+    badgeColor: '#fff',
+    badgeBorder: 'rgb(56, 144, 245)',
+    radioBg: '#fff',
+    radioColor: 'var(--color)',
+    radioEmptyBg: '#eee',
+    radioOutline: '#ccc',
+  },
+};
+
+const themeDark = Object.entries(theme.dark)
+  .map(([key, value]) => `--${key}: ${value};`)
+  .join('\n    ');
+const themeLight = Object.entries(theme.light)
+  .map(([key, value]) => `--${key}: ${value};`)
+  .join('\n    ');
+
 export const globalCss = /* css */ `
 @import url('https://fonts.googleapis.com/css2?family=Inter+Tight:wght@100..900&display=swap');
 
 
+
+
 @media (prefers-color-scheme: dark) {
   :root {
-    --modalShadow: #000;
-    --modalBg: #333;
-    --color: #d8d8d8;
-    --bg: #000;
+    ${themeDark}
   }
+}
+.dark {
+  ${themeDark}
 }
 @media (prefers-color-scheme: light) {
   :root {
-    --modalBg: #fff;
-    --modalShadow: rgba(0, 0, 0, 0.5);
-    --color: #000;
-    --bg: #bad1df;
+   ${themeLight}
   }
 }
 .light {
-  --modalBg: #fff;
-  --modalShadow: rgba(0, 0, 0, 0.5);
-  --color: #000;
-  --bg: #bad1df;
+  ${themeLight}
 }
-.dark {
-  --modalShadow: #000;
-  --modalBg: #333;
-  --color: #d8d8d8;
-  --bg: #000;
-}
+
 
 /* For radix */
 
@@ -37,6 +66,16 @@ export const globalCss = /* css */ `
   from {
     opacity: 0;
     transform: translateY(2px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes slideUpAndFadeMore {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
   }
   to {
     opacity: 1;
@@ -101,6 +140,7 @@ a,
 button {
   all: unset;
   cursor: pointer;
+  box-sizing: border-box;
 }
 
 * {

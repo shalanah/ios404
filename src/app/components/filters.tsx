@@ -1,8 +1,9 @@
-import React, { useEffect, useId, useRef, useState } from 'react';
+import React, { useId, useState } from 'react';
 import * as Popover from '@radix-ui/react-popover';
 import { MixerVerticalIcon, Cross2Icon } from '@radix-ui/react-icons';
 import useCanIUseContext from '../hooks/useCanIUseContext';
 import styled from 'styled-components';
+import { Checkbox } from './checkbox';
 
 const Button = styled.button`
   font-family: inherit;
@@ -17,7 +18,6 @@ const Button = styled.button`
   margin-left: -8px;
   &:hover {
     transition: 0.15s;
-
     background: var(--modalBg);
   }
 `;
@@ -45,27 +45,27 @@ const PopoverContent = styled(Popover.Content)`
   &[data-state='open'][data-side='left'] {
     animation-name: slideRightAndFade;
   }
-  .PopoverArrow {
-    fill: var(--modalBg);
-  }
-  .PopoverClose {
-    font-family: inherit;
-    border-radius: 100%;
-    height: 25px;
-    width: 25px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    color: orange;
-    position: absolute;
-    top: 5px;
-    right: 5px;
-  }
-  .PopoverClose:hover {
-    background-color: green;
-  }
-  .PopoverClose:focus {
-    box-shadow: 0 0 0 2px yellow;
+`;
+
+const PopoverArrow = styled(Popover.Arrow)`
+  fill: var(--modalBg);
+`;
+
+const PopoverClose = styled(Popover.Close)`
+  font-family: inherit;
+  border-radius: 100%;
+  height: 25px;
+  width: 25px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  z-index: 2;
+  &:hover,
+  &:focus {
+    outline: 1px solid currentColor;
   }
 `;
 
@@ -84,13 +84,11 @@ export const Filters = () => {
     })
   );
   const [open, setOpen] = useState(false);
-  const toggleAllId = useId();
-  const ref = useRef<HTMLInputElement>(null);
   const len = Object.keys(nonEmptyStatusFilters).length;
   const numChecked = Object.values(nonEmptyStatusFilters).filter(
     (v) => v
   ).length;
-  const notAllChecked = numChecked !== len && numChecked > 0;
+  const indeterminate = numChecked !== len && numChecked > 0;
   const allChecked = numChecked === len;
   const checked = allChecked || (numChecked < len / 2 && numChecked > 0);
 
@@ -99,10 +97,6 @@ export const Filters = () => {
       ? `${iOSLacking.length} missing features`
       : `${filteredData.length} found of ${iOSLacking.length}`;
   if (filteredData.length === 0) count = 'No matches';
-
-  useEffect(() => {
-    if (ref.current) ref.current.indeterminate = notAllChecked;
-  }, [notAllChecked, ref]);
 
   return (
     <div
@@ -127,14 +121,12 @@ export const Filters = () => {
         </Popover.Trigger>
         <Popover.Portal>
           <PopoverContent sideOffset={5}>
-            <div>Filter by Spec</div>
-            <div>
-              <input
-                ref={ref}
-                id={toggleAllId}
-                type="checkbox"
-                checked={checked}
-                onChange={() => {
+            <div>Filters</div>
+            <div style={{ padding: '15px 0' }}>
+              <Checkbox
+                switchOrder
+                indeterminate={indeterminate}
+                onCheckedChange={() => {
                   setFilters((prev: any) => {
                     return {
                       ...prev,
@@ -144,42 +136,162 @@ export const Filters = () => {
                     };
                   });
                 }}
-              />
-              <label style={{ marginLeft: 5 }} htmlFor={toggleAllId}>
-                {'All specifications'}
-              </label>
+                checked={checked}
+              >
+                All specifications
+              </Checkbox>
             </div>
-            {Object.entries(statusCounts).map(([k, v]) => {
-              if (v === 0) return null;
-              const checked = filters.statuses[k];
+            {[
+              {
+                title: 'W3C',
+                description: 'Creating protocols and guidelines since 1994',
+                filterFn: (v: string) => {
+                  return !v.startsWith('W3C');
+                },
+                nameFormat: (v: string) => {
+                  return v
+                    .replace('W3C ', '')
+                    .replace('Candidate Recommendation', 'Candidate')
+                    .replace('Working Draft', 'Draft');
+                },
+              },
+              {
+                title: 'WHATWG',
+                description: 'Working on evolving standards since 2004',
+                filterFn: (v: string) => {
+                  return !v.startsWith('WHATWG');
+                },
+                nameFormat: (v: string) => {
+                  return v.replace('WHATWG ', '');
+                },
+              },
+              {
+                filterFn: (v: string) => {
+                  return v.startsWith('W3C') || v.startsWith('WHATWG');
+                },
+                nameFormat: (v: string) => {
+                  return v;
+                },
+              },
+            ].map(({ title, description, filterFn, nameFormat }, i) => {
               return (
-                <div key={k}>
-                  <input
-                    id={k}
-                    type="checkbox"
-                    checked={checked}
-                    onChange={(e) => {
-                      setFilters((prev: any) => {
-                        return {
-                          ...prev,
-                          statuses: {
-                            ...prev.statuses,
-                            [k]: e.target.checked,
-                          },
-                        };
-                      });
-                    }}
-                  />
-                  <label style={{ marginLeft: 5 }} htmlFor={k}>
-                    {statuses[k]} ({v})
-                  </label>
+                <div
+                  key={i}
+                  style={{
+                    padding: '15px 0',
+                    borderTop: '1px dotted var(--modalHr)',
+                  }}
+                >
+                  {title && description && (
+                    <div
+                      style={{
+                        width: '100%',
+                        flexShrink: 0,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: 3,
+                        alignItems: 'baseline',
+                      }}
+                    >
+                      <div
+                        style={{
+                          fontSize: '.8rem',
+                          textTransform: 'uppercase',
+                          fontWeight: 700,
+                        }}
+                      >
+                        {title}
+                      </div>
+                      <p
+                        style={{
+                          opacity: 0.7,
+                          textAlign: 'right',
+                          fontSize: '.7rem',
+                          lineHeight: 1.25,
+                          marginBottom: 5,
+                          marginTop: 0,
+                        }}
+                      >
+                        {description}
+                      </p>
+                    </div>
+                  )}
+                  {Object.entries(statusCounts).map(([k, v]) => {
+                    if (v === 0) return null;
+                    const checked = filters.statuses[k];
+                    if (filterFn(statuses[k])) return null;
+                    return (
+                      <Checkbox
+                        switchOrder
+                        key={k}
+                        checked={checked}
+                        indeterminate={false}
+                        onCheckedChange={(checked) => {
+                          setFilters((prev: any) => {
+                            return {
+                              ...prev,
+                              statuses: {
+                                ...prev.statuses,
+                                [k]: checked,
+                              },
+                            };
+                          });
+                        }}
+                      >
+                        <div
+                          style={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                          }}
+                        >
+                          <span>{nameFormat(statuses[k])}</span>
+                          <span
+                            style={{
+                              background: 'var(--badgeBg)',
+                              color: 'var(--badgeColor)',
+                              border: '1px solid var(--badgeBorder)',
+                              height: 20,
+                              borderRadius: 20,
+                              fontSize: '.7rem',
+                              width: '4ch',
+                              textAlign: 'center',
+                              lineHeight: 0,
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              fontVariantNumeric: 'tabular-nums',
+                              fontWeight: 700,
+                            }}
+                          >
+                            {v as string}
+                          </span>
+                        </div>
+                      </Checkbox>
+                    );
+                  })}
                 </div>
               );
             })}
-            <Popover.Close className={'PopoverClose'} aria-label="Close">
+            <button
+              onClick={() => {
+                setOpen(false);
+              }}
+              style={{
+                display: 'block',
+                padding: '8px 0px',
+                textAlign: 'center',
+                borderRadius: '8px',
+                width: '100%',
+                outline: '1px solid currentColor',
+                fontSize: '.8rem',
+              }}
+            >
+              Done
+            </button>
+            <PopoverClose aria-label="Close">
               <Cross2Icon />
-            </Popover.Close>
-            <Popover.Arrow className={'PopoverArrow'} />
+            </PopoverClose>
+            <PopoverArrow />
           </PopoverContent>
         </Popover.Portal>
       </Popover.Root>

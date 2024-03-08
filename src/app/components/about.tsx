@@ -27,22 +27,22 @@ const Dl = styled.dl`
 `;
 
 const DialogClose = styled(Dialog.Close)`
-  button {
-    font-family: inherit;
-    border-radius: 100%;
-    height: 25px;
-    width: 25px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    transition: 0.2s;
-    outline: 1px solid transparent;
-    :hover {
-      outline: 1px solid currentColor;
-    }
+  font-family: inherit;
+  border-radius: 100%;
+  height: 25px;
+  width: 25px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  transition: 0.2s;
+  outline: 1px solid transparent;
+  z-index: 2;
+  &:hover,
+  &:focus {
+    outline: 1px solid currentColor;
   }
 `;
 const DialogContent = styled(Dialog.Content)`
@@ -118,10 +118,8 @@ export const About = ({ button }: { button: React.ReactNode }) => (
             </React.Fragment>
           ))}
         </Dl>
-        <DialogClose asChild>
-          <button aria-label="Close">
-            <Cross2Icon />
-          </button>
+        <DialogClose>
+          <Cross2Icon />
         </DialogClose>
       </DialogContent>
     </Dialog.Portal>

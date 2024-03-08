@@ -123,12 +123,12 @@ export const Text = ({ controls, index, rotation }) => {
                   textWrap: 'balance',
                 }}
               >
-                {title}
                 <a
                   href={`https://caniuse.com/${key}`}
                   target="_blank"
                   style={{ pointerEvents: 'all' }}
                 >
+                  {title}
                   <ExternalLinkIcon
                     style={{
                       marginLeft: 8,
@@ -242,21 +242,24 @@ export const Text = ({ controls, index, rotation }) => {
                   </div>
                   <div>
                     {/* <h3>Spec</h3> */}
-                    <p>
-                      {statuses[status]}
-                      <a
-                        href={spec}
-                        target="_blank"
-                        style={{
-                          marginLeft: 15,
-                          position: 'relative',
-                          top: 5,
-                          pointerEvents: 'all',
-                        }}
-                      >
-                        <ExternalLinkIcon style={{ width: 35, height: 35 }} />
-                      </a>
-                    </p>
+                    <a
+                      href={spec}
+                      target="_blank"
+                      style={{
+                        position: 'relative',
+                        top: 5,
+                        pointerEvents: 'all',
+                      }}
+                    >
+                      <p>
+                        {statuses[status]
+                          .replace('Candidate Recommendation', 'Candidate')
+                          .replace('Working Draft', 'Draft')}
+                        <ExternalLinkIcon
+                          style={{ width: 35, height: 35, marginLeft: 15 }}
+                        />
+                      </p>
+                    </a>
                   </div>
                 </div>
               </div>
@@ -271,12 +274,22 @@ export const Text = ({ controls, index, rotation }) => {
             lineHeight: '40px',
             width: 'calc(100% - 60px)',
             left: 30,
-            fontWeight: 'bold',
             textAlign: 'left',
-            // textTransform: 'uppercase',
           }}
         >
-          Contact caniuse if you have any information regarding this feature.
+          Contact{' '}
+          <a
+            href={`https://caniuse.com/${key}`}
+            target="_blank"
+            style={{
+              pointerEvents: 'all',
+              textDecoration: 'underline',
+              textUnderlineOffset: 5,
+            }}
+          >
+            caniuse.com
+          </a>{' '}
+          if you have any information regarding this feature.
         </div>
       </Div>
     </Html>
