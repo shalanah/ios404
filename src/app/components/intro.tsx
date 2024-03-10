@@ -10,7 +10,6 @@ const Div = styled.div`
   flex-direction: column;
   z-index: 1;
   gap: 5px;
-  pointer-events: all;
   margin: 0 -1em;
   padding: 0 1em;
   padding-bottom: 10px;
@@ -57,7 +56,7 @@ export const Intro = () => {
       </h1>
       <div
         style={{
-          color: 'var(--alternateTitle)',
+          color: 'var(--titleColor)',
           lineHeight: 1.35,
           fontSize: '.95rem',
           fontWeight: 400,

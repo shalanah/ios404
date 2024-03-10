@@ -107,7 +107,7 @@ export const Filters = () => {
         gap: 5,
         alignItems: 'center',
         marginBottom: 20,
-        color: 'var(--alternateTitle)',
+        color: 'var(--titleColor)',
       }}
     >
       <Popover.Root
@@ -195,7 +195,7 @@ export const Filters = () => {
                   {title && description && (
                     <div
                       style={{
-                        color: 'var(--alternateTitle)',
+                        color: 'var(--titleColor)',
                         width: '100%',
                         flexShrink: 0,
                         display: 'flex',

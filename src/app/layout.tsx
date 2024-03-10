@@ -1,8 +1,12 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import { Inter_Tight } from 'next/font/google';
 import { globalCss } from './utils/globalcss';
 
-const inter = Inter({ subsets: ['latin'] }); // use for our google font?
+const inter = Inter_Tight({
+  subsets: ['latin'],
+  // 700, 100, 800, 500, 300, 200, 400, "bold", "normal"
+  weight: ['100', '200', '300', '400', '500', '700', '800'],
+}); // use for our google font?
 
 export const metadata: Metadata = {
   title: 'iOS404',
@@ -17,8 +21,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       {/* Would like to load this to avoid background flashing */}
-      <style>{globalCss}</style>
-      <body>{children}</body>
+      <head>
+        <style>{globalCss}</style>
+      </head>
+      <body className={inter.className}>{children}</body>
     </html>
   );
 }

@@ -37,7 +37,7 @@ const Div = styled.div`
     font-weight: 400;
   }
   .stats p {
-    color: var(--alternateTitle);
+    color: var(--titleColor);
     font-size: 28px;
     font-weight: 700;
   }
@@ -74,6 +74,7 @@ export const Text = ({ controls, index, rotation }) => {
           width: 1000,
           fontSmoothing: 'antialiased',
           height: 1150,
+          pointerEvents: 'none',
           // scale: 4,
           transform: 'scale(4) translateZ(0)',
           position: 'relative',
@@ -126,11 +127,7 @@ export const Text = ({ controls, index, rotation }) => {
                   textWrap: 'balance',
                 }}
               >
-                <a
-                  href={`https://caniuse.com/${key}`}
-                  target="_blank"
-                  style={{ pointerEvents: 'all' }}
-                >
+                <a href={`https://caniuse.com/${key}`} target="_blank">
                   {title}
                   <ExternalLinkIcon
                     style={{
@@ -226,13 +223,22 @@ export const Text = ({ controls, index, rotation }) => {
                     <p>
                       {safariStat.startsWith('a') || safariStat.startsWith('y')
                         ? 'Partial'
-                        : 'None'}
+                        : '0%'}
                     </p>
                   </div>
                   <div>
                     <h3>Age </h3>
                     <p>
-                      {age} yr{age > 1 ? 's' : ''} old ({date})
+                      <span
+                        style={{
+                          fontWeight: 300,
+                          marginRight: 10,
+                        }}
+                      >
+                        ({date})
+                      </span>{' '}
+                      {age} yr
+                      {age > 1 ? 's' : ''} old
                     </p>
                   </div>
                   <div>
@@ -285,7 +291,6 @@ export const Text = ({ controls, index, rotation }) => {
             href={`https://caniuse.com/${key}`}
             target="_blank"
             style={{
-              pointerEvents: 'all',
               textDecoration: 'underline',
               textUnderlineOffset: 5,
             }}

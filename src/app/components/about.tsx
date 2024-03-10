@@ -11,7 +11,7 @@ const Dl = styled.dl`
     text-underline-offset: 0.2em;
   }
   dt {
-    color: var(--alternateTitle);
+    color: var(--titleColor);
     line-height: 1.2;
     font-size: 0.9rem;
     font-weight: 700;
@@ -88,11 +88,15 @@ const FAQ = [
   ],
   [
     'Why is this iOS specific? Why not Android?',
-    "iOS WebKit engine is a monopoly on iPhones and iPads. This monopoly has held back the web in terms of interactive APIs and PWAs. I am considering Android404 but **at the moment** since they are the gold-standard of web feature support - it doesn't seem worth it. NOTE: EU residents might have other engine options in the future due to DMA.",
+    'iOS WebKit engine is a monopoly on iPhones and iPads. This monopoly has held back the web in terms of interactive APIs and PWAs. I am considering an Android404 too but **at the moment** they are the gold-standard of web feature support. NOTE: EU residents might have other engine options in the future due to DMA.',
+  ],
+  [
+    'What is with the feature images?',
+    'Missing features affect people of all types around the whole world, limiting creativity and experiences. I tried to match the age of the missing feature and used Midjourney to personify of each.',
   ],
   [
     'Why did you make this site?',
-    "I have spent a lot of time debugging websites + PWAs on Apple devices. I have lost a lot of my life to it - and I'll never ever get that time back. I needed a place where I could see all the missing features at once and others could as well. I also wanted to play with R3F + Blender.",
+    "I have spent a lot of time debugging websites on Apple devices (specifically iPhones and iPads). Too much time, and time that I'll never ever get back. I believe the web should be a crazy fun place. Seeing the free and open web as a foe or a competitor is backwards thinking.",
   ],
   [
     'Who are you?',

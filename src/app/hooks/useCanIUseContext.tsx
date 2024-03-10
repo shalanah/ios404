@@ -204,7 +204,6 @@ export const CanIUseContextProvider = ({
 
   // console.log({ activeIndex, hash });
   // console.log(canIUseData);
-  console.log(iOSLacking, canIUseData?.statuses);
   // console.log(canIUseData);
 
   // If Safari brings up that caniuse data isn't up-to-date...

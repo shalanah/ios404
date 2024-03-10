@@ -17,7 +17,7 @@ const theme = {
     radioColor: 'var(--bg)',
     radioEmptyBg: 'var(--bg)',
     radioOutline: '#fff',
-    alternateTitle: '#fff',
+    titleColor: '#fff',
   },
   light: {
     modalBg: '#fff',
@@ -35,7 +35,7 @@ const theme = {
     radioColor: 'var(--color)',
     radioEmptyBg: '#eee',
     radioOutline: '#ccc',
-    alternateTitle: '#333',
+    titleColor: '#333',
   },
 };
 
@@ -47,31 +47,21 @@ const themeLight = Object.entries(theme.light)
   .join('\n    ');
 
 export const globalCss = /* css */ `
-@import url('https://fonts.googleapis.com/css2?family=Inter+Tight:wght@100..900&display=swap');
-
-
-
-
 @media (prefers-color-scheme: dark) {
-  :root {
-    ${themeDark}
-  }
-}
-.dark {
   ${themeDark}
 }
 @media (prefers-color-scheme: light) {
-  :root {
-   ${themeLight}
-  }
+  ${themeLight}
+}
+.dark {
+  ${themeDark}
 }
 .light {
   ${themeLight}
 }
 
 
-/* For radix */
-
+/* For radix --- TODO: put into styled comps */
 @keyframes slideUpAndFade {
   from {
     opacity: 0;
@@ -152,6 +142,7 @@ button {
   cursor: pointer;
   box-sizing: border-box;
   color: currentColor;
+  pointer-events: all,
 }
 
 * {
@@ -160,6 +151,10 @@ button {
   margin: 0;
   -webkit-overflow-scrolling: touch;
   -webkit-tap-highlight-color: transparent;
+}
+
+strong {
+  font-weight: 700;
 }
 
 html,
@@ -181,7 +176,7 @@ body {
 }
 
 svg {
-  color:var(--alternateTitle)
+  color:var(--titleColor)
 }
 
 h1,
@@ -192,17 +187,13 @@ h5,
 h6,
 strong,
 .header {
-  color: var(--alternateTitle);
+  color: var(--titleColor);
   font-weight: 400;
 }
 
 a {
   color: inherit;
   text-decoration: none;
-}
-a,
-button {
-  cursor: pointer !important;
 }
 
 ul {

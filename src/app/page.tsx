@@ -30,6 +30,7 @@ export default function Home() {
           style={{
             marginLeft: '15vw',
             position: 'fixed',
+            pointerEvents: 'none',
           }}
           camera={{
             position: [-77, -40.2, 242],
@@ -44,7 +45,6 @@ export default function Home() {
 
         <div
           style={{
-            pointerEvents: 'all',
             textAlign: 'left',
             position: 'absolute',
             left: '23vw',
@@ -52,16 +52,23 @@ export default function Home() {
             top: '0',
             paddingBottom: 30,
             padding: '0 1em',
-            // outline: '1px solid black',
             overscrollBehavior: 'contain',
-            paddingTop: '43dvh',
+            // paddingTop: '43dvh',
           }}
         >
+          {/* Don't allow for covered-up features to be clickable */}
+          <div
+            style={{
+              position: 'sticky',
+              height: '43dvh',
+              top: 0,
+              zIndex: 1,
+            }}
+          />
           <Features />
         </div>
         <div
           style={{
-            pointerEvents: 'all',
             textAlign: 'left',
             position: 'fixed',
             left: '23vw',
@@ -70,8 +77,8 @@ export default function Home() {
             height: '43dvh',
             paddingBottom: 30,
             padding: '0 1em',
-            // outline: '1px solid black',
-            overscrollBehavior: 'contain',
+            pointerEvents: 'none', // allow for scroll
+            zIndex: 1,
           }}
         >
           <Intro />
@@ -83,7 +90,6 @@ export default function Home() {
             left: 0,
             width: '100%',
             height: 40,
-            pointerEvents: 'none',
             zIndex: 1,
             display: 'flex',
             alignItems: 'center',
@@ -96,16 +102,12 @@ export default function Home() {
         >
           <p style={{ marginRight: 2 }}>No affiliation with Apple or iOS.</p>
           <DarkModeToggle />
-          <a
-            href={'https://github.com/shalanah/ios404'}
-            style={{ pointerEvents: 'all' }}
-            target="_blank"
-          >
+          <a href={'https://github.com/shalanah/ios404'} target="_blank">
             <GitHubLogoIcon style={{ width: 23, height: 23 }} />
           </a>
           <About
             button={
-              <button style={{ pointerEvents: 'all' }}>
+              <button>
                 <InfoCircledIcon style={{ width: 25, height: 25 }} />
               </button>
             }
