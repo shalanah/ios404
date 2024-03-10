@@ -223,7 +223,7 @@ export const Text = ({ controls, index, rotation }) => {
                     <p>
                       {safariStat.startsWith('a') || safariStat.startsWith('y')
                         ? 'Partial'
-                        : '0%'}
+                        : 'None'}
                     </p>
                   </div>
                   <div>

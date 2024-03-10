@@ -79,28 +79,20 @@ const FAQ = [
     'No. Absolutely not. Nada. Zilch. Zero. Nein. Null. Non.',
   ],
   [
-    'What is your source data?',
-    'iOS404 uses [caniuse.com](https://caniuse.com) ([caniuse github](https://github.com/Fyrd/caniuse/tree/main)) for data, an open-source project to collect and present data on web browser compatibility.',
+    'What is the source data?',
+    '[Caniuse.com](https://caniuse.com) ([caniuse github](https://github.com/Fyrd/caniuse/tree/main)), an open-source project to collect and present data on web browser compatibility',
   ],
   [
     'How do you determine if something is not supported?',
     'If Android Chrome supports a feature more than iOS WebKit, that feature is consider missing with special note if "Partially supported".',
   ],
   [
-    'Why is this iOS specific? Why not Android?',
-    'iOS WebKit engine is a monopoly on iPhones and iPads. This monopoly has held back the web in terms of interactive APIs and PWAs. I am considering an Android404 too but **at the moment** they are the gold-standard of web feature support. NOTE: EU residents might have other engine options in the future due to DMA.',
-  ],
-  [
-    'What is with the feature images?',
-    'Missing features affect people of all types around the whole world, limiting creativity and experiences. I tried to match the age of the missing feature and used Midjourney to personify of each.',
-  ],
-  [
-    'Why did you make this site?',
-    "I have spent a lot of time debugging websites on Apple devices (specifically iPhones and iPads). Too much time, and time that I'll never ever get back. I believe the web should be a crazy fun place. Seeing the free and open web as a foe or a competitor is backwards thinking.",
+    'Do you hate Apple?',
+    'Not at all! Quite the contrary. Apple builds beautiful products. I just want the web to be a beautiful, feature-rich place too.',
   ],
   [
     'Who are you?',
-    "Hi! 👋 So nice to meet you! I'm Shalanah Dawson a frontend developer. I started making websites in 2000 to showcase art and photography projects. I love coding, design, animation/interaction, and math. You can find me on [LinkedIn](https://linkedin.com/in/shalanah), [GitHub](https://github.com/shalanah), and [Twitter](https://twitter.com/shalanahfaith).",
+    "Hi! 👋 I'm Shalanah Dawson a frontend developer. You can find me on [LinkedIn](https://linkedin.com/in/shalanah), [GitHub](https://github.com/shalanah), and [Twitter](https://twitter.com/shalanahfaith).",
   ],
   ['', 'Copyright 2024. All Rights Reserved - Shalanah Dawson'],
 ];

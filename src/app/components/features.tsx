@@ -34,7 +34,6 @@ const Ul = styled.ul`
 export default function Features() {
   const { iOSLacking, activeIndex, updateHash, filteredData } =
     useCanIUseContext();
-  const len = filteredData.length;
 
   // Just on first load
   useEffect(() => {
@@ -63,34 +62,31 @@ export default function Features() {
       }
     };
     const onKeyUp = (e) => {
-      const els = document.querySelectorAll(`.${buttonClass}`);
-      const hasFocus = Array.from(els).some(
-        (el) => el === document.activeElement
-      );
-      if (!hasFocus || len <= 1) return;
-      const index = Number(
-        document.activeElement.getAttribute('data-filteredindex')
-      );
-      let nextIndex = -1;
-      switch (e.key) {
-        case 'ArrowDown':
-          nextIndex = (index + 1) % len;
-          break;
-        case 'ArrowUp':
-          nextIndex = index - 1;
-          if (nextIndex < 0) nextIndex = len - 1;
-          break;
-        default:
-          return;
+      // Make sure no other keys are pressed (like tab)....
+      // Make sure we aren't in a modal too
+      if (!['ArrowDown', 'ArrowUp', 'ArrowRight', 'ArrowLeft'].includes(e.key))
+        return;
+
+      const hasDialog = document.querySelector('[role="dialog"]');
+      if (hasDialog) return;
+      const len = filteredData.length;
+      if (len < 1) return;
+
+      let key = filteredData[0].key; // backup - select first
+      if (filteredData.some((v) => v.index === activeIndex) && len > 1) {
+        const findIndex = filteredData.findIndex(
+          (v) => v.index === activeIndex
+        );
+        if (['ArrowDown', 'ArrowRight'].includes(e.key)) {
+          key = filteredData[(findIndex + 1) % len].key;
+        } else if (['ArrowUp', 'ArrowLeft'].includes(e.key)) {
+          key = filteredData[(findIndex - 1 + len) % len].key;
+        }
       }
-      if (nextIndex === -1) return;
-      const el = document.querySelector(
-        `.${buttonClass}[data-filteredindex="${nextIndex}"]`
-      );
-      if (el && document.activeElement !== el) el.focus();
-      const nextActiveIndex = Number(el?.getAttribute('data-index') || -1);
-      e.preventDefault();
-      updateHash(iOSLacking[nextActiveIndex].key);
+
+      e.preventDefault(); // prevent scrolling down
+      updateHash(key);
+      document.querySelector(`.${buttonClass}[data-key="${key}"]`).focus();
     };
     document.addEventListener('keyup', onKeyUp);
     document.addEventListener('keydown', onKeyDown);
@@ -99,7 +95,7 @@ export default function Features() {
       document.removeEventListener('keydown', onKeyDown);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [len]);
+  }, [activeIndex, filteredData]);
   return (
     <Ul>
       {filteredData.map(({ key, index, ...v }, i) => {
@@ -107,9 +103,7 @@ export default function Features() {
         return (
           <li key={key}>
             <button
-              data-filteredindex={i}
               data-key={key}
-              data-index={index}
               className={buttonClass}
               onClick={(e) => {
                 updateHash(key);

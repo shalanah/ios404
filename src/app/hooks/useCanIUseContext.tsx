@@ -187,8 +187,6 @@ export const CanIUseContextProvider = ({
     if (activeIndex === -1 && iOSLacking.length > 0 && hash) updateHash('');
   }, [updateHash, activeIndex, iOSLacking.length, hash]);
 
-  console.log({ iOSLacking, canIUseData });
-
   // on mount... if hash doesn't exist remove hash
   // useEffect(() => {
   //   if (activeIndex !== -1 && prevActiveIndex === -1) {

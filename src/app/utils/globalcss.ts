@@ -142,9 +142,8 @@ button {
   cursor: pointer;
   box-sizing: border-box;
   color: currentColor;
-  pointer-events: all,
+  pointer-events: all !important;
 }
-
 * {
   box-sizing: border-box;
   padding: 0;
