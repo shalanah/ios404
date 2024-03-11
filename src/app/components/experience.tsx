@@ -2,7 +2,7 @@
 
 'use client';
 
-import { Suspense, useRef } from 'react';
+import { Suspense, useEffect, useLayoutEffect, useRef } from 'react';
 import { Center } from '@react-three/drei';
 import AnimateRotation from './animateRotation';
 // import { Perf } from 'r3f-perf';
@@ -71,7 +71,7 @@ export default function Experience() {
     <>
       {/* <Perf position="top-left" /> */}
       <Suspense fallback={null}>
-        <Center>
+        <Center disableZ disableX>
           <AnimateRotation
             rotation={[
               0,

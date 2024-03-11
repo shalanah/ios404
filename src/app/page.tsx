@@ -9,97 +9,112 @@ import { GitHubLogoIcon, InfoCircledIcon } from '@radix-ui/react-icons';
 import { About } from './components/about';
 import { DarkModeToggle } from './components/darkModeToggle';
 
+import styled from 'styled-components';
+
+const Div = styled.div`
+  overflow-x: hidden;
+  position: fixed;
+  overscroll-behavior: none;
+  scroll-behavior: smooth;
+  scroll-padding-block-start: 43dvh;
+  --left-gutter: 26vw;
+  --intro-padding: 40dvh;
+  --features-width: 300px;
+  --top: #eee9e2;
+  --carton-left: calc(var(--left-gutter) * 0.525);
+  @media (max-width: 1500px) {
+    --left-gutter: 22vw;
+  }
+  @media (max-width: 1300px) {
+    --left-gutter: 20vw;
+  }
+  @media (max-width: 1200px) {
+    --left-gutter: 13vw;
+  }
+  @media (max-width: 1100px) {
+    --left-gutter: 10vw;
+  }
+`;
+const FeaturesDiv = styled.div`
+  text-align: left;
+  position: absolute;
+  left: var(--left-gutter);
+  width: var(--features-width);
+  top: 0px;
+  padding-bottom: 50px;
+  padding: 0 1em;
+  overscroll-behavior: contain;
+`;
+// Covers up top portion of features so they can't be clicked --- but still allows for scroll
+const FeaturesStickyTopCover = styled.div`
+  position: sticky;
+  height: var(--intro-padding);
+  top: 0;
+  z-index: 1;
+`;
+
+const IntroDiv = styled.div`
+  text-align: left;
+  position: fixed;
+  left: var(--left-gutter);
+  width: var(--features-width);
+  top: 0;
+  height: var(--intro-padding);
+  padding-bottom: 30px;
+  padding: 0 1em;
+  pointer-events: none; /* allow for scroll */
+  z-index: 1;
+`;
+const LinksDiv = styled.div`
+  position: fixed;
+  top: 5px;
+  left: 0;
+  width: 100%;
+  height: 40px;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  padding-right: 15px;
+  font-size: 0.8rem;
+  line-height: 1;
+`;
+
+const CanvasDiv = styled.div`
+  position: fixed;
+  pointer-events: none;
+  height: 100dvh;
+  width: 100vw;
+  left: var(--carton-left);
+  top: 0;
+`;
+
 export default function Home() {
   return (
     <CanIUseContextProvider>
-      <div
-        className={'pos-full-win'}
-        style={{
-          overflowX: 'hidden',
-          background: 'var(--bg)',
-          // outline: '1px solid black',
-          position: 'fixed',
-          overscrollBehavior: 'none',
-          scrollBehavior: 'smooth',
-          scrollPaddingBlockStart: '43dvh',
-        }}
-      >
-        <Canvas
-          className="pos-full-win"
-          flat // already did tone mapping in our baked asset
-          style={{
-            marginLeft: '15vw',
-            position: 'fixed',
-            pointerEvents: 'none',
-          }}
-          camera={{
-            position: [-77, -40.2, 242],
-            fov: 60,
-            near: 0.1,
-            far: 10000,
-          }}
-        >
-          <Experience />
-        </Canvas>
-        {/* TODO: Might need to put regular html into sceen for pointer events */}
-
-        <div
-          style={{
-            textAlign: 'left',
-            position: 'absolute',
-            left: '23vw',
-            width: '24vw',
-            top: '0',
-            paddingBottom: 30,
-            padding: '0 1em',
-            overscrollBehavior: 'contain',
-            // paddingTop: '43dvh',
-          }}
-        >
-          {/* Don't allow for covered-up features to be clickable */}
-          <div
-            style={{
-              position: 'sticky',
-              height: '43dvh',
-              top: 0,
-              zIndex: 1,
+      <Div className={'pos-full-win'}>
+        <CanvasDiv>
+          <Canvas
+            flat // already did tone mapping in our baked asset
+            camera={{
+              position: [-77, -40.2, 242],
+              fov: 60,
+              near: 0.1,
+              far: 10000, // seems a bit much... TODO: double check
             }}
-          />
+          >
+            <Experience />
+          </Canvas>
+        </CanvasDiv>
+        <FeaturesDiv>
+          <FeaturesStickyTopCover />
           <Features />
-        </div>
-        <div
-          style={{
-            textAlign: 'left',
-            position: 'fixed',
-            left: '23vw',
-            width: '24vw',
-            top: '0',
-            height: '43dvh',
-            paddingBottom: 30,
-            padding: '0 1em',
-            pointerEvents: 'none', // allow for scroll
-            zIndex: 1,
-          }}
-        >
+        </FeaturesDiv>
+        <IntroDiv>
           <Intro />
-        </div>
-        <div
-          style={{
-            position: 'fixed',
-            top: 5,
-            left: 0,
-            width: '100%',
-            height: 40,
-            zIndex: 1,
-            display: 'flex',
-            alignItems: 'center',
-            fontSize: '.8rem',
-            justifyContent: 'flex-end',
-            paddingRight: 15,
-            lineHeight: 1,
-            gap: 10,
-          }}
-        >
+        </IntroDiv>
+        <LinksDiv>
           <p style={{ marginRight: 2 }}>No affiliation with Apple or iOS.</p>
           <DarkModeToggle />
           <a href={'https://github.com/shalanah/ios404'} target="_blank">
@@ -112,8 +127,8 @@ export default function Home() {
               </button>
             }
           />
-        </div>
-      </div>
+        </LinksDiv>
+      </Div>
     </CanIUseContextProvider>
   );
 }

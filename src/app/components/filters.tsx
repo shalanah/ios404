@@ -13,7 +13,6 @@ const Button = styled.button`
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: var(--bg);
   color: var(--color);
   margin-left: -8px;
   &:hover {

@@ -12,10 +12,11 @@ const Div = styled.div`
   .description code {
     background: var(--codeBg);
     color: var(--codeColor);
-    outline: 1px solid var(--codeOutline);
+    outline: 1px solid var(--codeBorder);
     font-size: 0.75em;
     padding: 0.1em 0.4em;
     border-radius: 0.4em;
+    font-weight: bold;
   }
   .stats {
     width: 450px;
@@ -195,6 +196,7 @@ export const Text = ({ controls, index, rotation }) => {
                   background: '#000',
                   height: 450,
                   display: 'flex',
+                  position: 'relative',
                 }}
               >
                 <Image
@@ -204,6 +206,19 @@ export const Text = ({ controls, index, rotation }) => {
                   height={450}
                   style={{
                     objectFit: 'cover',
+                    opacity: 0.85,
+                    // mixBlendMode: 'luminosity',
+                  }}
+                />
+                <div
+                  style={{
+                    position: 'absolute',
+                    left: 0,
+                    top: 0,
+                    background:
+                      'radial-gradient(ellipse at center, rgba(0,0,0,0) 50%, rgba(30,30,30,1) 100%)',
+                    width: 450,
+                    height: 450,
                   }}
                 />
               </div>

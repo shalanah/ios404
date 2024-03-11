@@ -32,8 +32,7 @@ const Ul = styled.ul`
 `;
 
 export default function Features() {
-  const { iOSLacking, activeIndex, updateHash, filteredData } =
-    useCanIUseContext();
+  const { activeIndex, updateHash, filteredData } = useCanIUseContext();
 
   // Just on first load
   useEffect(() => {
