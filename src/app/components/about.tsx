@@ -79,16 +79,16 @@ const FAQ = [
     'No. Absolutely not. Nada. Zilch. Zero. Nein. Null. Non.',
   ],
   [
-    'What is the source data?',
-    '[Caniuse.com](https://caniuse.com) ([caniuse github](https://github.com/Fyrd/caniuse/tree/main)), an open-source project to collect and present data on web browser compatibility',
+    'What data source are you using?',
+    'Currently using [caniuse.com](https://caniuse.com) ([caniuse github](https://github.com/Fyrd/caniuse/tree/main)), an open-source project to collect and present data on web browser compatibility. Hoping to expand to MDN - but there is a lot more data there and missing features!',
   ],
   [
     'How do you determine if something is not supported?',
-    'If Android Chrome supports a feature more than iOS WebKit, that feature is consider missing with special note if "Partially supported".',
+    'If Android Chrome supports a feature more than iOS WebKit, that feature is consider missing with special note if "Partially supported". There is a filtering option where you can remove less-standard or non-standard features from your search.',
   ],
   [
     'Do you hate Apple?',
-    'Not at all! Quite the contrary. Apple builds beautiful products. I just want the web to be a beautiful, feature-rich place too.',
+    'Not at all! Quite the contrary. Apple builds beautiful products that I love. I have hope for iOS web when other engines are allowed to exist and compete.',
   ],
   [
     'Who are you?',

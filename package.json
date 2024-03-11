@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "spritesheet": "node scripts/buildSpritessheet.ts"
   },
   "dependencies": {
     "@radix-ui/colors": "^3.0.0",
@@ -38,6 +39,8 @@
     "@types/three": "^0.161.2",
     "eslint": "^8.57.0",
     "eslint-config-next": "14.1.0",
+    "sharp": "^0.33.2",
+    "spritesmith": "^3.4.1",
     "typescript": "^5.3.3"
   }
 }

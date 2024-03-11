@@ -25,6 +25,7 @@ const PopoverContent = styled(Popover.Content)`
   border-radius: 20px;
   padding: 20px;
   width: 260px;
+  z-index: 2;
   background-color: var(--modalBg);
   box-shadow: var(--modalShadow) 0px 10px 38px -10px,
     var(--modalShadow) 0px 10px 20px -15px;
@@ -47,7 +48,7 @@ const PopoverContent = styled(Popover.Content)`
 `;
 
 const PopoverArrow = styled(Popover.Arrow)`
-  fill: var(--modalBg);
+  fill: none;
 `;
 
 const PopoverClose = styled(Popover.Close)`
@@ -93,7 +94,7 @@ export const Filters = () => {
 
   let count =
     filteredData.length === iOSLacking.length
-      ? `${iOSLacking.length} missing features`
+      ? `${iOSLacking.length} caniuse features`
       : `${filteredData.length} found of ${iOSLacking.length}`;
   if (filteredData.length === 0) count = 'No matches';
 
@@ -226,7 +227,7 @@ export const Filters = () => {
                       </p>
                     </div>
                   )}
-                  {Object.entries(statusCounts).map(([k, v]) => {
+                  {Object.entries(statusCounts).map(([k, v], i) => {
                     if (v === 0) return null;
                     const checked = filters.statuses[k];
                     if (filterFn(statuses[k])) return null;

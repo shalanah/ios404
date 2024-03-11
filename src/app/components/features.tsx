@@ -2,9 +2,10 @@
 'use client';
 
 import useCanIUseContext from '../hooks/useCanIUseContext';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { buttonClass } from '../hooks/useCanIUseContext';
 import styled from 'styled-components';
+import usePrevious from '../hooks/usePrevious';
 
 const Ul = styled.ul`
   h2 {
@@ -32,15 +33,19 @@ const Ul = styled.ul`
 `;
 
 export default function Features() {
-  const { activeIndex, updateHash, filteredData } = useCanIUseContext();
+  const { activeIndex, updateHash, filteredData, filters } =
+    useCanIUseContext();
 
   // Just on first load
   useEffect(() => {
+    console.log(activeIndex);
     if (activeIndex !== -1) {
       const el = document.querySelector(
         `.${buttonClass}[data-index="${activeIndex}"]`
       );
+
       if (el && document.activeElement !== el) {
+        console.log('hey');
         // scroll to element first
         el.scrollIntoView({ behavior: 'instant', block: 'center' });
         el.focus();
@@ -71,21 +76,22 @@ export default function Features() {
       const len = filteredData.length;
       if (len < 1) return;
 
-      let key = filteredData[0].key; // backup - select first
+      let index = 0;
       if (filteredData.some((v) => v.index === activeIndex) && len > 1) {
         const findIndex = filteredData.findIndex(
           (v) => v.index === activeIndex
         );
         if (['ArrowDown', 'ArrowRight'].includes(e.key)) {
-          key = filteredData[(findIndex + 1) % len].key;
+          index = (findIndex + 1) % len;
         } else if (['ArrowUp', 'ArrowLeft'].includes(e.key)) {
-          key = filteredData[(findIndex - 1 + len) % len].key;
+          index = (findIndex - 1 + len) % len;
         }
       }
 
       e.preventDefault(); // prevent scrolling down
+      const key = filteredData[index].key;
       updateHash(key);
-      document.querySelector(`.${buttonClass}[data-key="${key}"]`).focus();
+      document.querySelector(`.${buttonClass}[data-index="${index}"]`).focus();
     };
     document.addEventListener('keyup', onKeyUp);
     document.addEventListener('keydown', onKeyDown);
@@ -93,16 +99,29 @@ export default function Features() {
       document.removeEventListener('keyup', onKeyUp);
       document.removeEventListener('keydown', onKeyDown);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeIndex, filteredData]);
+  }, [activeIndex, filteredData, updateHash]);
+
+  const firstLoad = useRef(true);
+  const prevIndex = usePrevious(activeIndex);
+  useEffect(() => {
+    if (firstLoad.current && activeIndex !== -1 && prevIndex !== -1) {
+      firstLoad.current = false;
+    }
+  }, [activeIndex, prevIndex]);
+
+  const delay = (index) =>
+    firstLoad?.current ? 0 : Math.min(20, index) * 0.05; // only want to delay the first few in view
   return (
     <Ul>
       {filteredData.map(({ key, index, ...v }, i) => {
         const active = index === activeIndex;
         return (
-          <li key={key}>
+          <li key={key + JSON.stringify(filters)}>
             <button
-              data-key={key}
+              style={{
+                animation: `fadeIn 0.1s ${delay(i)}s ease-out both`,
+              }}
+              data-index={index} // to focus on load
               className={buttonClass}
               onClick={(e) => {
                 updateHash(key);

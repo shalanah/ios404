@@ -7,9 +7,9 @@ const theme = {
     modalHr: 'rgba(255, 255, 255, 0.2)',
     color: '#d8d8d8',
     bg: 'rgb(26, 26, 26)',
-    badgeBg: 'rgb(0, 114, 245)',
+    badgeBg: '#9500FF',
     badgeColor: '#fff',
-    badgeBorder: 'rgb(56, 144, 245)',
+    badgeBorder: '#690dac',
     codeBg: '#d7d7d7',
     codeColor: '#000',
     codeBorder: '#222',
@@ -18,6 +18,8 @@ const theme = {
     radioEmptyBg: 'var(--bg)',
     radioOutline: '#fff',
     titleColor: '#fff',
+    vignette:
+      'radial-gradient(ellipse at center, rgba(0,0,0,0) 50%, rgba(30,30,30,.6) 100%)',
   },
   light: {
     modalBg: '#fff',
@@ -25,9 +27,9 @@ const theme = {
     modalShadow: 'rgba(0, 0, 0, 0.5)',
     color: '#555',
     bg: '#cce9f4',
-    badgeBg: 'rgb(0, 114, 245)',
+    badgeBg: '#9500FF',
     badgeColor: '#fff',
-    badgeBorder: 'rgb(56, 144, 245)',
+    badgeBorder: '#690dac',
     codeBg: '#f9f9f988', // '#f5f5f5',
     codeColor: '#000',
     codeBorder: '#5c5c5c',
@@ -36,6 +38,8 @@ const theme = {
     radioEmptyBg: '#eee',
     radioOutline: '#ccc',
     titleColor: '#333',
+    vignette:
+      'radial-gradient(ellipse at center, rgba(255, 255, 255, 0) 50%, rgba(242, 216, 216, .5) 100%)',
   },
 };
 
@@ -59,6 +63,25 @@ export const globalCss = /* css */ `
 .light {
   ${themeLight}
 }
+
+:root {
+--left-gutter: 26vw; 
+  --intro-padding: 40dvh;
+  --features-width: 300px;
+  --top: #eee9e2;
+  --carton-left: calc(var(--left-gutter) * 0.525);
+  @media (max-width: 1500px) {
+    --left-gutter: 22vw;
+  }
+  @media (max-width: 1300px) {
+    --left-gutter: 20vw;
+  }
+  @media (max-width: 1200px) {
+    --left-gutter: 13vw;
+  }
+  @media (max-width: 1100px) {
+    --left-gutter: 10vw;
+  }}
 
 
 /* For radix --- TODO: put into styled comps */

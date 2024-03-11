@@ -17,23 +17,6 @@ const Div = styled.div`
   overscroll-behavior: none;
   scroll-behavior: smooth;
   scroll-padding-block-start: 43dvh;
-  --left-gutter: 26vw;
-  --intro-padding: 40dvh;
-  --features-width: 300px;
-  --top: #eee9e2;
-  --carton-left: calc(var(--left-gutter) * 0.525);
-  @media (max-width: 1500px) {
-    --left-gutter: 22vw;
-  }
-  @media (max-width: 1300px) {
-    --left-gutter: 20vw;
-  }
-  @media (max-width: 1200px) {
-    --left-gutter: 13vw;
-  }
-  @media (max-width: 1100px) {
-    --left-gutter: 10vw;
-  }
 `;
 const FeaturesDiv = styled.div`
   text-align: left;
@@ -44,13 +27,14 @@ const FeaturesDiv = styled.div`
   padding-bottom: 50px;
   padding: 0 1em;
   overscroll-behavior: contain;
+  z-index: 2;
 `;
 // Covers up top portion of features so they can't be clicked --- but still allows for scroll
 const FeaturesStickyTopCover = styled.div`
   position: sticky;
   height: var(--intro-padding);
   top: 0;
-  z-index: 1;
+  z-index: 2;
 `;
 
 const IntroDiv = styled.div`
@@ -63,7 +47,7 @@ const IntroDiv = styled.div`
   padding-bottom: 30px;
   padding: 0 1em;
   pointer-events: none; /* allow for scroll */
-  z-index: 1;
+  z-index: 2;
 `;
 const LinksDiv = styled.div`
   position: fixed;
@@ -88,25 +72,26 @@ const CanvasDiv = styled.div`
   width: 100vw;
   left: var(--carton-left);
   top: 0;
+  z-index: 0;
 `;
 
 export default function Home() {
   return (
     <CanIUseContextProvider>
+      <CanvasDiv>
+        <Canvas
+          flat // already did tone mapping in our baked asset
+          camera={{
+            position: [-77, -40.2, 242],
+            fov: 60,
+            near: 0.1,
+            far: 10000, // seems a bit much... TODO: double check
+          }}
+        >
+          <Experience />
+        </Canvas>
+      </CanvasDiv>
       <Div className={'pos-full-win'}>
-        <CanvasDiv>
-          <Canvas
-            flat // already did tone mapping in our baked asset
-            camera={{
-              position: [-77, -40.2, 242],
-              fov: 60,
-              near: 0.1,
-              far: 10000, // seems a bit much... TODO: double check
-            }}
-          >
-            <Experience />
-          </Canvas>
-        </CanvasDiv>
         <FeaturesDiv>
           <FeaturesStickyTopCover />
           <Features />

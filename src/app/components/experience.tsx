@@ -80,7 +80,7 @@ export default function Experience() {
             ]}
             config={{ mass: 0.05, tension: 600, friction: 40 }} // Spring config
           >
-            <axesHelper args={[100]} renderOrder={5} />
+            {/* <axesHelper args={[100]} renderOrder={5} /> */}
             <Model />
             <Text
               key={activeIndex}

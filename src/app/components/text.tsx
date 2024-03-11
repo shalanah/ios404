@@ -197,6 +197,8 @@ export const Text = ({ controls, index, rotation }) => {
                   height: 450,
                   display: 'flex',
                   position: 'relative',
+                  borderRadius: 20,
+                  overflow: 'hidden',
                 }}
               >
                 <Image
@@ -215,8 +217,7 @@ export const Text = ({ controls, index, rotation }) => {
                     position: 'absolute',
                     left: 0,
                     top: 0,
-                    background:
-                      'radial-gradient(ellipse at center, rgba(0,0,0,0) 50%, rgba(30,30,30,1) 100%)',
+                    background: 'var(--vignette)',
                     width: 450,
                     height: 450,
                   }}
