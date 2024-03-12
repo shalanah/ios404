@@ -248,11 +248,11 @@ export const Text = ({ controls, index, rotation }) => {
                       <span
                         style={{
                           fontWeight: 300,
-                          marginRight: 10,
                         }}
                       >
-                        ({date})
-                      </span>{' '}
+                        {date}
+                      </span>
+                      {' ⋅ '}
                       {age} yr
                       {age > 1 ? 's' : ''} old
                     </p>

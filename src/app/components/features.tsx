@@ -91,7 +91,10 @@ export default function Features() {
       e.preventDefault(); // prevent scrolling down
       const key = filteredData[index].key;
       updateHash(key);
-      document.querySelector(`.${buttonClass}[data-index="${index}"]`).focus();
+      const el = document.querySelector(
+        `.${buttonClass}[data-index="${index}"]`
+      );
+      if (el) el.focus();
     };
     document.addEventListener('keyup', onKeyUp);
     document.addEventListener('keydown', onKeyDown);
@@ -133,6 +136,7 @@ export default function Features() {
               <h2
                 className={active ? 'active' : ''}
                 style={{
+                  color: active ? 'var(--titleColor)' : 'var(--color)',
                   fontWeight: active ? 700 : 200,
                 }}
               >

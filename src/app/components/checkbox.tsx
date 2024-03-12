@@ -14,10 +14,14 @@ const CheckboxRoot = styled(CB.Root)`
   align-items: center;
   justify-content: center;
   line-height: 0;
-  outline: 1px solid var(--radioOutline);
+  border: 1px solid var(--radioOutline);
   transition: 0.1s;
   &[aria-checked='false'] {
     background-color: var(--radioEmptyBg);
+  }
+  &:focus {
+    outline: 2px dotted currentColor;
+    outline-offset: 2px;
   }
 `;
 
@@ -65,7 +69,11 @@ export const Checkbox = ({
         id={id}
       >
         <CheckboxIndicator key={`${indeterminate ? 'ind' : checked}`}>
-          {indeterminate ? <MinusIcon /> : <CheckIcon />}
+          {indeterminate ? (
+            <MinusIcon width={18} height={18} />
+          ) : (
+            <CheckIcon width={18} height={18} />
+          )}
         </CheckboxIndicator>
       </CheckboxRoot>
       <label htmlFor={id}>{children}</label>

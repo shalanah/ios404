@@ -167,6 +167,9 @@ button {
   color: currentColor;
   pointer-events: all !important;
 }
+input, textarea {
+  pointer-events: all !important;
+}
 * {
   box-sizing: border-box;
   padding: 0;

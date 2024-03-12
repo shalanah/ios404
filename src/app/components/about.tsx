@@ -62,6 +62,7 @@ const DialogContent = styled(Dialog.Content)`
   padding: 25px;
   animation: contentShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
   overflow: auto;
+  z-index: 2;
   :focus {
     outline: none;
   }
@@ -80,19 +81,15 @@ const FAQ = [
   ],
   [
     'What data source are you using?',
-    'Currently using [caniuse.com](https://caniuse.com) ([caniuse github](https://github.com/Fyrd/caniuse/tree/main)), an open-source project to collect and present data on web browser compatibility. Hoping to expand to MDN - but there is a lot more data there and missing features!',
+    'Currently using [caniuse.com](https://caniuse.com) ([caniuse github](https://github.com/Fyrd/caniuse/tree/main)), an open-source project to collect and present data on web browser compatibility. Hoping to expand to MDN - they have a lot more data there and missing features!',
   ],
   [
     'How do you determine if something is not supported?',
-    'If Android Chrome supports a feature more than iOS WebKit, that feature is consider missing with special note if "Partially supported". There is a filtering option where you can remove less-standard or non-standard features from your search.',
-  ],
-  [
-    'Do you hate Apple?',
-    'Not at all! Quite the contrary. Apple builds beautiful products that I love. I have hope for iOS web when other engines are allowed to exist and compete.',
+    'If Android Chrome supports a feature more than iOS WebKit, that feature is consider missing with special note if "Partially supported". There is filtering where you can remove less-standard or non-standard features from your search.',
   ],
   [
     'Who are you?',
-    "Hi! 👋 I'm Shalanah Dawson a frontend developer. You can find me on [LinkedIn](https://linkedin.com/in/shalanah), [GitHub](https://github.com/shalanah), and [Twitter](https://twitter.com/shalanahfaith).",
+    "Hi! 👋 I'm Shalanah Dawson a web dev. Connect on [LinkedIn](https://linkedin.com/in/shalanah), [GitHub](https://github.com/shalanah), or [Twitter](https://twitter.com/shalanahfaith).",
   ],
   ['', 'Copyright 2024. All Rights Reserved - Shalanah Dawson'],
 ];

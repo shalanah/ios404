@@ -45,7 +45,7 @@ export const Intro = () => {
         style={{
           lineHeight: 1,
           fontWeight: 100,
-          fontSize: '4.7rem',
+          fontSize: '76px',
           margin: 'auto 0 0',
         }}
       >
@@ -56,6 +56,8 @@ export const Intro = () => {
       </h1>
       <div
         style={{
+          marginLeft: -8,
+          marginRight: -8,
           color: 'var(--titleColor)',
           lineHeight: 1.35,
           fontSize: '.95rem',
@@ -66,7 +68,6 @@ export const Intro = () => {
           textWrap: 'balance',
         }}
       >
-        <p>The missing web features of iOS</p>
         <Filters />
       </div>
     </Div>
