@@ -41,8 +41,7 @@ const DialogClose = styled(Dialog.Close)`
   transition: 0.2s;
   outline: 1px solid transparent;
   z-index: 2;
-  &:hover,
-  &:focus {
+  &:hover {
     outline: 1px solid currentColor;
   }
 `;
@@ -64,7 +63,7 @@ const DialogContent = styled(Dialog.Content)`
   overflow: auto;
   z-index: 2;
   :focus {
-    outline: none;
+    outline: 2px dotted var(--modalHr);
   }
 `;
 const DialogOverlay = styled(Dialog.Overlay)`

@@ -71,8 +71,7 @@ const PopoverClose = styled(Popover.Close)`
   top: 5px;
   right: 5px;
   z-index: 2;
-  &:hover,
-  &:focus {
+  &:hover {
     outline: 1px solid currentColor;
   }
 `;
@@ -85,10 +84,6 @@ const Submit = styled.button`
   width: 100%;
   border: 1px solid currentColor;
   font-size: 0.8rem;
-  &:focus-visible {
-    outline: 2px dotted currentColor;
-    outline-offset: 2px;
-  }
 `;
 
 const Input = styled.input`
@@ -100,11 +95,6 @@ const Input = styled.input`
   width: 100%;
   background: var(--bg);
   color: var(--color);
-  &:focus-visible {
-    outline: 2px dotted currentColor;
-    outline-offset: 2px;
-    color: var(--color);
-  }
   &::placeholder {
     color: var(--color);
   }

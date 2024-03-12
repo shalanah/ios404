@@ -19,10 +19,6 @@ const CheckboxRoot = styled(CB.Root)`
   &[aria-checked='false'] {
     background-color: var(--radioEmptyBg);
   }
-  &:focus {
-    outline: 2px dotted currentColor;
-    outline-offset: 2px;
-  }
 `;
 
 const CheckboxIndicator = styled(CB.Indicator)`
