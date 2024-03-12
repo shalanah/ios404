@@ -82,12 +82,7 @@ export default function Experience() {
           >
             {/* <axesHelper args={[100]} renderOrder={5} /> */}
             <Model />
-            <Text
-              key={activeIndex}
-              rotation={rotation}
-              index={activeIndex}
-              controls={controls}
-            />
+            <Text rotation={rotation} index={activeIndex} controls={controls} />
           </AnimateRotation>
         </Center>
       </Suspense>

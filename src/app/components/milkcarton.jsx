@@ -7,8 +7,8 @@ import React from 'react';
 import { useGLTF, useTexture } from '@react-three/drei';
 import useCanIUseContext from '../hooks/useCanIUseContext';
 
-const textureUrlLight = '/milkcarton-texture-bake-light3.png';
-const textureUrlDark = '/milkcarton-texture-bake-dark.png';
+const textureUrlLight = '/milkcarton-texture-bake-light5.png';
+const textureUrlDark = '/milkcarton-texture-bake-dark8.png';
 
 export const Model = (props) => {
   const { isDarkMode } = useCanIUseContext();

@@ -6,7 +6,7 @@ const theme = {
     modalBg: 'rgb(41, 41, 41)',
     modalHr: 'rgba(255, 255, 255, 0.2)',
     color: '#d8d8d8',
-    bg: 'rgb(26, 26, 26)',
+    bg: '#161716', //'#161616', //'#272728', //'rgb(26, 26, 26)',
     badgeBg: '#9500FF',
     badgeColor: '#fff',
     badgeBorder: '#690dac',

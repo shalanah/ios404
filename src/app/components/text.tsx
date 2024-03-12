@@ -76,8 +76,8 @@ export const Text = ({ controls, index, rotation }) => {
           fontSmoothing: 'antialiased',
           height: 1150,
           pointerEvents: 'none',
-          // scale: 4,
-          transform: 'scale(4) translateZ(0)',
+          scale: 4,
+          transform: 'translateZ(0)',
           position: 'relative',
         }}
       >
