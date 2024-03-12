@@ -170,6 +170,18 @@ button {
 input, textarea {
   pointer-events: all !important;
 }
+input[type="search"]::-webkit-search-decoration,
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-results-button,
+input[type="search"]::-webkit-search-results-decoration {
+ display: none;
+}
+
+button:focus-visible, input:focus-visible, a:focus-visible {
+  outline: 2px dotted var(--titleColor) !important;
+  outline-offset: 2px !important;
+}
+
 * {
   box-sizing: border-box;
   padding: 0;

@@ -7,7 +7,7 @@ export const DarkModeToggle = () => {
   return (
     <button
       onClick={() => setColorScheme(isDarkMode ? 'light' : 'dark')}
-      style={{ width: 22, height: 22 }}
+      style={{ width: 22, height: 22, borderRadius: '50%' }}
     >
       {isDarkMode ? (
         <SunIcon style={{ width: 22, height: 22 }} />

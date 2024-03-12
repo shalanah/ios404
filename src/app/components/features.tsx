@@ -45,10 +45,8 @@ export default function Features() {
       );
 
       if (el && document.activeElement !== el) {
-        console.log('hey');
         // scroll to element first
         el.scrollIntoView({ behavior: 'instant', block: 'center' });
-        el.focus();
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

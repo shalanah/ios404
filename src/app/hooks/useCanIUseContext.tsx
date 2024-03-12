@@ -24,6 +24,8 @@ interface CanIUseContextInterface {
   isDarkMode: boolean;
   setColorScheme: (mode: string) => void;
   filteredData: any;
+  search: string;
+  setSearch: (search: string) => void;
 }
 
 const dataLink =
@@ -34,9 +36,6 @@ const ios_safari = 'ios_saf';
 // Features that we don't actually care about - deprecated or not relevant to mobile/ipad
 const skipFeatures = [
   'asmjs', // deprecated
-  'css3-cursors', // cursors are not super relevant to mobile
-  'css3-cursors-grab', // cursors are not super relevant to mobile
-  'css3-cursors-newer', // cursors are not super relevant to mobile
   'do-not-track', // not adopted
   'filesystem', // might no longer be maintained but still supported in chrome
   'sql-storage', // deprecating maybe drop later?,
@@ -144,6 +143,7 @@ export const CanIUseContextProvider = ({
   const [canIUseData, setData] = useState(false);
   const [hasError, setHasError] = useState(false);
   const iOSLacking = getIOSSafariLacking(canIUseData);
+  const [search, setSearch] = useState('');
   const [filters, setFilters] = useState<{
     statuses: { [k: string]: boolean };
   }>({
@@ -305,9 +305,19 @@ export const CanIUseContextProvider = ({
       });
   }, []);
 
+  let filteredData = iOSLacking.filter((v) => filters.statuses[v.status]);
+  if (search.trim().length > 0) {
+    const searchLower = search.trim().toLowerCase();
+    filteredData = filteredData.filter((v) => {
+      return v.title.toLowerCase().includes(searchLower);
+    });
+  }
+
   return (
     <CanIUseContext.Provider
       value={{
+        search,
+        setSearch,
         statusCounts,
         loading,
         hasError,
@@ -316,7 +326,7 @@ export const CanIUseContextProvider = ({
         activeIndex,
         statuses: canIUseData?.statuses,
         filters,
-        filteredData: iOSLacking.filter((v) => filters.statuses[v.status]),
+        filteredData,
         setFilters,
         isDarkMode,
         setColorScheme,

@@ -100,14 +100,20 @@ export default function Home() {
           <Intro />
         </IntroDiv>
         <LinksDiv>
-          <p style={{ marginRight: 2 }}>No affiliation with Apple or iOS.</p>
+          <p style={{ marginRight: 2, fontWeight: 'bold' }}>
+            No affiliation with Apple or iOS.
+          </p>
           <DarkModeToggle />
-          <a href={'https://github.com/shalanah/ios404'} target="_blank">
+          <a
+            href={'https://github.com/shalanah/ios404'}
+            target="_blank"
+            style={{ borderRadius: '50%' }}
+          >
             <GitHubLogoIcon style={{ width: 23, height: 23 }} />
           </a>
           <About
             button={
-              <button>
+              <button style={{ borderRadius: '50%' }}>
                 <InfoCircledIcon style={{ width: 25, height: 25 }} />
               </button>
             }

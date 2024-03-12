@@ -105,9 +105,8 @@ const Input = styled.input`
     outline-offset: 2px;
     color: var(--color);
   }
-  :placeholder {
-    color: red;
-    opacity: 1;
+  &::placeholder {
+    color: var(--color);
   }
 `;
 
@@ -119,6 +118,8 @@ export const Filters = () => {
     setFilters,
     iOSLacking,
     filteredData,
+    search,
+    setSearch,
   } = useCanIUseContext();
   const nonEmptyStatusFilters = Object.fromEntries(
     Object.entries(filters.statuses).filter(([k, _]) => {
@@ -162,11 +163,18 @@ export const Filters = () => {
         display: 'flex',
         flexDirection: 'column',
         marginBottom: 20,
-        gap: 3,
+        gap: 7,
       }}
     >
       <div style={{ position: 'relative' }}>
-        <Input type="search" placeholder="Search" />
+        <Input
+          type="search"
+          placeholder="Search"
+          value={search}
+          onChange={(e) => {
+            setSearch(e.target.value);
+          }}
+        />
         <span
           aria-label="Search"
           style={{
@@ -178,8 +186,25 @@ export const Filters = () => {
         >
           <MagnifyingGlassIcon width={18} height={18} />
         </span>
+        {search && (
+          <button
+            style={{
+              position: 'absolute',
+              right: 10,
+              top: 8,
+              borderRadius: '50%',
+              width: 18,
+              height: 18,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+            onClick={() => setSearch('')}
+          >
+            <Cross2Icon />
+          </button>
+        )}
       </div>
-
       <div
         style={{
           height: 35,
