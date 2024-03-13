@@ -7,7 +7,12 @@ import { buttonClass } from '../hooks/useCanIUseContext';
 import styled from 'styled-components';
 import usePrevious from '../hooks/usePrevious';
 
-const Ul = styled.ul`
+const Div = styled.div`
+  &:focus-visible {
+    outline: 2px dotted var(--titleColor);
+    outline-offset: 2px;
+  }
+
   h2 {
     font-size: 1.15rem;
     line-height: 1.2;
@@ -112,48 +117,49 @@ export default function Features() {
 
   const delay = (index) =>
     firstLoad?.current ? 0 : Math.min(20, index) * 0.05; // only want to delay the first few in view
+  const activeInList = filteredData.some((v) => v.index === activeIndex);
   return (
-    <Ul>
+    <Div>
       {filteredData.map(({ key, index, ...v }, i) => {
         const active = index === activeIndex;
         return (
-          <li key={key + JSON.stringify(filters)}>
-            <button
+          <button
+            tabIndex={active || (!activeInList && i === 0) ? 0 : -1}
+            key={key}
+            style={{
+              animation: `fadeIn 0.1s ${delay(i)}s ease-out both`,
+            }}
+            data-index={index} // to focus on load
+            className={buttonClass}
+            onClick={(e) => {
+              updateHash(key);
+              // Safari doesn't think buttons deserve focus... 🤷‍♀️?
+              // - https://stackoverflow.com/questions/42758815/safari-focus-event-doesnt-work-on-button-element
+              e.currentTarget.focus();
+            }}
+          >
+            <h2
+              className={active ? 'active' : ''}
               style={{
-                animation: `fadeIn 0.1s ${delay(i)}s ease-out both`,
-              }}
-              data-index={index} // to focus on load
-              className={buttonClass}
-              onClick={(e) => {
-                updateHash(key);
-                // Safari doesn't think buttons deserve focus... 🤷‍♀️?
-                // - https://stackoverflow.com/questions/42758815/safari-focus-event-doesnt-work-on-button-element
-                e.currentTarget.focus();
+                color: active ? 'var(--titleColor)' : 'var(--color)',
+                fontWeight: active ? 700 : 200,
               }}
             >
-              <h2
-                className={active ? 'active' : ''}
-                style={{
-                  color: active ? 'var(--titleColor)' : 'var(--color)',
-                  fontWeight: active ? 700 : 200,
-                }}
-              >
-                {v.title}{' '}
-              </h2>{' '}
-              {/* <div>{v.categories.join(', ')}</div> */}
-              {/* {v.notes && <div>{v.notes}</div>}
+              {v.title}{' '}
+            </h2>{' '}
+            {/* <div>{v.categories.join(', ')}</div> */}
+            {/* {v.notes && <div>{v.notes}</div>}
             {v.keywords && <div>{v.keywords}</div>} */}
-              {/* <div>
+            {/* <div>
               {v.links.map(({ url, title }, k) => (
                 <span key={k}>
                   {url} {title}
                 </span>
               ))}
             </div> */}
-            </button>
-          </li>
+          </button>
         );
       })}
-    </Ul>
+    </Div>
   );
 }
