@@ -61,7 +61,7 @@ const DialogContent = styled(Dialog.Content)`
   padding: 25px;
   animation: contentShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
   overflow: auto;
-  z-index: 2;
+  z-index: 4;
   :focus {
     outline: 2px dotted var(--modalHr);
   }

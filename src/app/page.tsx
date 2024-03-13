@@ -47,10 +47,11 @@ const IntroDiv = styled.div`
   padding-bottom: 30px;
   padding: 0 1em;
   pointer-events: none; /* allow for scroll */
-  z-index: 2;
+  z-index: 3;
 `;
 const LinksDiv = styled.div`
   position: fixed;
+  pointer-events: none;
   top: 5px;
   left: 0;
   width: 100%;
@@ -72,12 +73,41 @@ const CanvasDiv = styled.div`
   width: 100vw;
   left: var(--carton-left);
   top: 0;
-  z-index: 0;
+  z-index: -1;
 `;
 
 export default function Home() {
   return (
     <CanIUseContextProvider>
+      <Div className={'pos-full-win'}>
+        <IntroDiv>
+          <Intro />
+        </IntroDiv>
+        <FeaturesDiv>
+          <FeaturesStickyTopCover />
+          <Features />
+        </FeaturesDiv>
+      </Div>
+      <LinksDiv>
+        <p style={{ marginRight: 2, fontWeight: 'bold' }}>
+          No affiliation with Apple or iOS.
+        </p>
+        <DarkModeToggle />
+        <a
+          href={'https://github.com/shalanah/ios404'}
+          target="_blank"
+          style={{ borderRadius: '50%' }}
+        >
+          <GitHubLogoIcon style={{ width: 23, height: 23 }} />
+        </a>
+        <About
+          button={
+            <button style={{ borderRadius: '50%' }}>
+              <InfoCircledIcon style={{ width: 25, height: 25 }} />
+            </button>
+          }
+        />
+      </LinksDiv>
       <CanvasDiv>
         <Canvas
           flat // already did tone mapping in our baked asset
@@ -91,35 +121,6 @@ export default function Home() {
           <Experience />
         </Canvas>
       </CanvasDiv>
-      <Div className={'pos-full-win'}>
-        <FeaturesDiv>
-          <FeaturesStickyTopCover />
-          <Features />
-        </FeaturesDiv>
-        <IntroDiv>
-          <Intro />
-        </IntroDiv>
-        <LinksDiv>
-          <p style={{ marginRight: 2, fontWeight: 'bold' }}>
-            No affiliation with Apple or iOS.
-          </p>
-          <DarkModeToggle />
-          <a
-            href={'https://github.com/shalanah/ios404'}
-            target="_blank"
-            style={{ borderRadius: '50%' }}
-          >
-            <GitHubLogoIcon style={{ width: 23, height: 23 }} />
-          </a>
-          <About
-            button={
-              <button style={{ borderRadius: '50%' }}>
-                <InfoCircledIcon style={{ width: 25, height: 25 }} />
-              </button>
-            }
-          />
-        </LinksDiv>
-      </Div>
     </CanIUseContextProvider>
   );
 }

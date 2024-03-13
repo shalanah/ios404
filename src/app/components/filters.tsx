@@ -30,7 +30,7 @@ const PopoverContent = styled(Popover.Content)`
   border-radius: 20px;
   padding: 20px;
   width: 260px;
-  z-index: 2;
+  z-index: 4;
   background-color: var(--modalBg);
   box-shadow: var(--modalShadow) 0px 10px 38px -10px,
     var(--modalShadow) 0px 10px 20px -15px;
