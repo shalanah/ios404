@@ -23,7 +23,7 @@ const Div = styled.div`
   }
   .stats > div {
     width: 100%;
-    border-bottom: 1px solid currentColor;
+    border-bottom: 2px solid currentColor;
     padding: 10px 0px;
     display: flex;
     gap: 5px;
@@ -41,6 +41,10 @@ const Div = styled.div`
     color: var(--titleColor);
     font-size: 28px;
     font-weight: 700;
+  }
+  a {
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
   }
 `;
 
@@ -128,7 +132,11 @@ export const Text = ({ controls, index, rotation }) => {
                   textWrap: 'balance',
                 }}
               >
-                <a href={`https://caniuse.com/${key}`} target="_blank">
+                <a
+                  href={`https://caniuse.com/${key}`}
+                  target="_blank"
+                  style={{ textDecoration: 'none' }}
+                >
                   {title}
                   <ExternalLinkIcon
                     style={{
@@ -155,7 +163,13 @@ export const Text = ({ controls, index, rotation }) => {
                 className={'description'}
               >
                 {Object.entries(notes_by_num).length > 0 && (
-                  <ul style={{ marginBottom: 15, fontWeight: 700 }}>
+                  <ul
+                    style={{
+                      marginBottom: 15,
+                      fontWeight: 700,
+                      color: 'var(--partial)',
+                    }}
+                  >
                     {Object.entries(notes_by_num).map(([num, note]) => {
                       if (
                         !safariStat
@@ -265,7 +279,11 @@ export const Text = ({ controls, index, rotation }) => {
                   </div>
                   <div>
                     <h3>Spec</h3>
-                    <a href={spec} target="_blank">
+                    <a
+                      href={spec}
+                      target="_blank"
+                      style={{ textDecoration: 'none' }}
+                    >
                       <p>
                         {statuses[status]
                           .replace('Candidate Recommendation', 'Candidate')

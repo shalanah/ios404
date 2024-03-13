@@ -20,6 +20,7 @@ const theme = {
     titleColor: '#fff',
     vignette:
       'radial-gradient(ellipse at center, rgba(0,0,0,0) 50%, rgba(30,30,30,.6) 100%)',
+    partial: 'yellow',
   },
   light: {
     modalBg: '#fff',
@@ -40,6 +41,7 @@ const theme = {
     titleColor: '#333',
     vignette:
       'radial-gradient(ellipse at center, rgba(255, 255, 255, 0) 50%, rgba(242, 216, 216, .5) 100%)',
+    partial: '#005364',
   },
 };
 

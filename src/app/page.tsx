@@ -67,19 +67,32 @@ const LinksDiv = styled.div`
 `;
 
 const CanvasDiv = styled.div`
-  position: fixed;
+  position: sticky;
   pointer-events: none;
   height: 100dvh;
   width: 100vw;
-  left: var(--carton-left);
+  margin-left: var(--carton-left);
   top: 0;
-  z-index: -1;
+  /* z-index: -1; */
 `;
 
 export default function Home() {
   return (
     <CanIUseContextProvider>
       <Div className={'pos-full-win'}>
+        <CanvasDiv>
+          <Canvas
+            flat // already did tone mapping in our baked asset
+            camera={{
+              position: [-77, -40.2, 242],
+              fov: 60,
+              near: 0.1,
+              far: 10000, // seems a bit much... TODO: double check
+            }}
+          >
+            <Experience />
+          </Canvas>
+        </CanvasDiv>
         <IntroDiv>
           <Intro />
         </IntroDiv>
@@ -108,19 +121,6 @@ export default function Home() {
           }
         />
       </LinksDiv>
-      <CanvasDiv>
-        <Canvas
-          flat // already did tone mapping in our baked asset
-          camera={{
-            position: [-77, -40.2, 242],
-            fov: 60,
-            near: 0.1,
-            far: 10000, // seems a bit much... TODO: double check
-          }}
-        >
-          <Experience />
-        </Canvas>
-      </CanvasDiv>
     </CanIUseContextProvider>
   );
 }

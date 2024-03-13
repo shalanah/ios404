@@ -90,10 +90,10 @@ const Input = styled.input`
   padding: 8px 10px 8px 35px;
   height: 33px;
   border-radius: 12px;
-  border: 1px solid currentColor;
+  border: 1px solid var(--modalHr);
   font-size: 0.8rem;
   width: 100%;
-  background: var(--bg);
+  background: var(--modalBg);
   color: var(--color);
   &::placeholder {
     color: var(--color);
