@@ -7,8 +7,22 @@ import Markdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { ExternalLinkIcon } from '@radix-ui/react-icons';
 import styled from 'styled-components';
+import * as THREE from 'three';
+
+const HTML = styled(Html)`
+  touch-action: none !important;
+  pointer-events: none !important;
+  * {
+    touch-action: none !important;
+  }
+`;
 
 const Div = styled.div`
+  touch-action: none !important;
+  pointer-events: none !important;
+  * {
+    touch-action: none !important;
+  }
   .description code {
     background: var(--codeBg);
     color: var(--codeColor);
@@ -65,29 +79,30 @@ export const Text = ({ position, index, rotation }) => {
   date = date ? date.getFullYear() : '';
   const age = new Date().getFullYear() - date;
   return (
-    <Html
+    <HTML
       rotation={rotation}
       transform
-      wrapperClass="wrapper"
-      distanceFactor={10}
+      pointerEvents="none"
       position={position}
-      occlude={'raycast'}
-      // side={THREE.FrontSide} // Required
+      scale={4}
+      side={THREE.FrontSide} // Required
     >
       <Div
         style={{
           width: 1000,
+          touchAction: 'none',
           fontSmoothing: 'antialiased',
           height: 1150,
           pointerEvents: 'none',
-          scale: 4,
-          transform: 'translateZ(0)',
+          // scale: 4,
+          // transform: 'scale(4) translateZ(0)',
           position: 'relative',
         }}
       >
         <div
           style={{
             position: 'absolute',
+            overflow: 'visible',
             top: 30,
             fontSize: 38,
             lineHeight: '40px',
@@ -309,31 +324,7 @@ export const Text = ({ position, index, rotation }) => {
             </div>
           </div>
         </div>
-        <div
-          style={{
-            position: 'absolute',
-            bottom: 25,
-            fontSize: 30.75,
-            lineHeight: '40px',
-            width: 'calc(100% - 60px)',
-            left: 30,
-            textAlign: 'left',
-          }}
-        >
-          Contact{' '}
-          <a
-            href={`https://caniuse.com/${key}`}
-            target="_blank"
-            style={{
-              textDecoration: 'underline',
-              textUnderlineOffset: 5,
-            }}
-          >
-            caniuse.com
-          </a>{' '}
-          if you have any information regarding this feature.
-        </div>
       </Div>
-    </Html>
+    </HTML>
   );
 };

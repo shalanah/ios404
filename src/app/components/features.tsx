@@ -38,17 +38,19 @@ const Div = styled.div`
 `;
 
 export default function Features() {
-  const { activeIndex, updateHash, filteredData, filters } =
-    useCanIUseContext();
+  const {
+    activeIndex,
+    updateHash,
+    filteredData,
+    setNextFeature,
+    filters,
+    search,
+  } = useCanIUseContext();
 
   // Just on first load
   useEffect(() => {
-    console.log(activeIndex);
     if (activeIndex !== -1) {
-      const el = document.querySelector(
-        `.${buttonClass}[data-index="${activeIndex}"]`
-      );
-
+      const el = document.querySelector(`.${buttonClass}[data-active="true"]`);
       if (el && document.activeElement !== el) {
         // scroll to element first
         el.scrollIntoView({ behavior: 'instant', block: 'center' });
@@ -77,28 +79,11 @@ export default function Features() {
 
       const hasDialog = document.querySelector('[role="dialog"]');
       if (hasDialog) return;
-      const len = filteredData.length;
-      if (len < 1) return;
 
-      let index = 0;
-      if (filteredData.some((v) => v.index === activeIndex) && len > 1) {
-        const findIndex = filteredData.findIndex(
-          (v) => v.index === activeIndex
-        );
-        if (['ArrowDown', 'ArrowRight'].includes(e.key)) {
-          index = (findIndex + 1) % len;
-        } else if (['ArrowUp', 'ArrowLeft'].includes(e.key)) {
-          index = (findIndex - 1 + len) % len;
-        }
-      }
-
-      e.preventDefault(); // prevent scrolling down
-      const key = filteredData[index].key;
-      updateHash(key);
-      const el = document.querySelector(
-        `.${buttonClass}[data-index="${index}"]`
-      );
-      if (el) el.focus();
+      setNextFeature({
+        e,
+        forwards: ['ArrowDown', 'ArrowRight'].includes(e.key),
+      });
     };
     document.addEventListener('keyup', onKeyUp);
     document.addEventListener('keydown', onKeyDown);
@@ -106,7 +91,7 @@ export default function Features() {
       document.removeEventListener('keyup', onKeyUp);
       document.removeEventListener('keydown', onKeyDown);
     };
-  }, [activeIndex, filteredData, updateHash]);
+  }, [setNextFeature]);
 
   const firstLoad = useRef(true);
   const prevIndex = usePrevious(activeIndex);
@@ -130,6 +115,7 @@ export default function Features() {
             style={{
               animation: `fadeIn 0.1s ${delay(i)}s ease-out both`,
             }}
+            data-active={active ? 'true' : 'false'}
             data-index={index} // to focus on load
             className={buttonClass}
             onClick={(e) => {

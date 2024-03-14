@@ -69,7 +69,7 @@ export const Drawer = ({
 
   const offset = 80;
   const bind = useDrag(
-    ({ movement: [mx, my], last, tap, event }) => {
+    ({ movement: [_, my], last, tap, event }) => {
       if (tap && clickRef?.current?.contains(event.target)) {
         setOpen((o) => !o);
         return;
@@ -89,7 +89,7 @@ export const Drawer = ({
         }
       }
     },
-    { filterTaps: true }
+    { filterTaps: true, axis: 'y' }
   );
 
   return (
@@ -110,7 +110,10 @@ export const Drawer = ({
           flex: 1,
         }}
       >
-        <div ref={clickRef} style={{ position: 'relative' }}>
+        <div
+          ref={clickRef}
+          style={{ position: 'relative', touchAction: 'none' }}
+        >
           <div
             style={{
               position: 'absolute',
@@ -124,7 +127,10 @@ export const Drawer = ({
           </div>
           {clickContent}
         </div>
-        <div style={{ display: open ? '' : 'none' }} key={open}>
+        <div
+          style={{ display: open ? '' : 'none', touchAction: 'none' }}
+          key={open}
+        >
           {content}
         </div>
       </div>

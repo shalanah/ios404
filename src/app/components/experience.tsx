@@ -1,18 +1,30 @@
-// @ts-nocheck
-
 'use client';
 
-import { Suspense, useEffect, useLayoutEffect, useRef } from 'react';
+import { Suspense, useEffect, useRef } from 'react';
 import { Center } from '@react-three/drei';
-import AnimateRotation from './animateRotation';
 // import { Perf } from 'r3f-perf';
 import { Model } from './milkcarton';
 import { Text } from './text';
 import useCanIUseContext from '../hooks/useCanIUseContext';
 import usePrevious from '../hooks/usePrevious';
+import { Perf } from 'r3f-perf';
+import { a, useSpring } from '@react-spring/three';
+import { useDrag } from '@use-gesture/react';
+import { Html } from '@react-three/drei';
+import styled from 'styled-components';
 
+const HTML = styled(Html)`
+  touch-action: none;
+  pointer-events: none;
+  * {
+    touch-action: none;
+  }
+`;
+
+const config = { mass: 0.05, tension: 600, friction: 40 };
 export default function Experience() {
-  const { activeIndex, iOSLacking } = useCanIUseContext();
+  const { activeIndex, iOSLacking, setNextFeature, filteredData } =
+    useCanIUseContext();
   const len = iOSLacking.length;
   const quarterTurns = useRef(0);
   const prevActiveIndex = usePrevious(activeIndex);
@@ -55,25 +67,69 @@ export default function Experience() {
       break;
   }
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const rot = [0, (quarterTurns.current * -Math.PI) / 2 - Math.PI / 10, 0];
+  const [spring, api] = useSpring(() => ({
+    rotation: rot,
+    config,
+  }));
+
+  useEffect(() => {
+    api.start({
+      rotation: rot,
+      config,
+    });
+  }, [api, rot]);
+
+  const bind = useDrag(
+    ({ movement: [mx], last }) => {
+      const value = Math.min(Math.abs(mx), 44.5); // clamping...
+      const sign = Math.sign(mx);
+      if (last) {
+        if (value > 35 && filteredData.length > 1) {
+          setNextFeature({ forwards: sign === -1 });
+          return;
+        } else {
+          api.start({
+            rotation: [
+              0,
+              (quarterTurns.current * -Math.PI) / 2 - Math.PI / 10,
+              0,
+            ],
+            config,
+          });
+          return;
+        }
+      }
+      api.start({
+        rotation: [
+          rot[0],
+          rot[1] + (Math.PI / (360 * 2)) * value * sign,
+          rot[2],
+        ],
+        config,
+      });
+    },
+    { axis: 'x' }
+  );
+
   if (len === 0 || activeIndex === -1) return null;
 
   return (
     <>
-      {/* <Perf position="top-left" /> */}
+      {/* <Perf position="top-right" /> */}
       <Suspense fallback={null}>
         <Center disableZ disableX>
-          <AnimateRotation
-            rotation={[
-              0,
-              (quarterTurns.current * -Math.PI) / 2 - Math.PI / 10,
-              0,
-            ]}
-            config={{ mass: 0.05, tension: 600, friction: 40 }} // Spring config
-          >
-            {/* <axesHelper args={[100]} renderOrder={5} /> */}
-            <Model />
+          <a.group {...(spring as any)} {...bind()}>
+            <Model></Model>
             <Text rotation={rotation} index={activeIndex} position={position} />
-          </AnimateRotation>
+            <HTML position={[0, -20, 0]}>
+              <div style={{ touchAction: 'none' }}>
+                <button>previous</button>
+                <button>next</button>
+              </div>
+            </HTML>
+          </a.group>
         </Center>
       </Suspense>
     </>

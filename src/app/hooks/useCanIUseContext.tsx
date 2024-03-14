@@ -26,6 +26,7 @@ interface CanIUseContextInterface {
   filteredData: any;
   search: string;
   setSearch: (search: string) => void;
+  setNextFeature: (args: { forwards: boolean; e?: Event }) => void;
 }
 
 const dataLink =
@@ -313,6 +314,29 @@ export const CanIUseContextProvider = ({
     });
   }
 
+  const setNextFeature = ({
+    forwards,
+    e,
+  }: {
+    forwards: boolean;
+    e?: Event;
+  }) => {
+    const len = filteredData.length;
+    if (len < 1) return;
+
+    let filteredIndex = 0;
+    if (filteredData.some((v) => v.index === activeIndex) && len > 1) {
+      const findIndex = filteredData.findIndex((v) => v.index === activeIndex);
+      if (forwards) filteredIndex = (findIndex + 1) % len;
+      else filteredIndex = (findIndex - 1 + len) % len;
+    }
+    if (e) e.preventDefault(); // prevent scrolling down
+    const { key, index } = filteredData[filteredIndex];
+    updateHash(key);
+    const el = document.querySelector(`.${buttonClass}[data-index="${index}"]`);
+    if (el) el.focus(); // scroll ino view
+  };
+
   return (
     <CanIUseContext.Provider
       value={{
@@ -330,6 +354,7 @@ export const CanIUseContextProvider = ({
         setFilters,
         isDarkMode,
         setColorScheme,
+        setNextFeature,
       }}
     >
       {children}

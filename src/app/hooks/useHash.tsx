@@ -17,7 +17,11 @@ export const useHash = () => {
 
   const updateHash = useCallback(
     (newHash: string) => {
-      if (newHash !== hash) window.location.hash = newHash;
+      if (newHash !== hash) {
+        const urlWithoutHash = window.location.href.split('#')[0];
+        window.history.replaceState(null, '', `${urlWithoutHash}#${newHash}`);
+        setHash(`#${newHash}`);
+      }
     },
     [hash]
   );

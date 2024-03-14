@@ -81,6 +81,7 @@ const DesktopCanvasDiv = styled.div`
   left: calc(50% - (var(--features-width) * 0.5));
   width: calc(var(--features-width) * 2); // little extra for padding
   top: 0;
+  touch-action: none;
 `;
 
 const camera = {
@@ -92,7 +93,7 @@ const camera = {
 
 export default function Home() {
   const { width, height } = useWindowSize();
-  const closedHeight = 40;
+  const closedHeight = 100;
   const openHeight = Math.max((height || 0) - 200, (height || 0) * 0.75);
 
   if (width === null) return null;
@@ -107,6 +108,7 @@ export default function Home() {
             height: '100dvh',
             width: '100vw',
             zIndex: 0,
+            touchAction: 'none',
           }}
         >
           <Canvas
@@ -149,6 +151,7 @@ export default function Home() {
               transform: 'translateX(calc(-50% + 4vw))',
               top: 0,
               height: '100dvh',
+              touchAction: 'none',
             }}
           >
             <Canvas
