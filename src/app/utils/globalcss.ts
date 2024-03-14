@@ -67,23 +67,11 @@ export const globalCss = /* css */ `
 }
 
 :root {
---left-gutter: 26vw; 
   --intro-padding: 40dvh;
   --features-width: 300px;
   --top: #eee9e2;
-  --carton-left: calc(var(--left-gutter) * 0.525);
-  @media (max-width: 1500px) {
-    --left-gutter: 22vw;
+
   }
-  @media (max-width: 1300px) {
-    --left-gutter: 20vw;
-  }
-  @media (max-width: 1200px) {
-    --left-gutter: 13vw;
-  }
-  @media (max-width: 1100px) {
-    --left-gutter: 10vw;
-  }}
 
 
 /* For radix --- TODO: put into styled comps */

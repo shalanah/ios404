@@ -313,7 +313,7 @@ export const Text = ({ controls, index, rotation }) => {
           style={{
             position: 'absolute',
             bottom: 25,
-            fontSize: 30,
+            fontSize: 30.75,
             lineHeight: '40px',
             width: 'calc(100% - 60px)',
             left: 30,
