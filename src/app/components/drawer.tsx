@@ -124,7 +124,9 @@ export const Drawer = ({
           </div>
           {clickContent}
         </div>
-        <div style={{ display: open ? '' : 'none' }}>{content}</div>
+        <div style={{ display: open ? '' : 'none' }} key={open}>
+          {content}
+        </div>
       </div>
       {footer && <div>{footer}</div>}
     </Container>

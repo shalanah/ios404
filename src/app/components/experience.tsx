@@ -34,33 +34,23 @@ export default function Experience() {
   let mod = quarterTurns.current % 4;
   if (mod < 0) mod += 4;
 
-  let controls = {
-    htmlPosition: [0.1, 58, 51],
-  };
+  let position = [0.1, 58, 51];
   let rotation = [0, 0, 0];
   switch (mod) {
     case 0:
-      controls = {
-        htmlPosition: [0.1, 58, 51],
-      };
+      position = [0.1, 58, 51];
       rotation = [0, 0, 0];
       break;
     case 1:
-      controls = {
-        htmlPosition: [51, 58, 0.1],
-      };
+      position = [51, 58, 0.1];
       rotation = [0, Math.PI / 2, 0];
       break;
     case 2:
-      controls = {
-        htmlPosition: [0.1, 58, -51],
-      };
+      position = [0.1, 58, -51];
       rotation = [0, Math.PI, 0];
       break;
     case 3:
-      controls = {
-        htmlPosition: [-51, 58, 0.1],
-      };
+      position = [-51, 58, 0.1];
       rotation = [0, (Math.PI * 3) / 2, 0];
       break;
   }
@@ -82,7 +72,7 @@ export default function Experience() {
           >
             {/* <axesHelper args={[100]} renderOrder={5} /> */}
             <Model />
-            <Text rotation={rotation} index={activeIndex} controls={controls} />
+            <Text rotation={rotation} index={activeIndex} position={position} />
           </AnimateRotation>
         </Center>
       </Suspense>

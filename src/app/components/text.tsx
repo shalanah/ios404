@@ -48,7 +48,7 @@ const Div = styled.div`
   }
 `;
 
-export const Text = ({ controls, index, rotation }) => {
+export const Text = ({ position, index, rotation }) => {
   const { iOSLacking, statuses } = useCanIUseContext();
   const {
     title,
@@ -70,7 +70,7 @@ export const Text = ({ controls, index, rotation }) => {
       transform
       wrapperClass="wrapper"
       distanceFactor={10}
-      position={controls.htmlPosition}
+      position={position}
       occlude={'raycast'}
       // side={THREE.FrontSide} // Required
     >

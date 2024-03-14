@@ -106,6 +106,7 @@ export default function Home() {
             top: -40, /// making room for features div
             height: '100dvh',
             width: '100vw',
+            zIndex: 0,
           }}
         >
           <Canvas
@@ -121,9 +122,6 @@ export default function Home() {
           <Links />
         </LinksDiv>
         <Drawer
-          style={{
-            zIndex: 16606783, // above canvas html too... why is this z-index so high?... double check
-          }}
           height={[openHeight, closedHeight]}
           content={
             <div style={{ height: 1000, outline: '1px solid yellow' }}>
