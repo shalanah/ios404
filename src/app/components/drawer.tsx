@@ -1,7 +1,7 @@
 // @ts-nocheck
 import React, { useState, useRef, useEffect } from 'react';
 import { animated } from '@react-spring/web';
-import { useDrag } from '@use-gesture/react';
+import { useDrag, useGesture } from '@use-gesture/react';
 import styled from 'styled-components';
 import { useSpring } from '@react-spring/web';
 import { useOnClickOutside } from 'usehooks-ts';
@@ -68,6 +68,7 @@ export const Drawer = ({
   }, [open, api, openHeight, closedHeight]);
 
   const offset = 80;
+
   const bind = useDrag(
     ({ movement: [_, my], last, tap, event }) => {
       if (tap && clickRef?.current?.contains(event.target)) {

@@ -9,7 +9,7 @@ import useCanIUseContext from '../hooks/useCanIUseContext';
 import usePrevious from '../hooks/usePrevious';
 // import { Perf } from 'r3f-perf';
 import { a, useSpring } from '@react-spring/three';
-import { useDrag } from '@use-gesture/react';
+import { useDrag, useGesture } from '@use-gesture/react';
 import { Html } from '@react-three/drei';
 import styled from 'styled-components';
 
@@ -82,7 +82,7 @@ export default function Experience() {
   }, [api, rot]);
 
   const bind = useDrag(
-    ({ movement: [mx], last }) => {
+    ({ movement: [mx], last, event }) => {
       const value = Math.min(Math.abs(mx), 44.5); // clamping...
       const sign = Math.sign(mx);
       if (last) {
@@ -122,7 +122,12 @@ export default function Experience() {
         <Center disableZ disableX>
           <a.group {...(spring as any)} {...bind()}>
             <Model></Model>
-            <Text rotation={rotation} index={activeIndex} position={position} />
+            <Text
+              rotation={rotation}
+              index={activeIndex}
+              position={position}
+              bind={bind}
+            />
             <HTML position={[0, -20, 0]}>
               <div style={{ touchAction: 'none' }}>
                 <button>previous</button>

@@ -27,13 +27,6 @@ export const Links = () => {
       </p>
       <div>
         <DarkModeToggle />
-        <a
-          href={'https://github.com/shalanah/ios404'}
-          target="_blank"
-          style={{ borderRadius: '50%' }}
-        >
-          <GitHubLogoIcon style={{ width: 23, height: 23 }} />
-        </a>
         <About
           button={
             <button style={{ borderRadius: '50%' }}>

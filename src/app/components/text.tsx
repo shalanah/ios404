@@ -8,22 +8,15 @@ import remarkGfm from 'remark-gfm';
 import { ExternalLinkIcon } from '@radix-ui/react-icons';
 import styled from 'styled-components';
 import * as THREE from 'three';
-import { useEffect, useState } from 'react';
 
-const HTML = styled(Html)`
-  touch-action: none !important;
-  pointer-events: none !important;
-  * {
-    touch-action: none !important;
-  }
-`;
+const rightHandWidth = 440;
 
 const Div = styled.div`
-  touch-action: none !important;
+  /* touch-action: none !important;
   pointer-events: none !important;
   * {
     touch-action: none !important;
-  }
+  } */
   .description code {
     background: var(--codeBg);
     color: var(--codeColor);
@@ -34,36 +27,70 @@ const Div = styled.div`
     font-weight: bold;
   }
   .stats {
-    width: 450px;
+    width: ${rightHandWidth}px;
   }
   .stats > div {
     width: 100%;
-    border-bottom: 2px solid currentColor;
-    padding: 10px 0px;
+    /* border-bottom: 2px solid currentColor; */
     display: flex;
     gap: 5px;
     align-items: baseline;
     justify-content: space-between;
+    position: relative;
+    padding: 16px 0px;
+    :after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: currentColor;
+      width: 100%;
+      opacity: 0.05;
+    }
   }
   .stats h3 {
-    font-size: 25px;
-    text-transform: uppercase;
+    font-size: 30px;
     width: 100px;
     flex-shrink: 0;
-    font-weight: 400;
+    font-weight: 500;
+    opacity: 0.8;
   }
   .stats p {
     color: var(--titleColor);
-    font-size: 28px;
-    font-weight: 700;
+    font-size: 30px;
+    font-weight: 800;
   }
   a {
     text-decoration: underline;
     text-underline-offset: 0.2em;
+    border-radius: 15px;
+    padding: 0px 15px;
+    margin: 0px -15px;
+    &:focus {
+      outline: 5px dotted currentColor !important;
+      outline-offset: 4px !important;
+    }
   }
 `;
 
-export const Text = ({ position, index, rotation }) => {
+const H1 = styled.h1`
+  font-weight: bold;
+  font-size: 236px;
+  margin-left: -10px;
+  text-transform: uppercase;
+  line-height: 1;
+  margin-bottom: 0px;
+  align-self: stretch;
+`;
+
+export const Text = ({
+  position,
+  index,
+  rotation,
+  bind, // assures that we can also swipe on <a> tags
+}) => {
   const { iOSLacking, statuses } = useCanIUseContext();
   const {
     title,
@@ -76,23 +103,11 @@ export const Text = ({ position, index, rotation }) => {
     notes_by_num,
   } = iOSLacking[index];
 
-  const [scroll, setScroll] = useState(0);
-  useEffect(() => {
-    const scroll = document.getElementById('scroll');
-    const onScroll = (e) => {
-      setScroll(e.target.scrollTop);
-    };
-    scroll?.addEventListener('scroll', onScroll);
-    return () => {
-      scroll?.removeEventListener('scroll', onScroll);
-    };
-  }, []);
-
   let date = firstSeen?.[1] ? new Date(firstSeen?.[1] * 1000) : '';
   date = date ? date.getFullYear() : '';
   const age = new Date().getFullYear() - date;
   return (
-    <HTML
+    <Html
       rotation={rotation}
       transform
       pointerEvents="none"
@@ -107,9 +122,8 @@ export const Text = ({ position, index, rotation }) => {
       }}
       side={THREE.FrontSide} // Required
     >
-      <Div>
+      <Div {...bind()}>
         <div
-          key={scroll}
           style={{
             position: 'absolute',
             overflow: 'visible',
@@ -126,19 +140,7 @@ export const Text = ({ position, index, rotation }) => {
             flexDirection: 'column',
           }}
         >
-          <h1
-            style={{
-              fontWeight: 'bold',
-              fontSize: 236,
-              marginLeft: -10,
-              textTransform: 'uppercase',
-              lineHeight: 1,
-              marginBottom: 10,
-              alignSelf: 'stretch',
-            }}
-          >
-            Missing
-          </h1>
+          <H1>Missing</H1>
           <div
             style={{
               display: 'flex',
@@ -149,7 +151,7 @@ export const Text = ({ position, index, rotation }) => {
             <div>
               <h2
                 style={{
-                  fontSize: 48,
+                  fontSize: 46,
                   marginBottom: 15,
                   textTransform: 'none',
                   lineHeight: 1.15,
@@ -157,10 +159,20 @@ export const Text = ({ position, index, rotation }) => {
                   textWrap: 'balance',
                 }}
               >
-                <a
-                  href={`https://caniuse.com/${key}`}
-                  target="_blank"
-                  style={{ textDecoration: 'none' }}
+                <div
+                  // onMouseMove={(e) => e.preventDefault()}
+                  // onPointerMove={(e) => e.preventDefault()}
+                  // onDrag={(e) => e.preventDefault()}
+                  // onDragStart={(e) => e.preventDefault()}
+                  // onMouseDown={(e) => e.preventDefault()}
+                  // onPointerDown={(e) => e.preventDefault()}
+                  // onDragEnd={(e) => e.preventDefault()}
+                  onClick={() =>
+                    (window.location = `https://caniuse.com/${key}`)
+                  }
+                  // href={`https://caniuse.com/${key}`}
+                  // target="_blank"
+                  style={{ textDecoration: 'none', pointerEvents: 'auto' }}
                 >
                   {title}
                   <ExternalLinkIcon
@@ -173,14 +185,14 @@ export const Text = ({ position, index, rotation }) => {
                       height: 40,
                     }}
                   />
-                </a>
+                </div>
               </h2>
               <div
                 style={{
                   textAlign: 'left',
                   textTransform: 'none',
-                  fontSize: 36,
-                  lineHeight: 1.25,
+                  fontSize: 35,
+                  lineHeight: 1.45,
                   marginBottom: 30,
                   fontWeight: 500,
                   textWrap: 'balance',
@@ -221,7 +233,7 @@ export const Text = ({ position, index, rotation }) => {
                 display: 'flex',
                 flexDirection: 'column',
                 gap: 5,
-                width: 450,
+                width: rightHandWidth,
                 flexShrink: 0,
                 alignItems: 'flex-start',
                 // justifyContent: 'space-between',
@@ -231,10 +243,10 @@ export const Text = ({ position, index, rotation }) => {
             >
               <div
                 style={{
-                  width: 450,
+                  width: rightHandWidth,
                   flexShrink: 0,
                   background: '#000',
-                  height: 450,
+                  height: rightHandWidth,
                   display: 'flex',
                   position: 'relative',
                   borderRadius: 20,
@@ -244,8 +256,8 @@ export const Text = ({ position, index, rotation }) => {
                 <Image
                   alt={'hey'}
                   src={`/imgs/${key}.png`}
-                  width={450}
-                  height={450}
+                  width={rightHandWidth}
+                  height={rightHandWidth}
                   style={{
                     objectFit: 'cover',
                     opacity: 0.85,
@@ -258,14 +270,14 @@ export const Text = ({ position, index, rotation }) => {
                     left: 0,
                     top: 0,
                     background: 'var(--vignette)',
-                    width: 450,
-                    height: 450,
+                    width: rightHandWidth,
+                    height: rightHandWidth,
                   }}
                 />
               </div>
               <div
                 style={{
-                  minHeight: 450,
+                  minHeight: rightHandWidth,
                   textTransform: 'none',
                   display: 'flex',
                   flexDirection: 'column',
@@ -275,26 +287,20 @@ export const Text = ({ position, index, rotation }) => {
               >
                 <div className={'stats'}>
                   <div>
-                    <h3>Support</h3>
+                    <h3>iOS&nbsp;Support</h3>
                     <p>
                       {safariStat.startsWith('a') || safariStat.startsWith('y')
                         ? 'Partial'
                         : 'None'}
                     </p>
                   </div>
+
                   <div>
                     <h3>Age </h3>
                     <p>
-                      <span
-                        style={{
-                          fontWeight: 300,
-                        }}
-                      >
-                        {date}
-                      </span>
-                      {' ⋅ '}
-                      {age} yr
-                      {age > 1 ? 's' : ''} old
+                      {age}
+                      {age > 1 ? ' years' : ' year'}
+                      {' ⋅ '} {date}
                     </p>
                   </div>
                   <div>
@@ -306,6 +312,8 @@ export const Text = ({ position, index, rotation }) => {
                   <div>
                     <h3>Spec</h3>
                     <a
+                      onDrag={(e) => e.preventDefault()}
+                      onDragStart={(e) => e.preventDefault()}
                       href={spec}
                       target="_blank"
                       style={{ textDecoration: 'none' }}
@@ -336,6 +344,6 @@ export const Text = ({ position, index, rotation }) => {
           </div>
         </div>
       </Div>
-    </HTML>
+    </Html>
   );
 };

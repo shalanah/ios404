@@ -80,11 +80,11 @@ const FAQ = [
   ],
   [
     'What data source are you using?',
-    'Currently using [caniuse.com](https://caniuse.com) ([caniuse github](https://github.com/Fyrd/caniuse/tree/main)), an open-source project to collect and present data on web browser compatibility. Hoping to expand to MDN - they have a lot more data there and missing features!',
+    'iOS404 uses [caniuse.com](https://caniuse.com) ([caniuse github](https://github.com/Fyrd/caniuse/tree/main)), an open-source project to collect and present data on web browser compatibility.',
   ],
   [
     'How do you determine if something is not supported?',
-    'If Android Chrome supports a feature more than iOS WebKit, that feature is consider missing with special note if "Partially supported". There is filtering where you can remove less-standard or non-standard features from your search.',
+    'If Android Chrome supports a feature more than iOS WebKit, that feature is consider missing with special note if "Partially supported". Use filtering to remove less-standard or non-standard features from your search.',
   ],
   [
     'Who are you?',

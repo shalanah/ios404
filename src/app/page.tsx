@@ -75,12 +75,31 @@ const DesktopCanvasDiv = styled.div`
   width: calc(var(--features-width) * 2); // little extra for padding
   top: 0;
   z-index: 0;
+  touch-action: none;
 `;
 
-const camera = {
+const MobileCanvasDiv = styled.div`
+  position: absolute;
+  left: 0;
+  top: -40px; /// making room for features div
+  height: 100dvh;
+  width: 100vw;
+  z-index: 0;
+  touch-action: none;
+`;
+
+const cameraDesktop = {
   // position: [-77, -40.2, 242],
   position: [-77, -30, 242],
   fov: 56,
+  near: 0.1,
+  far: 10000, // seems a bit much... TODO: double check
+};
+
+const cameraMobile = {
+  // position: [-77, -40.2, 242],
+  position: [-77, -30, 242],
+  fov: 60,
   near: 0.1,
   far: 10000, // seems a bit much... TODO: double check
 };
@@ -102,27 +121,16 @@ export default function Home() {
   if (width && width < 930) {
     return (
       <CanIUseContextProvider>
-        <div
-          style={{
-            position: 'absolute',
-            left: 0,
-            top: -40, /// making room for features div
-            height: '100dvh',
-            width: '100vw',
-            zIndex: 0,
-            // pointerEvents: 'none',
-            // touchAction: 'pan-y',
-          }}
-        >
+        <MobileCanvasDiv>
           <Canvas
-            flat // already did tone mapping in our baked asset
+            flat
             // @ts-ignore
-            camera={camera}
+            camera={cameraMobile}
+            style={{ touchAction: 'none' }}
           >
             <Experience />
           </Canvas>
-        </div>
-        {/* TODO: Pull out links div into own comp */}
+        </MobileCanvasDiv>
         <LinksDiv>
           <Links />
         </LinksDiv>
@@ -156,10 +164,12 @@ export default function Home() {
           }}
         >
           <Canvas
-            style={{ position: 'sticky', top: 0, left: 0 }}
-            flat // already did tone mapping in our baked asset
+            style={{
+              touchAction: 'none',
+            }}
+            flat
             // @ts-ignore
-            camera={camera}
+            camera={cameraDesktop}
           >
             <Experience />
           </Canvas>
