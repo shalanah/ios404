@@ -37,7 +37,7 @@ const Div = styled.div`
     align-items: baseline;
     justify-content: space-between;
     position: relative;
-    padding: 16px 0px;
+    padding: 13px 0px;
     :after {
       content: '';
       position: absolute;
@@ -159,20 +159,11 @@ export const Text = ({
                   textWrap: 'balance',
                 }}
               >
-                <div
-                  // onMouseMove={(e) => e.preventDefault()}
-                  // onPointerMove={(e) => e.preventDefault()}
-                  // onDrag={(e) => e.preventDefault()}
-                  // onDragStart={(e) => e.preventDefault()}
-                  // onMouseDown={(e) => e.preventDefault()}
-                  // onPointerDown={(e) => e.preventDefault()}
-                  // onDragEnd={(e) => e.preventDefault()}
-                  onClick={() =>
-                    (window.location = `https://caniuse.com/${key}`)
-                  }
-                  // href={`https://caniuse.com/${key}`}
-                  // target="_blank"
-                  style={{ textDecoration: 'none', pointerEvents: 'auto' }}
+                <a
+                  onDragStart={(e) => e.preventDefault()}
+                  href={`https://caniuse.com/${key}`}
+                  target="_blank"
+                  style={{ textDecoration: 'none' }}
                 >
                   {title}
                   <ExternalLinkIcon
@@ -185,7 +176,7 @@ export const Text = ({
                       height: 40,
                     }}
                   />
-                </div>
+                </a>
               </h2>
               <div
                 style={{
@@ -312,7 +303,6 @@ export const Text = ({
                   <div>
                     <h3>Spec</h3>
                     <a
-                      onDrag={(e) => e.preventDefault()}
                       onDragStart={(e) => e.preventDefault()}
                       href={spec}
                       target="_blank"

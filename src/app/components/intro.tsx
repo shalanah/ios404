@@ -41,6 +41,7 @@ export const Intro = () => {
           zIndex: -1,
         }}
       />
+
       <h1
         style={{
           lineHeight: 1,
@@ -49,10 +50,12 @@ export const Intro = () => {
           margin: 'auto 0 0',
         }}
       >
-        iOS
-        <span style={{ fontWeight: 700 }}>
-          4<span>04</span>
-        </span>
+        <a href="/">
+          iOS
+          <span style={{ fontWeight: 700 }}>
+            4<span>04</span>
+          </span>
+        </a>
       </h1>
       <div
         style={{

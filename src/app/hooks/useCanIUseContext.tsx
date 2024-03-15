@@ -26,7 +26,11 @@ interface CanIUseContextInterface {
   filteredData: any;
   search: string;
   setSearch: (search: string) => void;
-  setNextFeature: (args: { forwards: boolean; e?: Event }) => void;
+  setNextFeature: (args: {
+    forwards: boolean;
+    e?: Event;
+    featureActive?: boolean;
+  }) => void;
 }
 
 const dataLink =
@@ -317,9 +321,11 @@ export const CanIUseContextProvider = ({
   const setNextFeature = ({
     forwards,
     e,
+    featureActive = true,
   }: {
     forwards: boolean;
     e?: Event;
+    featureActive?: boolean;
   }) => {
     const len = filteredData.length;
     if (len < 1) return;
@@ -334,7 +340,11 @@ export const CanIUseContextProvider = ({
     const { key, index } = filteredData[filteredIndex];
     updateHash(key);
     const el = document.querySelector(`.${buttonClass}[data-index="${index}"]`);
-    if (el) el.focus(); // scroll ino view
+    if (featureActive) {
+      if (el) el.focus(); // scroll ino view
+    } else {
+      if (el) el.scrollIntoView({ block: 'nearest' });
+    }
   };
 
   return (

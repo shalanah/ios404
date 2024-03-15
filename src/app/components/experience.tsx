@@ -13,12 +13,14 @@ import { useDrag, useGesture } from '@use-gesture/react';
 import { Html } from '@react-three/drei';
 import styled from 'styled-components';
 
-const HTML = styled(Html)`
-  touch-action: none;
-  pointer-events: none;
-  * {
-    touch-action: none;
-  }
+const Button = styled.button`
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  /* background: var(--modalBg); */
+  color: var(--modalHr);
+  /* border: 2px solid var(--modalHr); */
+  flex-shrink: 0;
 `;
 
 const config = { mass: 0.05, tension: 600, friction: 40 };
@@ -110,7 +112,10 @@ export default function Experience() {
         config,
       });
     },
-    { axis: 'x' }
+    {
+      axis: 'x',
+      filterTaps: true,
+    }
   );
 
   if (len === 0 || activeIndex === -1) return null;
@@ -128,12 +133,64 @@ export default function Experience() {
               position={position}
               bind={bind}
             />
-            <HTML position={[0, -20, 0]}>
-              <div style={{ touchAction: 'none' }}>
-                <button>previous</button>
-                <button>next</button>
+            <Html
+              position={[0, -22, 0]}
+              style={{
+                width: '100%',
+                position: 'absolute',
+              }}
+              center
+            >
+              <div
+                style={{
+                  touchAction: 'none',
+                  gap: 15,
+                  width: 80 + 15,
+                }}
+                className="d-flex pos-center"
+              >
+                <Button
+                  onClick={() =>
+                    setNextFeature({ forwards: false, featureActive: false })
+                  }
+                  className="d-flex justify-content-center align-items-center"
+                >
+                  <span
+                    style={{
+                      width: 15,
+                      height: 15,
+                      opacity: 1,
+                      transformOrigin: 'center',
+                      transform: 'translateX(3px) rotate(-45deg) ',
+                      border: '2px solid var(--color)',
+                      borderBottom: 'none',
+                      borderRight: 'none',
+                    }}
+                  />
+                  <span className="sr-only">previous</span>
+                </Button>
+                <Button
+                  className="d-flex justify-content-center align-items-center"
+                  onClick={() =>
+                    setNextFeature({ forwards: true, featureActive: false })
+                  }
+                >
+                  <span
+                    style={{
+                      width: 15,
+                      height: 15,
+                      opacity: 1,
+                      transformOrigin: 'center',
+                      transform: 'translateX(-3px) rotate(135deg) ',
+                      border: '2px solid var(--color)',
+                      borderBottom: 'none',
+                      borderRight: 'none',
+                    }}
+                  />
+                  <span className="sr-only">next</span>
+                </Button>
               </div>
-            </HTML>
+            </Html>
           </a.group>
         </Center>
       </Suspense>

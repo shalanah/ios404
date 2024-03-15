@@ -88,7 +88,7 @@ const FAQ = [
   ],
   [
     'Who are you?',
-    "Hi! 👋 I'm Shalanah Dawson a web dev. Connect on [LinkedIn](https://linkedin.com/in/shalanah), [GitHub](https://github.com/shalanah), or [Twitter](https://twitter.com/shalanahfaith).",
+    "Hi! 👋 I'm Shalanah Dawson a developer that believes the web should be powerful, approachable, and fun. Find me on [LinkedIn](https://linkedin.com/in/shalanah), [GitHub](https://github.com/shalanah), or [Twitter](https://twitter.com/shalanahfaith).",
   ],
   ['', 'Copyright 2024. All Rights Reserved - Shalanah Dawson'],
 ];

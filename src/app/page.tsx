@@ -24,7 +24,7 @@ const DesktopFeaturesDiv = styled.div`
   padding: 0 1em;
   overscroll-behavior: contain;
   z-index: 2;
-  outline: 1px solid red;
+  /* outline: 1px solid red; */
 `;
 // Covers up top portion of features so they can't be clicked --- but still allows for scroll
 const DesktopFeaturesStickyTopCover = styled.div`
@@ -66,7 +66,7 @@ const LinksDiv = styled.div`
 `;
 
 const DesktopCanvasDiv = styled.div`
-  outline: 1px solid red;
+  /* outline: 1px solid red; */
   position: sticky;
   overflow: visible;
   /* pointer-events: none; */
