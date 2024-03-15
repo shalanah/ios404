@@ -8,6 +8,7 @@ import remarkGfm from 'remark-gfm';
 import { ExternalLinkIcon } from '@radix-ui/react-icons';
 import styled from 'styled-components';
 import * as THREE from 'three';
+import { useEffect, useState } from 'react';
 
 const HTML = styled(Html)`
   touch-action: none !important;
@@ -75,6 +76,18 @@ export const Text = ({ position, index, rotation }) => {
     notes_by_num,
   } = iOSLacking[index];
 
+  const [scroll, setScroll] = useState(0);
+  useEffect(() => {
+    const scroll = document.getElementById('scroll');
+    const onScroll = (e) => {
+      setScroll(e.target.scrollTop);
+    };
+    scroll?.addEventListener('scroll', onScroll);
+    return () => {
+      scroll?.removeEventListener('scroll', onScroll);
+    };
+  }, []);
+
   let date = firstSeen?.[1] ? new Date(firstSeen?.[1] * 1000) : '';
   date = date ? date.getFullYear() : '';
   const age = new Date().getFullYear() - date;
@@ -85,21 +98,18 @@ export const Text = ({ position, index, rotation }) => {
       pointerEvents="none"
       position={position}
       scale={4}
+      style={{
+        width: 1000,
+        touchAction: 'none',
+        fontSmoothing: 'antialiased',
+        height: 1150,
+        pointerEvents: 'none',
+      }}
       side={THREE.FrontSide} // Required
     >
-      <Div
-        style={{
-          width: 1000,
-          touchAction: 'none',
-          fontSmoothing: 'antialiased',
-          height: 1150,
-          pointerEvents: 'none',
-          // scale: 4,
-          // transform: 'scale(4) translateZ(0)',
-          position: 'relative',
-        }}
-      >
+      <Div>
         <div
+          key={scroll}
           style={{
             position: 'absolute',
             overflow: 'visible',
@@ -132,14 +142,14 @@ export const Text = ({ position, index, rotation }) => {
           <div
             style={{
               display: 'flex',
-              gap: 20,
+              gap: 40,
               justifyContent: 'space-between',
             }}
           >
             <div>
               <h2
                 style={{
-                  fontSize: 42,
+                  fontSize: 48,
                   marginBottom: 15,
                   textTransform: 'none',
                   lineHeight: 1.15,
@@ -202,6 +212,7 @@ export const Text = ({ position, index, rotation }) => {
                     })}
                   </ul>
                 )}
+                <div style={{ height: 5 }} />
                 <Markdown remarkPlugins={[remarkGfm]}>{description}</Markdown>
               </div>
             </div>

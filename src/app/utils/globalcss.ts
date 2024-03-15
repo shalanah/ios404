@@ -1,5 +1,3 @@
-import { a } from '@react-spring/three';
-
 const theme = {
   dark: {
     modalShadow: '#000',
@@ -70,8 +68,7 @@ export const globalCss = /* css */ `
   --intro-padding: 40dvh;
   --features-width: 300px;
   --top: #eee9e2;
-
-  }
+}
 
 
 /* For radix --- TODO: put into styled comps */
@@ -189,17 +186,20 @@ body {
   background: var(--bg);
   color: var(--color);
   text-align: center;
-   font-family: 'Inter Tight', sans-serif;
+  font-family: 'Inter Tight', sans-serif;
   line-height: 1.4;
   font-weight: normal;
   width: 100%;
   height: 100%;
   height: 100dvh;
-  overflow: hidden;
+  overflow-x: hidden;
   position: fixed;
+  overflow-y: auto;
   left: 0px;
   top: 0px;
-  /* background: linear-gradient(red, green); */
+  overscroll-behavior: none;
+  scroll-behavior: smooth;
+  scroll-padding-block-start: 43dvh;
 }
 
 svg {

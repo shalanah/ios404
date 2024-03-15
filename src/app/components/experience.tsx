@@ -7,7 +7,7 @@ import { Model } from './milkcarton';
 import { Text } from './text';
 import useCanIUseContext from '../hooks/useCanIUseContext';
 import usePrevious from '../hooks/usePrevious';
-import { Perf } from 'r3f-perf';
+// import { Perf } from 'r3f-perf';
 import { a, useSpring } from '@react-spring/three';
 import { useDrag } from '@use-gesture/react';
 import { Html } from '@react-three/drei';

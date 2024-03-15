@@ -9,16 +9,10 @@ import { useWindowSize } from '@uidotdev/usehooks';
 import styled from 'styled-components';
 import { Links } from './components/links';
 import { Drawer } from './components/drawer';
-import { useState } from 'react';
 import { Filters } from './components/filters';
+import { useEffect } from 'react';
+import Bowser from 'bowser';
 
-const DesktopDiv = styled.div`
-  overflow-x: hidden;
-  position: fixed;
-  overscroll-behavior: none;
-  scroll-behavior: smooth;
-  scroll-padding-block-start: 43dvh;
-`;
 const DesktopFeaturesDiv = styled.div`
   text-align: left;
   position: absolute;
@@ -45,7 +39,6 @@ const DesktopIntroDiv = styled.div`
   position: fixed;
   left: 50%;
   margin-left: 15px;
-
   transform: translateX(calc(var(--features-width) * -1.5));
   width: var(--features-width);
   top: 0;
@@ -76,17 +69,18 @@ const DesktopCanvasDiv = styled.div`
   outline: 1px solid red;
   position: sticky;
   overflow: visible;
-  pointer-events: none;
-  height: 100dvh;
+  /* pointer-events: none; */
+  height: 100%;
   left: calc(50% - (var(--features-width) * 0.5));
   width: calc(var(--features-width) * 2); // little extra for padding
   top: 0;
-  touch-action: none;
+  z-index: 0;
 `;
 
 const camera = {
-  position: [-77, -40.2, 242],
-  fov: 60,
+  // position: [-77, -40.2, 242],
+  position: [-77, -30, 242],
+  fov: 56,
   near: 0.1,
   far: 10000, // seems a bit much... TODO: double check
 };
@@ -95,6 +89,14 @@ export default function Home() {
   const { width, height } = useWindowSize();
   const closedHeight = 100;
   const openHeight = Math.max((height || 0) - 200, (height || 0) * 0.75);
+  const browser = Bowser.getParser(window.navigator.userAgent);
+  const isFirefox = browser.isBrowser('Firefox');
+
+  useEffect(() => {
+    window.addEventListener('scroll', () => {
+      console.log('scrolling');
+    });
+  }, []);
 
   if (width === null) return null;
   if (width && width < 930) {
@@ -108,7 +110,8 @@ export default function Home() {
             height: '100dvh',
             width: '100vw',
             zIndex: 0,
-            touchAction: 'none',
+            // pointerEvents: 'none',
+            // touchAction: 'pan-y',
           }}
         >
           <Canvas
@@ -141,36 +144,34 @@ export default function Home() {
   }
   return (
     <CanIUseContextProvider>
-      <DesktopDiv className={'pos-full-win'}>
-        <DesktopCanvasDiv>
-          <div
-            style={{
-              width: '100vw',
-              position: 'absolute',
-              left: '50%',
-              transform: 'translateX(calc(-50% + 4vw))',
-              top: 0,
-              height: '100dvh',
-              touchAction: 'none',
-            }}
+      <DesktopCanvasDiv style={{ position: isFirefox ? 'fixed' : 'sticky' }}>
+        <div
+          style={{
+            width: '100vw',
+            position: 'absolute',
+            left: '50%',
+            transform: 'translateX(calc(-50% + 4vw))',
+            top: 0,
+            height: '100dvh',
+          }}
+        >
+          <Canvas
+            style={{ position: 'sticky', top: 0, left: 0 }}
+            flat // already did tone mapping in our baked asset
+            // @ts-ignore
+            camera={camera}
           >
-            <Canvas
-              flat // already did tone mapping in our baked asset
-              // @ts-ignore
-              camera={camera}
-            >
-              <Experience />
-            </Canvas>
-          </div>
-        </DesktopCanvasDiv>
-        <DesktopIntroDiv>
-          <Intro />
-        </DesktopIntroDiv>
-        <DesktopFeaturesDiv>
-          <DesktopFeaturesStickyTopCover />
-          <Features />
-        </DesktopFeaturesDiv>
-      </DesktopDiv>
+            <Experience />
+          </Canvas>
+        </div>
+      </DesktopCanvasDiv>
+      <DesktopIntroDiv>
+        <Intro />
+      </DesktopIntroDiv>
+      <DesktopFeaturesDiv>
+        <DesktopFeaturesStickyTopCover />
+        <Features />
+      </DesktopFeaturesDiv>
       <LinksDiv>
         <Links />
       </LinksDiv>
