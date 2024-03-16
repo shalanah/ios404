@@ -17,10 +17,11 @@ const Button = styled.button`
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  /* background: var(--modalBg); */
-  color: var(--modalHr);
-  /* border: 2px solid var(--modalHr); */
+  color: var(--color);
   flex-shrink: 0;
+  &:focus {
+    outline: 2.5px dotted currentColor;
+  }
 `;
 
 const config = { mass: 0.05, tension: 600, friction: 40 };
@@ -134,7 +135,7 @@ export default function Experience() {
               bind={bind}
             />
             <Html
-              position={[0, -22, 0]}
+              position={[0, -27, 0]}
               style={{
                 width: '100%',
                 position: 'absolute',
@@ -162,7 +163,7 @@ export default function Experience() {
                       opacity: 1,
                       transformOrigin: 'center',
                       transform: 'translateX(3px) rotate(-45deg) ',
-                      border: '2px solid var(--color)',
+                      border: '2px solid currentColor',
                       borderBottom: 'none',
                       borderRight: 'none',
                     }}
@@ -182,7 +183,7 @@ export default function Experience() {
                       opacity: 1,
                       transformOrigin: 'center',
                       transform: 'translateX(-3px) rotate(135deg) ',
-                      border: '2px solid var(--color)',
+                      border: '2px solid currentColor',
                       borderBottom: 'none',
                       borderRight: 'none',
                     }}

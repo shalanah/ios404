@@ -53,7 +53,7 @@ const LinksDiv = styled.div`
   pointer-events: none;
   top: 0;
   left: 0;
-  padding: 5px 15px 0px;
+  padding: 15px 15px 0px;
   width: 100%;
   height: 40px;
   z-index: 1;
@@ -106,8 +106,8 @@ const cameraMobile = {
 
 export default function Home() {
   const { width, height } = useWindowSize();
-  const closedHeight = 100;
-  const openHeight = Math.max((height || 0) - 200, (height || 0) * 0.75);
+  const closedHeight = 50;
+  const openHeight = Math.max((height || 0) - 400, (height || 0) * 0.6);
   const browser = Bowser.getParser(window.navigator.userAgent);
   const isFirefox = browser.isBrowser('Firefox');
 

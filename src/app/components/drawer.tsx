@@ -8,16 +8,15 @@ import { useOnClickOutside } from 'usehooks-ts';
 
 const Container = styled(animated.div)`
   position: fixed;
-  width: calc(100% - 20px);
+  width: 100%;
   display: flex;
   flex-direction: column;
   bottom: 0px;
-  left: 10px;
+  left: 0px;
   background: var(--modalBg);
-  border-radius: 10px 10px 0px 0px;
+  border-radius: 30px 30px 0px 0px;
   overflow: hidden;
-  border: 1px solid var(--modalHr);
-  border-bottom: none;
+  border-top: 1px solid var(--modalHr);
 `;
 const config = {
   mass: 1,

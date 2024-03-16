@@ -183,7 +183,7 @@ export const Text = ({
                   textAlign: 'left',
                   textTransform: 'none',
                   fontSize: 35,
-                  lineHeight: 1.45,
+                  lineHeight: 1.35,
                   marginBottom: 30,
                   fontWeight: 500,
                   textWrap: 'balance',
@@ -245,11 +245,14 @@ export const Text = ({
                 }}
               >
                 <Image
-                  alt={'hey'}
+                  alt={`${title} as a ${age} ${
+                    age === 1 ? 'year' : 'years'
+                  } old kid`}
                   src={`/imgs/${key}.png`}
                   width={rightHandWidth}
                   height={rightHandWidth}
                   style={{
+                    textTransform: 'none',
                     objectFit: 'cover',
                     opacity: 0.85,
                     // mixBlendMode: 'luminosity',
@@ -290,8 +293,8 @@ export const Text = ({
                     <h3>Age </h3>
                     <p>
                       {age}
-                      {age > 1 ? ' years' : ' year'}
-                      {' ⋅ '} {date}
+                      {age > 1 ? ' years' : ' year'}{' '}
+                      <span style={{ fontWeight: 400 }}>({date})</span>
                     </p>
                   </div>
                   <div>

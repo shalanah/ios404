@@ -1,8 +1,9 @@
 import React from 'react';
-import { DarkModeToggle } from './darkModeToggle';
-import { GitHubLogoIcon, InfoCircledIcon } from '@radix-ui/react-icons';
+import { InfoCircledIcon } from '@radix-ui/react-icons';
 import { About } from './about';
 import styled from 'styled-components';
+import { MoonIcon, SunIcon } from '@radix-ui/react-icons';
+import useCanIUseContext from '../hooks/useCanIUseContext';
 
 const Div = styled.div`
   display: flex;
@@ -12,7 +13,11 @@ const Div = styled.div`
   justify-content: flex-end;
   > div {
     display: flex;
-    gap: 10px;
+  }
+  button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   @media (max-width: 930px) {
     justify-content: space-between;
@@ -20,17 +25,32 @@ const Div = styled.div`
 `;
 
 export const Links = () => {
+  const { isDarkMode, setColorScheme } = useCanIUseContext();
   return (
     <Div>
-      <p style={{ marginRight: 2, fontWeight: 'bold' }}>
+      <p style={{ marginRight: 2, fontWeight: 400 }}>
         No affiliation with Apple or iOS.
       </p>
       <div>
-        <DarkModeToggle />
+        <button
+          aria-label="Toggle dark mode"
+          onClick={() => setColorScheme(isDarkMode ? 'light' : 'dark')}
+          style={{ width: 40, height: 40, borderRadius: 8 }}
+        >
+          {isDarkMode ? (
+            <SunIcon style={{ width: 26, height: 26 }} />
+          ) : (
+            <MoonIcon style={{ width: 28, height: 28 }} />
+          )}
+        </button>
         <About
           button={
-            <button style={{ borderRadius: '50%' }}>
-              <InfoCircledIcon style={{ width: 25, height: 25 }} />
+            <button
+              aria-label="Learn more about this site"
+              style={{ borderRadius: 8, width: 40, height: 40 }}
+              onPointerUp={(e) => e.stopPropagation()}
+            >
+              <InfoCircledIcon style={{ width: 30, height: 30 }} />
             </button>
           }
         />
