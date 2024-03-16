@@ -127,8 +127,8 @@ export const Filters = () => {
 
   let count =
     filteredData.length === iOSLacking.length
-      ? `${iOSLacking.length} / ${iOSLacking.length}`
-      : `${filteredData.length} / ${iOSLacking.length}`;
+      ? `${iOSLacking.length} features`
+      : `${filteredData.length} features`;
 
   useEffect(() => {
     // Make sure there is focus on the container element

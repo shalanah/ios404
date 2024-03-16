@@ -22,7 +22,7 @@ const theme = {
   },
   light: {
     modalBg: '#fff',
-    modalHr: '#ccc',
+    modalHr: '#afdaeb',
     modalShadow: 'rgba(0, 0, 0, 0.5)',
     color: '#555',
     bg: '#cce9f4',
