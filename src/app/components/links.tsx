@@ -4,6 +4,7 @@ import { About } from './about';
 import styled from 'styled-components';
 import { MoonIcon, SunIcon } from '@radix-ui/react-icons';
 import useCanIUseContext from '../hooks/useCanIUseContext';
+import { verticalViewWidth } from '../utils/constants';
 
 const Div = styled.div`
   display: flex;
@@ -19,7 +20,7 @@ const Div = styled.div`
     align-items: center;
     justify-content: center;
   }
-  @media (max-width: 930px) {
+  @media (max-width: ${verticalViewWidth}px) {
     justify-content: space-between;
   }
 `;

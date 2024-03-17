@@ -1,7 +1,7 @@
 // @ts-nocheck
 import React, { useState, useRef, useEffect } from 'react';
 import { animated } from '@react-spring/web';
-import { useDrag, useGesture } from '@use-gesture/react';
+import { useDrag } from '@use-gesture/react';
 import styled from 'styled-components';
 import { useSpring } from '@react-spring/web';
 import { useOnClickOutside } from 'usehooks-ts';
@@ -33,7 +33,7 @@ const Handle = styled.div`
 
 type Props = {
   content: React.ReactNode;
-  clickContent: React.ReactNode;
+  clickContent?: React.ReactNode;
   height: [number, number];
   footer?: React.ReactNode;
   style?: React.CSSProperties;
@@ -41,7 +41,7 @@ type Props = {
 
 export const Drawer = ({
   content,
-  clickContent,
+  clickContent = null,
   height: [openHeight, closedHeight],
   footer,
   style = {},
@@ -112,7 +112,11 @@ export const Drawer = ({
       >
         <div
           ref={clickRef}
-          style={{ position: 'relative', touchAction: 'none' }}
+          style={{
+            position: 'relative',
+            touchAction: 'none',
+            height: openHeight,
+          }}
         >
           <div
             style={{

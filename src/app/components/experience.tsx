@@ -24,6 +24,32 @@ const Button = styled.button`
   }
 `;
 
+const Arrow = ({
+  left = false,
+  right = false,
+}: {
+  left?: boolean;
+  right?: boolean;
+}) => {
+  let isLeft = left !== undefined ? left : right === false;
+  return (
+    <span
+      style={{
+        width: 15,
+        height: 15,
+        opacity: 1,
+        transformOrigin: 'center',
+        transform: `translateX(${isLeft ? 3 : -3}px) rotate(${
+          isLeft ? -45 : 135
+        }deg) `,
+        border: '2px solid var(--titleColor)',
+        borderBottom: 'none',
+        borderRight: 'none',
+      }}
+    />
+  );
+};
+
 const config = { mass: 0.05, tension: 600, friction: 40 };
 export default function Experience() {
   const { activeIndex, iOSLacking, setNextFeature, filteredData } =
@@ -121,6 +147,18 @@ export default function Experience() {
 
   if (len === 0 || activeIndex === -1) return null;
 
+  const indexInList =
+    filteredData.find((v) => v.index === activeIndex) !== undefined;
+  let countText =
+    filteredData.length && indexInList ? (
+      <>
+        {activeIndex + 1}&nbsp;&nbsp;/&nbsp;&nbsp;
+        {filteredData.length}
+      </>
+    ) : (
+      ''
+    );
+
   return (
     <>
       {/* <Perf position="top-right" /> */}
@@ -145,49 +183,38 @@ export default function Experience() {
               <div
                 style={{
                   touchAction: 'none',
-                  gap: 15,
-                  width: 80 + 15,
+                  gap: 5,
                 }}
-                className="d-flex pos-center"
+                className="d-flex pos-center align-items-center"
               >
                 <Button
                   onClick={() =>
                     setNextFeature({ forwards: false, featureActive: false })
                   }
-                  className="d-flex justify-content-center align-items-center"
+                  className="d-flex justify-content-center align-items-center justify-content-center"
                 >
-                  <span
-                    style={{
-                      width: 15,
-                      height: 15,
-                      opacity: 1,
-                      transformOrigin: 'center',
-                      transform: 'translateX(3px) rotate(-45deg) ',
-                      border: '2px solid currentColor',
-                      borderBottom: 'none',
-                      borderRight: 'none',
-                    }}
-                  />
+                  <Arrow left />
                   <span className="sr-only">previous</span>
                 </Button>
+                <span
+                  style={{
+                    fontSize: '.7rem',
+                    whiteSpace: 'nowrap',
+                    width: '6.5ch',
+                    textAlign: 'center',
+                    fontVariantNumeric: 'tabular-nums',
+                    opacity: 0.75,
+                  }}
+                >
+                  {countText}
+                </span>
                 <Button
                   className="d-flex justify-content-center align-items-center"
                   onClick={() =>
                     setNextFeature({ forwards: true, featureActive: false })
                   }
                 >
-                  <span
-                    style={{
-                      width: 15,
-                      height: 15,
-                      opacity: 1,
-                      transformOrigin: 'center',
-                      transform: 'translateX(-3px) rotate(135deg) ',
-                      border: '2px solid currentColor',
-                      borderBottom: 'none',
-                      borderRight: 'none',
-                    }}
-                  />
+                  <Arrow right />
                   <span className="sr-only">next</span>
                 </Button>
               </div>

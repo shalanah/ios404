@@ -9,9 +9,10 @@ import { useWindowSize } from '@uidotdev/usehooks';
 import styled from 'styled-components';
 import { Links } from './components/links';
 import { Drawer } from './components/drawer';
-import { Filters } from './components/filters';
 import { useEffect } from 'react';
 import Bowser from 'bowser';
+import { DrawerContents } from './components/drawerContents';
+import { verticalViewWidth } from './utils/constants';
 
 const DesktopFeaturesDiv = styled.div`
   text-align: left;
@@ -106,7 +107,7 @@ const cameraMobile = {
 
 export default function Home() {
   const { width, height } = useWindowSize();
-  const closedHeight = 50;
+  const closedHeight = 40;
   const openHeight = Math.max((height || 0) - 400, (height || 0) * 0.6);
   const browser = Bowser.getParser(window.navigator.userAgent);
   const isFirefox = browser.isBrowser('Firefox');
@@ -118,7 +119,7 @@ export default function Home() {
   }, []);
 
   if (width === null) return null;
-  if (width && width < 930) {
+  if (width && width < verticalViewWidth) {
     return (
       <CanIUseContextProvider>
         <MobileCanvasDiv>
@@ -136,16 +137,8 @@ export default function Home() {
         </LinksDiv>
         <Drawer
           height={[openHeight, closedHeight]}
-          content={
-            <div style={{ height: 1000, outline: '1px solid yellow' }}>
-              <Filters />
-              <Features />
-            </div>
-          }
-          clickContent={
-            <div style={{ height: closedHeight, outline: '1px solid red' }} />
-          }
-          footer={<div style={{ height: 20, background: 'green' }} />}
+          content={<DrawerContents />}
+          footer={null} // don't think we need a footer this time around??? TODO: double check... maybe a close button
         />
       </CanIUseContextProvider>
     );

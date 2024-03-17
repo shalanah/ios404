@@ -169,12 +169,13 @@ button:focus-visible, input:focus-visible, a:focus-visible {
   outline-offset: 2px !important;
 }
 
-* {
+*, *::before, *::after{
   box-sizing: border-box;
   padding: 0;
   margin: 0;
   -webkit-overflow-scrolling: touch;
   -webkit-tap-highlight-color: transparent;
+  font-family: 'Inter Tight', sans-serif;
 }
 
 /* https://www.sarasoueidan.com/blog/accessible-icon-buttons/ */

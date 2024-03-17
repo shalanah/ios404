@@ -38,14 +38,8 @@ const Div = styled.div`
 `;
 
 export default function Features() {
-  const {
-    activeIndex,
-    updateHash,
-    filteredData,
-    setNextFeature,
-    filters,
-    search,
-  } = useCanIUseContext();
+  const { activeIndex, updateHash, filteredData, setNextFeature } =
+    useCanIUseContext();
 
   // Just on first load
   useEffect(() => {
