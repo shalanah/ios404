@@ -1,6 +1,7 @@
 import React from 'react';
-import { Filters } from './filters';
 import styled from 'styled-components';
+import { Search } from './search';
+import { Filter } from './filter';
 
 const Div = styled.div`
   display: flex;
@@ -71,7 +72,18 @@ export const Intro = () => {
           textWrap: 'balance',
         }}
       >
-        <Filters />
+        <div
+          style={{
+            marginTop: 10,
+            display: 'flex',
+            flexDirection: 'column',
+            marginBottom: 20,
+            gap: 7,
+          }}
+        >
+          <Search />
+          <Filter />
+        </div>
       </div>
     </Div>
   );

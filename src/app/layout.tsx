@@ -21,9 +21,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       {/* Would like to load this to avoid background flashing */}
-      <head>
-        <style>{globalCss}</style>
-      </head>
+      <style id={'head'}>{globalCss}</style>
       <body className={inter.className}>{children}</body>
     </html>
   );

@@ -16,10 +16,14 @@ const Div = styled.div`
   h2 {
     font-size: 1.15rem;
     line-height: 1.2;
-    transition: 0.05s color ease-out;
+    transition: 0.1s color ease-out;
+    font-weight: 200;
+    color: var(--color);
   }
   h2.active {
     position: relative;
+    font-weight: 700;
+    color: var(--titleColor) !important;
   }
   button {
     display: block;
@@ -31,6 +35,14 @@ const Div = styled.div`
     transition: 0.3s;
     border-radius: 10px;
     margin-bottom: 2px;
+    &:hover,
+    &:focus,
+    &:active {
+      transform: scale(1);
+    }
+    &:hover h2 {
+      color: var(--titleColor);
+    }
   }
   button:focus {
     outline: 2px dotted currentColor;
@@ -119,15 +131,7 @@ export default function Features() {
               e.currentTarget.focus();
             }}
           >
-            <h2
-              className={active ? 'active' : ''}
-              style={{
-                color: active ? 'var(--titleColor)' : 'var(--color)',
-                fontWeight: active ? 700 : 200,
-              }}
-            >
-              {v.title}{' '}
-            </h2>{' '}
+            <h2 className={active ? 'active' : ''}>{v.title} </h2>{' '}
             {/* <div>{v.categories.join(', ')}</div> */}
             {/* {v.notes && <div>{v.notes}</div>}
             {v.keywords && <div>{v.keywords}</div>} */}

@@ -164,9 +164,26 @@ input[type="search"]::-webkit-search-results-decoration {
  display: none;
 }
 
+button, input, a, [role="button"] {
+  transition: 0.1s;
+}
+@media (hover: hover) {
+  button:hover,  a:hover {
+    transform: scale(1.2);
+  }
+  button:hover, input:hover, a:hover, [role="button"]:hover {
+    // outline: 2px dotted var(--titleColor) !important;
+    // outline-offset: 2px !important;
+  }
+}
+
+button:active,  a:active {
+  transform: scale(1);
+}
+
 button:focus-visible, input:focus-visible, a:focus-visible {
   outline: 2px dotted var(--titleColor) !important;
-  outline-offset: 2px !important;
+  outline-offset: 1px !important;
 }
 
 *, *::before, *::after{
@@ -175,7 +192,7 @@ button:focus-visible, input:focus-visible, a:focus-visible {
   margin: 0;
   -webkit-overflow-scrolling: touch;
   -webkit-tap-highlight-color: transparent;
-  font-family: 'Inter Tight', sans-serif;
+  font-family: var(--font-inter);
 }
 
 /* https://www.sarasoueidan.com/blog/accessible-icon-buttons/ */
@@ -198,7 +215,6 @@ body {
   background: var(--bg);
   color: var(--color);
   text-align: center;
-  font-family: 'Inter Tight', sans-serif;
   line-height: 1.4;
   font-weight: normal;
   width: 100%;

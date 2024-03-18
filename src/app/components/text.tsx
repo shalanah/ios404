@@ -8,8 +8,19 @@ import remarkGfm from 'remark-gfm';
 import { ExternalLinkIcon } from '@radix-ui/react-icons';
 import styled from 'styled-components';
 import * as THREE from 'three';
+import { visit } from 'unist-util-visit';
 
-const rightHandWidth = 440;
+const rightHandWidth = 450;
+
+function addCanIUseUrlBack() {
+  return (tree) => {
+    visit(tree, 'link', (node) => {
+      if (node.url.startsWith('/')) {
+        node.url = `https://caniuse.com${node.url}`;
+      }
+    });
+  };
+}
 
 const Div = styled.div`
   /* touch-action: none !important;
@@ -51,7 +62,7 @@ const Div = styled.div`
     }
   }
   .stats h3 {
-    font-size: 30px;
+    font-size: 29px;
     width: 100px;
     flex-shrink: 0;
     font-weight: 500;
@@ -59,7 +70,7 @@ const Div = styled.div`
   }
   .stats p {
     color: var(--titleColor);
-    font-size: 30px;
+    font-size: 29px;
     font-weight: 800;
   }
   a {
@@ -101,6 +112,7 @@ export const Text = ({
     status,
     key,
     notes_by_num,
+    desktopSafariStat,
   } = iOSLacking[index];
 
   let date = firstSeen?.[1] ? new Date(firstSeen?.[1] * 1000) : '';
@@ -144,14 +156,14 @@ export const Text = ({
           <div
             style={{
               display: 'flex',
-              gap: 40,
+              gap: 25,
               justifyContent: 'space-between',
             }}
           >
             <div>
               <h2
                 style={{
-                  fontSize: 46,
+                  fontSize: 44,
                   marginBottom: 15,
                   textTransform: 'none',
                   lineHeight: 1.15,
@@ -209,14 +221,19 @@ export const Text = ({
                         return null;
                       return (
                         <li key={num}>
-                          <Markdown>{note}</Markdown>
+                          <Markdown
+                            remarkPlugins={[remarkGfm, addCanIUseUrlBack]}
+                          >
+                            {note}
+                          </Markdown>
                         </li>
                       );
                     })}
                   </ul>
                 )}
-                <div style={{ height: 5 }} />
-                <Markdown remarkPlugins={[remarkGfm]}>{description}</Markdown>
+                <Markdown remarkPlugins={[remarkGfm, addCanIUseUrlBack]}>
+                  {description}
+                </Markdown>
               </div>
             </div>
             <div
@@ -280,29 +297,41 @@ export const Text = ({
                 }}
               >
                 <div className={'stats'}>
-                  <div>
-                    <h3>iOS&nbsp;Support</h3>
+                  <div style={{ whiteSpace: 'nowrap' }}>
+                    <h3>iOS</h3>
                     <p>
                       {safariStat.startsWith('a') || safariStat.startsWith('y')
                         ? 'Partial'
                         : 'None'}
                     </p>
                   </div>
-
+                  <div style={{ whiteSpace: 'nowrap' }}>
+                    <h3>Mac Safari</h3>
+                    <p>
+                      {desktopSafariStat.startsWith('a') ? 'Partial' : ''}
+                      {desktopSafariStat.startsWith('n') ? 'None' : ''}
+                      {desktopSafariStat.startsWith('y') ? 'Supported' : ''}
+                    </p>
+                  </div>
                   <div>
                     <h3>Age </h3>
                     <p>
                       {age}
-                      {age > 1 ? ' years' : ' year'}{' '}
+                      {age === 1 ? ' year' : ' years'}{' '}
                       <span style={{ fontWeight: 400 }}>({date})</span>
                     </p>
                   </div>
                   <div>
                     <h3>Parents</h3>
                     <p>
-                      {firstSeen?.[0] || ''} {firstSeen?.[2] || ''}
+                      {(firstSeen?.[0] || '').replace(
+                        'Chrome for Android',
+                        'Chrome Android'
+                      )}{' '}
+                      {firstSeen?.[2] || ''}
                     </p>
                   </div>
+
                   <div>
                     <h3>Spec</h3>
                     <a

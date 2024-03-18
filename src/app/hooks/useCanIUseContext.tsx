@@ -51,14 +51,14 @@ const skipFeatures = [
 const getIOSSafariLacking = (canIUseData: any) => {
   if (!canIUseData) return [];
   const { statuses, data, agents } = canIUseData;
-  const chromeVersion = agents[android_chrome].version_list.at(-1).version;
-  const iosVersion = agents[ios_safari].version_list.at(-1).version;
+  const chromeVersion = agents[android_chrome].current_version;
+  const iosVersion = agents[ios_safari].current_version;
+  const safariVersion = agents.safari.current_version;
   const safariDoesNotSupport = Object.entries(data)
     .filter(([k, v]) => {
       if (skipFeatures.includes(k)) return false; // non-relevant features
       const iOSStatus = v.stats[ios_safari][iosVersion];
       const androidChromeStatus = v.stats[android_chrome][chromeVersion];
-
       return (
         (iOSStatus.startsWith('n') && !androidChromeStatus.startsWith('n')) ||
         (iOSStatus.startsWith('a') && androidChromeStatus.startsWith('y'))
@@ -115,13 +115,17 @@ const getIOSSafariLacking = (canIUseData: any) => {
           noBrowserFullSupport = true;
         }
       }
+      const desktopSafariStat = v.stats.safari[safariVersion];
+      const safariStat = v.stats[ios_safari][iosVersion];
+      const chromeStat = v.stats[android_chrome][chromeVersion];
       return {
         ...v,
+        desktopSafariStat,
         key: k,
         firstSeen,
         noBrowserFullSupport, // TODO: make a note that no browser full supports this feature
-        safariStat: v.stats[ios_safari][iosVersion],
-        chromeStat: v.stats[android_chrome][chromeVersion],
+        safariStat,
+        chromeStat,
       };
     })
     .filter((v) => {
@@ -191,23 +195,6 @@ export const CanIUseContextProvider = ({
   useEffect(() => {
     if (activeIndex === -1 && iOSLacking.length > 0 && hash) updateHash('');
   }, [updateHash, activeIndex, iOSLacking.length, hash]);
-
-  // on mount... if hash doesn't exist remove hash
-  // useEffect(() => {
-  //   if (activeIndex !== -1 && prevActiveIndex === -1) {
-  //     // scroll element into view
-  //     const el = document.querySelector(
-  //       `.${buttonClass}[data-index="${activeIndex}"]`
-  //     );
-  //     if (el) el.scrollIntoView({ behavior: 'instant', block: 'center' });
-  //   }
-  // }, [activeIndex, prevActiveIndex]);
-
-  // console.log(activeIndex, hash);
-
-  // console.log({ activeIndex, hash });
-  // console.log(canIUseData);
-  // console.log(canIUseData);
 
   // If Safari brings up that caniuse data isn't up-to-date...
   // Maybe they should work on that --- who do they really have to blame? That's part of their job, right? Right?

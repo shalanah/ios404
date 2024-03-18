@@ -2,7 +2,6 @@
 
 import { Canvas } from '@react-three/fiber';
 import Experience from './components/experience';
-import Features from './components/features';
 import { CanIUseContextProvider } from './hooks/useCanIUseContext';
 import { Intro } from './components/intro';
 import { useWindowSize } from '@uidotdev/usehooks';
@@ -13,6 +12,8 @@ import { useEffect } from 'react';
 import Bowser from 'bowser';
 import { DrawerContents } from './components/drawerContents';
 import { verticalViewWidth } from './utils/constants';
+import { Search } from './components/search';
+import Features from './components/features';
 
 const DesktopFeaturesDiv = styled.div`
   text-align: left;
@@ -95,7 +96,7 @@ const cameraDesktop = {
   fov: 56,
   near: 0.1,
   far: 10000, // seems a bit much... TODO: double check
-};
+} as const;
 
 const cameraMobile = {
   // position: [-77, -40.2, 242],
@@ -103,11 +104,11 @@ const cameraMobile = {
   fov: 60,
   near: 0.1,
   far: 10000, // seems a bit much... TODO: double check
-};
+} as const;
 
 export default function Home() {
   const { width, height } = useWindowSize();
-  const closedHeight = 40;
+  const closedHeight = 55;
   const openHeight = Math.max((height || 0) - 400, (height || 0) * 0.6);
   const browser = Bowser.getParser(window.navigator.userAgent);
   const isFirefox = browser.isBrowser('Firefox');
@@ -119,16 +120,13 @@ export default function Home() {
   }, []);
 
   if (width === null) return null;
+
+  // Vertical View
   if (width && width < verticalViewWidth) {
     return (
       <CanIUseContextProvider>
         <MobileCanvasDiv>
-          <Canvas
-            flat
-            // @ts-ignore
-            camera={cameraMobile}
-            style={{ touchAction: 'none' }}
-          >
+          <Canvas flat camera={cameraMobile} style={{ touchAction: 'none' }}>
             <Experience />
           </Canvas>
         </MobileCanvasDiv>
@@ -138,11 +136,23 @@ export default function Home() {
         <Drawer
           height={[openHeight, closedHeight]}
           content={<DrawerContents />}
-          footer={null} // don't think we need a footer this time around??? TODO: double check... maybe a close button
+          footer={
+            <div
+              style={{
+                padding: '20px 25px',
+                borderTop: '1px solid var(--modalHr)',
+              }}
+            >
+              {/* <Filter /> */}
+              <Search />
+            </div>
+          }
         />
       </CanIUseContextProvider>
     );
   }
+
+  // Horizontal View
   return (
     <CanIUseContextProvider>
       <DesktopCanvasDiv style={{ position: isFirefox ? 'fixed' : 'sticky' }}>
@@ -161,7 +171,6 @@ export default function Home() {
               touchAction: 'none',
             }}
             flat
-            // @ts-ignore
             camera={cameraDesktop}
           >
             <Experience />

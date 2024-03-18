@@ -1,6 +1,4 @@
 import React from 'react';
-import styled from 'styled-components';
-import { Filters } from './filters';
 import Features from './features';
 
 export const DrawerContents = () => {
@@ -12,9 +10,6 @@ export const DrawerContents = () => {
         textAlign: 'left',
       }}
     >
-      <div style={{ margin: '-10px -10px' }}>
-        <Filters />
-      </div>
       <Features />
     </div>
   );

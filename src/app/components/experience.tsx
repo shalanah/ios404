@@ -9,14 +9,14 @@ import useCanIUseContext from '../hooks/useCanIUseContext';
 import usePrevious from '../hooks/usePrevious';
 // import { Perf } from 'r3f-perf';
 import { a, useSpring } from '@react-spring/three';
-import { useDrag, useGesture } from '@use-gesture/react';
+import { useDrag } from '@use-gesture/react';
 import { Html } from '@react-three/drei';
 import styled from 'styled-components';
 
 const Button = styled.button`
   width: 40px;
   height: 40px;
-  border-radius: 50%;
+  border-radius: 8px;
   color: var(--color);
   flex-shrink: 0;
   &:focus {
@@ -183,7 +183,7 @@ export default function Experience() {
               <div
                 style={{
                   touchAction: 'none',
-                  gap: 5,
+                  gap: 20,
                 }}
                 className="d-flex pos-center align-items-center"
               >

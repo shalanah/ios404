@@ -6,6 +6,10 @@ import styled from 'styled-components';
 import { useSpring } from '@react-spring/web';
 import { useOnClickOutside } from 'usehooks-ts';
 
+const clamp = (value: number, min: number, max: number) => {
+  return Math.min(Math.max(value, min), max);
+};
+
 const Container = styled(animated.div)`
   position: fixed;
   width: 100%;
@@ -29,6 +33,18 @@ const Handle = styled.div`
   height: 3px;
   background: #ccc;
   border-radius: 3px;
+`;
+const ClickArea = styled.div`
+  cursor: pointer;
+  width: 100%;
+  position: relative;
+  touch-action: none;
+  border: 2px dotted transparent;
+  border-radius: 30px 30px 0px 0px;
+  &:focus-visible {
+    border: 2px dotted var(--titleColor);
+    outline: none;
+  }
 `;
 
 type Props = {
@@ -66,30 +82,41 @@ export const Drawer = ({
     api.start({ y: open ? 0 : openHeight - closedHeight });
   }, [open, api, openHeight, closedHeight]);
 
-  const offset = 80;
+  const offset = 30;
 
   const bind = useDrag(
-    ({ movement: [_, my], last, tap, event }) => {
+    ({ movement: [_, my], last, tap, event, ...props }) => {
       if (tap && clickRef?.current?.contains(event.target)) {
-        setOpen((o) => !o);
         return;
       }
-      if (open && my >= 0) api.start({ y: my, immediate: false });
-      else if (!open && my <= 0)
-        api.start({ y: openHeight - closedHeight + my, immediate: false });
+      if (!last)
+        api.start({
+          y: clamp(
+            !open ? openHeight - closedHeight + my : my,
+            0,
+            openHeight - closedHeight
+          ),
+          immediate: true,
+        });
+      // }
       if (last) {
         if (open && my >= offset) {
           setOpen(false);
         } else if (!open && my <= -offset) {
           setOpen(true);
-        } else if (open) {
-          api.start({ y: 0, immediate: false });
         } else {
-          api.start({ y: openHeight - closedHeight, immediate: false });
+          api.start({
+            y: open ? 0 : openHeight - closedHeight,
+            immediate: false,
+          });
         }
       }
+      // api.start({
+      //   y: open ? my : openHeight - closedHeight + oy,
+      //   immediate: true,
+      // });
     },
-    { filterTaps: true, axis: 'y' }
+    { filterTaps: true }
   );
 
   return (
@@ -104,39 +131,43 @@ export const Drawer = ({
       {...bind()}
       {...rest}
     >
-      <div
+      <ClickArea
+        tabIndex={0}
+        role="button"
+        onKeyDown={(e) => {
+          if (['Enter', ' '].includes(e.key)) {
+            setOpen((o) => !o);
+          }
+        }}
+        ref={clickRef}
+        onClick={() => setOpen((o) => !o)}
         style={{
-          overflowY: open ? 'scroll' : 'hidden', // don't want to scroll when closed
-          flex: 1,
+          touchAction: 'none',
+          background: 'red',
+          height: closedHeight,
         }}
       >
         <div
-          ref={clickRef}
           style={{
-            position: 'relative',
-            touchAction: 'none',
-            height: openHeight,
+            pointerEvents: 'none',
+            position: 'absolute',
+            display: 'flex',
+            width: '100%',
+            top: 0,
+            left: 0,
           }}
         >
-          <div
-            style={{
-              position: 'absolute',
-              display: 'flex',
-              width: '100%',
-              top: 0,
-              left: 0,
-            }}
-          >
-            <Handle style={{ margin: '5px auto' }} />
-          </div>
-          {clickContent}
+          <Handle style={{ margin: '5px auto' }} />
         </div>
-        <div
-          style={{ display: open ? '' : 'none', touchAction: 'none' }}
-          key={open}
-        >
-          {content}
-        </div>
+        {clickContent}
+      </ClickArea>
+      <div
+        style={{
+          overflowY: 'auto', // don't want to scroll when closed
+          flex: 1,
+        }}
+      >
+        {content}
       </div>
       {footer && <div>{footer}</div>}
     </Container>

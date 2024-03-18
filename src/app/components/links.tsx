@@ -30,7 +30,7 @@ export const Links = () => {
   return (
     <Div>
       <p style={{ marginRight: 2, fontWeight: 400 }}>
-        No affiliation with Apple or iOS.
+        No affiliation with Apple or iOS
       </p>
       <div>
         <button
