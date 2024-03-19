@@ -6,22 +6,36 @@ Command: npx gltfjsx@6.2.16 milkcartons-noart.glb
 import React from 'react';
 import { useGLTF, useTexture } from '@react-three/drei';
 import useCanIUseContext from '../hooks/useCanIUseContext';
+import {
+  type Object3DEventMap,
+  type BufferGeometry,
+  type Object3D,
+} from 'three';
 
-const textureUrlLight = '/milkcarton-texture-bake-light5.png';
-const textureUrlDark = '/milkcarton-texture-bake-dark8.png';
+const textureUrlLight = '/milkcarton-texture-bake-light5.jpg';
+const textureUrlDark = '/milkcarton-texture-bake-dark8.jpg';
 
-export const Model = (props) => {
+type MilkCartonNodes = {
+  nodes: {
+    carton: Object3D<Object3DEventMap> & { geometry: BufferGeometry };
+    ground: Object3D<Object3DEventMap> & { geometry: BufferGeometry };
+  };
+};
+
+export const Model = () => {
   const { isDarkMode } = useCanIUseContext();
-  const { nodes } = useGLTF('/milkcartons-noart.glb');
+  const scene = useGLTF('/milkcartons-noart.glb');
+  const nodes = scene.nodes as MilkCartonNodes['nodes'];
+  // @ts-ignore
   nodes.carton.geometry.attributes.uv = nodes.carton.geometry.attributes.uv1; // overwrite pme iv fpr now
   return (
-    <group {...props} dispose={null}>
+    <group dispose={null}>
       {isDarkMode ? <ModelDark nodes={nodes} /> : <ModelLight nodes={nodes} />}
     </group>
   );
 };
 
-const ModelDark = ({ nodes }) => {
+const ModelDark = ({ nodes }: MilkCartonNodes) => {
   const bakedTextureDark = useTexture(textureUrlDark);
   return (
     <>
@@ -43,7 +57,7 @@ const ModelDark = ({ nodes }) => {
   );
 };
 
-const ModelLight = ({ nodes }) => {
+const ModelLight = ({ nodes }: MilkCartonNodes) => {
   const bakedTextureLight = useTexture(textureUrlLight);
   return (
     <>

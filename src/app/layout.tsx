@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { Inter_Tight } from 'next/font/google';
-import { globalCss } from './utils/globalcss';
+import { globalCss } from '../utils/globalcss';
 
 const inter = Inter_Tight({
   subsets: ['latin'],
@@ -20,8 +20,21 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <style type="text/css">{globalCss}</style>
+        <link
+          href="/light-mode-favicon.ico"
+          rel="icon"
+          media="(prefers-color-scheme: light)"
+        />
+        <link
+          href="/dark-mode-favicon.ico"
+          rel="icon"
+          media="(prefers-color-scheme: dark)"
+        />
+        <link rel="manifest" href="/manifest.json" />
+      </head>
       {/* Would like to load this to avoid background flashing */}
-      <style id={'head'}>{globalCss}</style>
       <body className={inter.className}>{children}</body>
     </html>
   );

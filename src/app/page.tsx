@@ -1,19 +1,19 @@
 'use client';
 
 import { Canvas } from '@react-three/fiber';
-import Experience from './components/experience';
-import { CanIUseContextProvider } from './hooks/useCanIUseContext';
-import { Intro } from './components/intro';
+import Experience from '../components/experience';
+import { CanIUseContextProvider } from '../hooks/useCanIUseContext';
+import { Intro } from '../components/intro';
 import { useWindowSize } from '@uidotdev/usehooks';
 import styled from 'styled-components';
-import { Links } from './components/links';
-import { Drawer } from './components/drawer';
+import { Links } from '../components/links';
+import { Drawer } from '../components/drawer';
 import { useEffect } from 'react';
 import Bowser from 'bowser';
-import { DrawerContents } from './components/drawerContents';
-import { verticalViewWidth } from './utils/constants';
-import { Search } from './components/search';
-import Features from './components/features';
+import { DrawerContents } from '../components/drawerContents';
+import { verticalViewWidth } from '../utils/constants';
+import { Search } from '../components/search';
+import Features from '../components/features';
 
 const DesktopFeaturesDiv = styled.div`
   text-align: left;
@@ -110,7 +110,7 @@ export default function Home() {
   const { width, height } = useWindowSize();
   const closedHeight = 55;
   const openHeight = Math.max((height || 0) - 400, (height || 0) * 0.6);
-  const browser = Bowser.getParser(window.navigator.userAgent);
+  const browser = Bowser.getParser(window?.navigator?.userAgent);
   const isFirefox = browser.isBrowser('Firefox');
 
   useEffect(() => {

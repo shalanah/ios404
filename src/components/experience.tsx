@@ -165,7 +165,7 @@ export default function Experience() {
       <Suspense fallback={null}>
         <Center disableZ disableX>
           <a.group {...(spring as any)} {...bind()}>
-            <Model></Model>
+            <Model />
             <Text
               rotation={rotation}
               index={activeIndex}
