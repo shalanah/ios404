@@ -7,9 +7,16 @@ import React, {
   useState,
   ReactNode,
   useEffect,
+  useMemo,
 } from 'react';
 import { useHash } from './useHash';
 import usePrefersColorScheme from 'use-prefers-color-scheme';
+import { getIOSSafariLacking } from '../utils/parseCanIUseData';
+import canIUseDataSaved from '../utils/canIUseData.json';
+// import { parseMdnData } from '../utils/parseMdnData';
+
+const dataLink =
+  'https://raw.githubusercontent.com/Fyrd/caniuse/master/fulldata-json/data-2.0.json';
 
 interface CanIUseContextInterface {
   loading: boolean;
@@ -31,111 +38,8 @@ interface CanIUseContextInterface {
     e?: Event;
     featureActive?: boolean;
   }) => void;
+  canIUseData: any;
 }
-
-const dataLink =
-  'https://raw.githubusercontent.com/Fyrd/caniuse/master/fulldata-json/data-2.0.json';
-const android_chrome = 'and_chr';
-const ios_safari = 'ios_saf';
-
-// Features that we don't actually care about - deprecated or not relevant to mobile/ipad
-const skipFeatures = [
-  'asmjs', // deprecated
-  'do-not-track', // not adopted
-  'filesystem', // might no longer be maintained but still supported in chrome
-  'sql-storage', // deprecating maybe drop later?,
-  'battery-status', // remove because due to fingerprinting - really they should just limit the api some
-  'feature-policy', // deprecated
-];
-
-const getIOSSafariLacking = (canIUseData: any) => {
-  if (!canIUseData) return [];
-  const { statuses, data, agents } = canIUseData;
-  const chromeVersion = agents[android_chrome].current_version;
-  const iosVersion = agents[ios_safari].current_version;
-  const safariVersion = agents.safari.current_version;
-  const safariDoesNotSupport = Object.entries(data)
-    .filter(([k, v]) => {
-      if (skipFeatures.includes(k)) return false; // non-relevant features
-      const iOSStatus = v.stats[ios_safari][iosVersion];
-      const androidChromeStatus = v.stats[android_chrome][chromeVersion];
-      return (
-        (iOSStatus.startsWith('n') && !androidChromeStatus.startsWith('n')) ||
-        (iOSStatus.startsWith('a') && androidChromeStatus.startsWith('y'))
-      );
-    })
-    .map(([k, v]) => {
-      // find first time supported
-      // TODO: Make sure Android Chrome get credit for Chromium first parenting
-      let firstSeen = Object.entries(v.stats).reduce(
-        (acc, [browserKey, stat]) => {
-          const firstY = Object.entries(stat).find(
-            ([_, status]) => status.startsWith('y') && _ !== 'TP' // come on we don't count TP
-          );
-          if (firstY) {
-            const date = agents[browserKey].version_list.find(
-              (v) => v.version === firstY[0]
-            ).release_date;
-            if (!date) return acc;
-            // console.log(date, firstY);
-            return (acc.length === 0 || date < acc[1]) && browserKey !== 'baidu' // let chromium win over say Baidu
-              ? [agents[browserKey].browser, date, firstY[0]]
-              : acc;
-          }
-          return acc;
-        },
-        []
-      );
-
-      let noBrowserFullSupport = false;
-
-      // maybe just kinda supported elsewhere
-      if (firstSeen.length === 0) {
-        firstSeen = Object.entries(v.stats).reduce(
-          (acc, [browserKey, stat]) => {
-            const firstY = Object.entries(stat).find(
-              ([_, status]) => status.startsWith('a') && _ !== 'TP' // come on we don't count TP
-            );
-            if (firstY) {
-              const date = agents[browserKey].version_list.find(
-                (v) => v.version === firstY[0]
-              ).release_date;
-              if (!date) return acc;
-              // console.log(date, firstY);
-              return (acc.length === 0 || date < acc[1]) &&
-                browserKey !== 'baidu' // let chromium win over say Baidu
-                ? [agents[browserKey].browser, date, firstY[0]]
-                : acc;
-            }
-            return acc;
-          },
-          []
-        );
-        if (firstSeen.length === 0) {
-          noBrowserFullSupport = true;
-        }
-      }
-      const desktopSafariStat = v.stats.safari[safariVersion];
-      const safariStat = v.stats[ios_safari][iosVersion];
-      const chromeStat = v.stats[android_chrome][chromeVersion];
-      return {
-        ...v,
-        desktopSafariStat,
-        key: k,
-        firstSeen,
-        noBrowserFullSupport, // TODO: make a note that no browser full supports this feature
-        safariStat,
-        chromeStat,
-      };
-    })
-    .filter((v) => {
-      return v.firstSeen.length > 0;
-    })
-    .map((v, i) => {
-      return { ...v, index: i };
-    });
-  return safariDoesNotSupport;
-};
 
 // Game state... could probably be broken out into smaller files / hooks
 export const CanIUseContext = createContext<CanIUseContextInterface | null>(
@@ -143,6 +47,7 @@ export const CanIUseContext = createContext<CanIUseContextInterface | null>(
 );
 export const buttonClass = 'feature-list-button';
 
+// TODO: Separate out some of these providers?
 export const CanIUseContextProvider = ({
   children,
 }: {
@@ -151,7 +56,10 @@ export const CanIUseContextProvider = ({
   const [loading, setLoading] = useState(true);
   const [canIUseData, setData] = useState(false);
   const [hasError, setHasError] = useState(false);
-  const iOSLacking = getIOSSafariLacking(canIUseData);
+  const iOSLacking = useMemo(
+    () => getIOSSafariLacking(canIUseData),
+    [canIUseData]
+  );
   const [search, setSearch] = useState('');
   const [filters, setFilters] = useState<{
     statuses: { [k: string]: boolean };
@@ -196,90 +104,24 @@ export const CanIUseContextProvider = ({
     if (activeIndex === -1 && iOSLacking.length > 0 && hash) updateHash('');
   }, [updateHash, activeIndex, iOSLacking.length, hash]);
 
+  // MDN DATA: TODO: Later
   // If Safari brings up that caniuse data isn't up-to-date...
   // Maybe they should work on that --- who do they really have to blame? That's part of their job, right? Right?
-  useEffect(() => {
-    fetch('https://unpkg.com/@mdn/browser-compat-data')
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error('Network response was not ok');
-        }
-        return res.json();
-      })
-      .then((data) => {
-        let parsedData = [];
-        for (const [cat, mainFeatures] of Object.entries(data)) {
-          for (const [mainFeatureKey, features] of Object.entries(
-            mainFeatures
-          )) {
-            if (features.__compat && features.__compat.mdn_url) {
-              if (features?.status?.deprecated) continue;
-              const {
-                __compat: {
-                  support: { safari_ios, chrome_android },
-                },
-              } = features;
-              const chromeSupport = Array.isArray(chrome_android)
-                ? chrome_android?.[0]?.version_added
-                : chrome_android?.version_added;
-              const safariSupport = Array.isArray(safari_ios)
-                ? safari_ios?.[0]?.version_added
-                : safari_ios?.version_added;
-              if (safariSupport || !chromeSupport) continue;
-              parsedData.push({ cat, mainFeatureKey, features });
-            } else {
-              for (const [featureKey, feature] of Object.entries(features)) {
-                if (feature.__compat && feature.__compat.mdn_url) {
-                  if (feature?.status?.deprecated) continue;
-                  const {
-                    __compat: {
-                      support: { safari_ios, chrome_android },
-                    },
-                  } = feature;
-                  const chromeSupport = Array.isArray(chrome_android)
-                    ? chrome_android?.[0]?.version_added
-                    : chrome_android?.version_added;
-                  const safariSupport = Array.isArray(safari_ios)
-                    ? safari_ios?.[0]?.version_added
-                    : safari_ios?.version_added;
-                  if (safariSupport || !chromeSupport) continue;
-                  parsedData.push({ cat, mainFeatureKey, feature, featureKey });
-                }
-              }
-            }
-          }
-        }
-
-        // const parseData = Object.entries(data).reduce(
-        //   (acc, [cat, mainFeatures]) => {
-        //     return Object.entries(mainFeatures).reduce(
-        //       (a, [mainFeatureKey, features]) => {
-        //         if (features.__compat && features.__compat.mdn_url) {
-        //           const compat = features.__compat;
-        //           const status = compat.status;
-        //           if (
-        //             status?.deprecated ||
-        //             compat?.support?.safari_ios?.version_added || // supported in ios
-        //             !compat?.support?.chrome_android?.version_added // not supported in chrome android
-        //           )
-        //             return acc;
-        //           return [...acc, { cat, mainFeatureKey, features }];
-        //         } else {
-        //           return acc;
-        //           console.log('there is more');
-        //         }
-        //       },
-        //       []
-        //     );
-        //   },
-        //   []
-        // );
-        console.log(parsedData);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  }, []);
+  // useEffect(() => {
+  //   fetch('https://unpkg.com/@mdn/browser-compat-data')
+  //     .then((res) => {
+  //       if (!res.ok) {
+  //         throw new Error('Network response was not ok');
+  //       }
+  //       return res.json();
+  //     })
+  //     .then((data) => {
+  //       parseMdnData(data);
+  //     })
+  //     .catch((err) => {
+  //       console.error(err);
+  //     });
+  // }, []);
 
   useEffect(() => {
     fetch(dataLink)
@@ -293,6 +135,7 @@ export const CanIUseContextProvider = ({
       .catch((err) => {
         setHasError(true);
         setLoading(false);
+        setData(canIUseDataSaved);
         console.error(err);
       });
   }, []);
@@ -352,6 +195,7 @@ export const CanIUseContextProvider = ({
         isDarkMode,
         setColorScheme,
         setNextFeature,
+        canIUseData,
       }}
     >
       {children}
