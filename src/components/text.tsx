@@ -2,13 +2,13 @@
 
 import { Html } from '@react-three/drei';
 import useCanIUseContext from '../hooks/useCanIUseContext';
-import Image from 'next/image';
 import Markdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { ExternalLinkIcon } from '@radix-ui/react-icons';
 import styled from 'styled-components';
 import * as THREE from 'three';
 import { visit } from 'unist-util-visit';
+import { Image } from './image';
 
 const rightHandWidth = 450;
 
@@ -114,6 +114,8 @@ export const Text = ({
     notes_by_num,
     desktopSafariStat,
   } = iOSLacking[index];
+
+  const iosMacSame = safariStat.slice(0, 1) === desktopSafariStat.slice(0, 1);
 
   let date = firstSeen?.[1] ? new Date(firstSeen?.[1] * 1000) : '';
   date = date ? date.getFullYear() : '';
@@ -253,7 +255,6 @@ export const Text = ({
                 style={{
                   width: rightHandWidth,
                   flexShrink: 0,
-                  background: '#000',
                   height: rightHandWidth,
                   display: 'flex',
                   position: 'relative',
@@ -261,29 +262,27 @@ export const Text = ({
                   overflow: 'hidden',
                 }}
               >
+                {/* eslint-disable-next-line jsx-a11y/alt-text */}
                 <Image
-                  alt={`${title} as a ${age} ${
+                  name={`${title} as a ${age} ${
                     age === 1 ? 'year' : 'years'
                   } old kid`}
-                  src={`/imgs/${key}.png`}
-                  width={rightHandWidth}
-                  height={rightHandWidth}
+                  imageKey={key}
                   style={{
-                    textTransform: 'none',
-                    objectFit: 'cover',
-                    opacity: 0.85,
-                    // mixBlendMode: 'luminosity',
-                  }}
-                />
-                <div
-                  style={{
-                    position: 'absolute',
-                    left: 0,
-                    top: 0,
-                    background: 'var(--vignette)',
                     width: rightHandWidth,
                     height: rightHandWidth,
                   }}
+                  width={rightHandWidth}
+                  height={rightHandWidth}
+                  // src={`/imgs/${key}.png`}
+                  // width={rightHandWidth}
+                  // height={rightHandWidth}
+                  // style={{
+                  //   textTransform: 'none',
+                  //   objectFit: 'cover',
+                  //   opacity: 0.85,
+                  //   // mixBlendMode: 'luminosity',
+                  // }}
                 />
               </div>
               <div
@@ -298,21 +297,23 @@ export const Text = ({
               >
                 <div className={'stats'}>
                   <div style={{ whiteSpace: 'nowrap' }}>
-                    <h3>iOS</h3>
+                    <h3>{iosMacSame ? 'iOS / Mac Safari' : 'iOS'}</h3>
                     <p>
                       {safariStat.startsWith('a') || safariStat.startsWith('y')
                         ? 'Partial'
                         : 'None'}
                     </p>
                   </div>
-                  <div style={{ whiteSpace: 'nowrap' }}>
-                    <h3>Mac Safari</h3>
-                    <p>
-                      {desktopSafariStat.startsWith('a') ? 'Partial' : ''}
-                      {desktopSafariStat.startsWith('n') ? 'None' : ''}
-                      {desktopSafariStat.startsWith('y') ? 'Supported' : ''}
-                    </p>
-                  </div>
+                  {!iosMacSame && (
+                    <div style={{ whiteSpace: 'nowrap' }}>
+                      <h3>Mac Safari</h3>
+                      <p>
+                        {desktopSafariStat.startsWith('a') ? 'Partial' : ''}
+                        {desktopSafariStat.startsWith('n') ? 'None' : ''}
+                        {desktopSafariStat.startsWith('y') ? 'Supported' : ''}
+                      </p>
+                    </div>
+                  )}
                   <div>
                     <h3>Age </h3>
                     <p>

@@ -14,10 +14,11 @@ async function resizeAndSaveImage(imagePath, outputDir) {
     // Resize image to 400x400px
     const resizedImageBuffer = await sharp(imagePath)
       .resize({ width: 300, height: 300 })
+      .jpeg({ quality: 60 })
       .toBuffer();
 
     // Generate output file path
-    const filename = path.basename(imagePath);
+    const filename = path.basename(imagePath).replace(/\.\w+$/, '.jpg');
     const outputFilePath = path.join(resizeDir, filename);
 
     // Save resized image
@@ -60,82 +61,46 @@ fs.readdir(imagesDir, async (err, files) => {
 
     // Write spritesheet image as JPG
     const spritesheetFilePath = path.join(outputDir, 'spritesheet.jpg');
-    fs.writeFileSync(spritesheetFilePath, result.image, 'binary');
+    // turn into jpg
+    sharp(result.image)
+      .jpeg({ quality: 60 })
+      .toBuffer()
+      .then((buffer) => {
+        fs.writeFileSync(spritesheetFilePath, buffer);
+        console.log('Spritesheet generated successfully!');
+      })
+      .catch((err) => {
+        console.error('Error saving spritesheet as JPG:', err);
+      });
 
     // Write spritesheet metadata
     fs.writeFileSync(
       path.join(outputDir, 'spritesheet.json'),
-      JSON.stringify(result.coordinates)
+      JSON.stringify(
+        Object.fromEntries([
+          [
+            'metadata',
+            {
+              width: 300,
+              height: 300,
+              fullWidth: result.properties.width,
+              fullHeight: result.properties.height,
+              columns: Math.round(result.properties.width / 300),
+              rows: Math.round(result.properties.height / 300),
+            },
+          ],
+          ...Object.entries(result.coordinates).map(([file, coords]) => [
+            path
+              .basename(file)
+              .split('/')
+              .at(-1)
+              .replace(/\.\w+$/, ''),
+            [Math.round(coords.x / 300), Math.round(coords.y / 300)], //, coords.width, coords.height], for now... all are 300x300
+          ]),
+        ])
+      )
     );
 
     console.log('Spritesheet generated successfully!');
   });
 });
-
-// fs.readdir(imagesDir, (err, files) => {
-//   if (err) {
-//     console.error('Error reading images directory:', err);
-//     return;
-//   }
-
-//   // Filter out only image files
-//   const imageFiles = files.filter((file) => /\.(png|jpg|jpeg|gif)$/.test(file));
-
-//   // Array to hold image buffers after resizing
-//   const resizedImageBuffers = [];
-
-//   // Resize images to 400x400px
-//   Promise.all(
-//     imageFiles.map((file) => {
-//       console.log(file);
-//       const imagePath = path.join(imagesDir, file);
-//       return sharp(imagePath)
-//         .resize({ width: 400, height: 400 })
-//         .toBuffer()
-//         .then((buffer) => {
-//           resizedImageBuffers.push(buffer);
-//         })
-//         .catch((err) => {
-//           console.error(`Error resizing image ${file}:`, err);
-//         });
-//     })
-//   ).then(() => {
-//     spritesmith.run({ src: resizedImageBuffers }, (err, result) => {
-//       if (err) {
-//         console.error('Error generating spritesheet:', err);
-//         return;
-//       }
-
-//       // Write spritesheet image as JPG
-//       const spritesheetFilePath = path.join(outputDir, 'spritesheet.jpg');
-//       fs.writeFileSync(spritesheetFilePath, result.image, 'binary');
-
-//       // Write spritesheet metadata
-//       fs.writeFileSync(
-//         path.join(outputDir, 'spritesheet.json'),
-//         JSON.stringify(result.coordinates)
-//       );
-
-//       console.log('Spritesheet generated successfully!');
-//       console.log('Saved at:', spritesheetFilePath);
-
-//       // Generate spritesheet from resized images
-//       // spritesmith.run({ src: resizedImageBuffers }, (err, result) => {
-//       //   if (err) {
-//       //     console.error('Error generating spritesheet:', err);
-//       //     return;
-//       //   }
-
-//       //   // Write spritesheet image
-//       //   fs.writeFileSync(path.join(outputDir, 'spritesheet.png'), result.image);
-
-//       //   // Write spritesheet metadata
-//       //   fs.writeFileSync(
-//       //     path.join(outputDir, 'spritesheet.json'),
-//       //     JSON.stringify(result.coordinates)
-//       //   );
-
-//       //   console.log('Spritesheet generated successfully!');
-//     });
-//   });
-// });

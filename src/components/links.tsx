@@ -2,9 +2,16 @@ import React from 'react';
 import { InfoCircledIcon } from '@radix-ui/react-icons';
 import { About } from './about';
 import styled from 'styled-components';
-import { MoonIcon, SunIcon } from '@radix-ui/react-icons';
 import useCanIUseContext from '../hooks/useCanIUseContext';
 import { verticalViewWidth } from '../utils/constants';
+import { DarkModeSwitch, defaultProperties } from 'react-toggle-dark-mode';
+
+const DMS = styled(DarkModeSwitch)`
+  vector-effect: non-scaling-stroke;
+  mask * {
+    stroke: none;
+  }
+`;
 
 const Div = styled.div`
   display: flex;
@@ -36,13 +43,25 @@ export const Links = () => {
         <button
           aria-label="Toggle dark mode"
           onClick={() => setColorScheme(isDarkMode ? 'light' : 'dark')}
-          style={{ width: 40, height: 40, borderRadius: 8 }}
+          style={{
+            width: 40,
+            height: 40,
+            borderRadius: 8,
+            fill: 'red',
+            color: 'orange',
+          }}
         >
-          {isDarkMode ? (
-            <SunIcon style={{ width: 26, height: 26 }} />
-          ) : (
-            <MoonIcon style={{ width: 28, height: 28 }} />
-          )}
+          <DMS
+            checked={!isDarkMode}
+            size={25}
+            moonColor="transparent"
+            sunColor="transparent"
+            onChange={() => {}}
+            animationProperties={{
+              ...defaultProperties,
+              springConfig: { mass: 2, tension: 250, friction: 35 },
+            }}
+          />
         </button>
         <About
           button={
