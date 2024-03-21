@@ -1,63 +1,54 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
 import { Cross2Icon } from '@radix-ui/react-icons';
 import styled from 'styled-components';
 import { DialogClose, DialogContent, DialogOverlay } from './dialogStyles';
 import useCanIUseContext from '../hooks/useCanIUseContext';
 
-const Dl = styled.dl`
-  a {
-    text-decoration: underline;
-    text-underline-offset: 0.2em;
+const Div = styled.div`
+  * {
+    margin-bottom: 0.5rem;
   }
-  dt {
-    color: var(--titleColor);
-    line-height: 1.2;
+  *:last-child {
+    margin-bottom: 0;
+  }
+  h2 {
+    font-size: 1.1rem;
+    font-weight: 600;
+  }
+  p {
     font-size: 0.9rem;
-    font-weight: 700;
-    margin-bottom: 10px;
-  }
-  dd {
-    line-height: 1.6;
-    font-size: 0.9rem;
-    margin-bottom: 25px;
-  }
-  dd:last-child {
-    margin-bottom: 0px;
   }
 `;
 
-export const ErrorModal = ({ button }: { button: React.ReactNode }) => {
-  const { hasError, canIUseData } = useCanIUseContext();
-  const [open, setOpen] = React.useState(false);
-  useEffect(() => {
-    if (hasError && !open) setOpen(true);
-  }, [hasError, open]);
+export const ErrorModal = () => {
+  const { hasError, canIUseData, setHasError } = useCanIUseContext();
 
-  if (!(hasError && canIUseData && open)) return null;
-  const date = new Date(canIUseData?.updated).toLocaleDateString(undefined, {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  });
+  if (!hasError) return null;
+
+  const date = new Date(canIUseData?.updated * 1000).toLocaleDateString(
+    undefined,
+    {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    }
+  );
   return (
     <Dialog.Root
+      open={hasError}
       onOpenChange={(o) => {
-        setOpen(o);
+        setHasError(false);
       }}
     >
-      <Dialog.Trigger asChild>{button}</Dialog.Trigger>
       <Dialog.Portal>
         <DialogOverlay />
         <DialogContent>
-          <div>
-            <h2>Oooops</h2>
-            <p>
-              Looks like there was an issue grabbing the latest caniuse.com
-              data. No worries, we will revert to saved caniuse.com data from
-              {date}.
-            </p>
-          </div>
+          <Div>
+            <h2>Using Fallback Data</h2>
+            <p>There was an issue grabbing the latest caniuse.com data.</p>
+            <p>No worries, reverting to backup caniuse.com data from {date}.</p>
+          </Div>
           <DialogClose>
             <Cross2Icon />
           </DialogClose>

@@ -10,10 +10,11 @@ import { Links } from '../components/links';
 import { Drawer } from '../components/drawer';
 import { useEffect } from 'react';
 import Bowser from 'bowser';
-import { DrawerContents } from '../components/drawerContents';
 import { verticalViewWidth } from '../utils/constants';
 import { Search } from '../components/search';
 import Features from '../components/features';
+import { ErrorModal } from '../components/errorModal';
+import { Filter } from '../components/filter';
 
 const DesktopFeaturesDiv = styled.div`
   text-align: left;
@@ -125,6 +126,7 @@ export default function Home() {
   if (width && width < verticalViewWidth) {
     return (
       <CanIUseContextProvider>
+        <ErrorModal />
         <MobileCanvasDiv>
           <Canvas flat camera={cameraMobile} style={{ touchAction: 'none' }}>
             <Experience />
@@ -135,15 +137,25 @@ export default function Home() {
         </LinksDiv>
         <Drawer
           height={[openHeight, closedHeight]}
-          content={<DrawerContents />}
+          content={
+            <div
+              style={{
+                padding: '0px 30px 20px',
+                textAlign: 'left',
+              }}
+            >
+              <Features />
+            </div>
+          }
           footer={
             <div
               style={{
-                padding: '20px 25px',
+                padding: '13px 25px 20px',
                 borderTop: '1px solid var(--modalHr)',
               }}
             >
-              {/* <Filter /> */}
+              <Filter />
+              <div style={{ height: 8 }} />
               <Search />
             </div>
           }
@@ -155,6 +167,7 @@ export default function Home() {
   // Horizontal View
   return (
     <CanIUseContextProvider>
+      <ErrorModal />
       <DesktopCanvasDiv style={{ position: isFirefox ? 'fixed' : 'sticky' }}>
         <div
           style={{

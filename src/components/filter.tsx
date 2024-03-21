@@ -24,12 +24,17 @@ const Button = styled.button`
 
 const Submit = styled.button`
   display: block;
-  padding: 8px 0px;
+  padding: 8px 15px;
   text-align: center;
-  border-radius: 8px;
+  border-radius: 12px;
   width: 100%;
   border: 1px solid currentColor;
-  font-size: 0.8rem;
+  font-size: 0.95rem;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  font-variant-numeric: tabular-nums;
   &:hover {
     transform: scale(1);
   }
@@ -71,6 +76,12 @@ export const Filter = () => {
     };
   }, [open]);
 
+  const filteredTotal = (
+    iOSLacking.filter((v) => {
+      return filters.statuses[v?.status];
+    }) || []
+  ).length;
+
   return (
     <div
       style={{
@@ -88,8 +99,8 @@ export const Filter = () => {
         open={open}
       >
         <Dialog.Trigger asChild>
-          <Button aria-label="Filter" style={{ marginLeft: 3 }}>
-            <MixerVerticalIcon width={18} height={18} />
+          <Button aria-label="Filter" style={{ marginLeft: 7 }}>
+            <MixerVerticalIcon width={22} height={22} />
           </Button>
         </Dialog.Trigger>
         <Dialog.Portal>
@@ -101,7 +112,7 @@ export const Filter = () => {
                 setOpen(false);
               }}
             >
-              Done
+              Matching: {filteredTotal} features
             </Submit>
             <DialogClose>
               <Cross2Icon />
@@ -123,7 +134,7 @@ export const Filter = () => {
             whiteSpace: 'nowrap',
             fontVariantNumeric: 'tabular-nums',
             color: 'var(--color)',
-            fontSize: '12px',
+            fontSize: '14px',
             opacity: 1,
           }}
         >

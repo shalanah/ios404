@@ -18,7 +18,11 @@ export const DialogClose = styled(Dialog.Close)`
     outline: 1px solid currentColor;
   }
 `;
-export const DialogContent = styled(Dialog.Content)`
+
+export const DialogContentClassName = 'dialog-content';
+export const DialogContent = styled(Dialog.Content).attrs((p) => ({
+  className: DialogContentClassName,
+}))`
   text-align: left;
   background-color: var(--modalBg);
   border-radius: 22px;
@@ -35,7 +39,7 @@ export const DialogContent = styled(Dialog.Content)`
   animation: contentShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
   overflow: auto;
   z-index: 4;
-  :focus {
+  &:focus {
     outline: 2px dotted var(--modalHr);
   }
 `;

@@ -7,12 +7,12 @@ export default function Document() {
       <Head>
         <style type="text/css">{globalCss}</style>
         <link
-          href="light-mode-favicon.png"
+          href="/light-mode-favicon.ico"
           rel="icon"
           media="(prefers-color-scheme: light)"
         />
         <link
-          href="dark-mode-favicon.png"
+          href="/dark-mode-favicon.ico"
           rel="icon"
           media="(prefers-color-scheme: dark)"
         />

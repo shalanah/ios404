@@ -7,8 +7,8 @@ const CheckboxRoot = styled(CB.Root)`
   box-sizing: border-box;
   flex-shrink: 0;
   background-color: var(--radioBg);
-  width: 20px;
-  height: 20px;
+  width: 28px;
+  height: 28px;
   border-radius: 4px;
   display: flex;
   align-items: center;
@@ -18,6 +18,10 @@ const CheckboxRoot = styled(CB.Root)`
   transition: 0.1s;
   &[aria-checked='false'] {
     background-color: var(--radioEmptyBg);
+  }
+  &:hover {
+    transform: scale(1);
+    cursor: pointer;
   }
 `;
 
@@ -30,13 +34,13 @@ const CheckboxIndicator = styled(CB.Indicator)`
 
 const Div = styled.div`
   display: flex;
-  gap: 8px;
+  gap: 6px;
   align-items: center;
   cursor: pointer;
   label {
     width: 100%;
-    padding: 5px 0px;
-    font-size: 0.9rem; // TODO: double check this doesn't do the weird zoomy thing in iOS
+    padding: 4px 0px;
+    font-size: 0.95rem; // TODO: double check this doesn't do the weird zoomy thing in iOS
     line-height: 1.1;
   }
 `;
@@ -57,7 +61,13 @@ export const Checkbox = ({
   const id = useId();
 
   return (
-    <Div style={switchOrder ? { justifyContent: 'space-between' } : {}}>
+    <Div
+      style={
+        switchOrder
+          ? { justifyContent: 'space-between', alignItems: 'center' }
+          : {}
+      }
+    >
       <CheckboxRoot
         style={switchOrder ? { order: 2 } : {}}
         onCheckedChange={onCheckedChange}

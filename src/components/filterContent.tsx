@@ -1,16 +1,10 @@
 import React from 'react';
 import { Checkbox } from './checkbox';
 import useCanIUseContext from '../hooks/useCanIUseContext';
+import { Badge } from './badge';
 
 export const FilterContent = () => {
-  const {
-    statusCounts,
-    statuses,
-    filters,
-    setFilters,
-    iOSLacking,
-    filteredData,
-  } = useCanIUseContext();
+  const { statusCounts, statuses, filters, setFilters } = useCanIUseContext();
   const nonEmptyStatusFilters = Object.fromEntries(
     Object.entries(filters.statuses).filter(([k, _]) => {
       return statusCounts[k] > 0;
@@ -156,29 +150,11 @@ export const FilterContent = () => {
                     style={{
                       display: 'flex',
                       justifyContent: 'space-between',
+                      alignItems: 'center',
                     }}
                   >
                     <span>{nameFormat(statuses[k])}</span>
-                    <span
-                      style={{
-                        background: 'var(--badgeBg)',
-                        color: 'var(--badgeColor)',
-                        border: '1px solid var(--badgeBorder)',
-                        height: 20,
-                        borderRadius: 20,
-                        fontSize: '.7rem',
-                        width: '4ch',
-                        textAlign: 'center',
-                        lineHeight: 0,
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        fontVariantNumeric: 'tabular-nums',
-                        fontWeight: 700,
-                      }}
-                    >
-                      {v as string}
-                    </span>
+                    <Badge active={checked}>{v as string}</Badge>
                   </div>
                 </Checkbox>
               );

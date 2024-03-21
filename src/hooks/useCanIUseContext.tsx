@@ -11,9 +11,11 @@ import React, {
 } from 'react';
 import { useHash } from './useHash';
 import usePrefersColorScheme from 'use-prefers-color-scheme';
-import { getIOSSafariLacking } from '../utils/parseCanIUseData';
+import {
+  getIOSSafariLacking,
+  orderCanIUseData,
+} from '../utils/parseCanIUseData';
 import canIUseDataSaved from '../utils/canIUseData.json';
-// import { parseMdnData } from '../utils/parseMdnData';
 
 const dataLink =
   'https://raw.githubusercontent.com/Fyrd/caniuse/master/fulldata-json/data-2.0.json';
@@ -39,6 +41,7 @@ interface CanIUseContextInterface {
     featureActive?: boolean;
   }) => void;
   canIUseData: any;
+  setHasError: (error: boolean) => void;
 }
 
 // Game state... could probably be broken out into smaller files / hooks
@@ -129,13 +132,14 @@ export const CanIUseContextProvider = ({
         return res.json();
       })
       .then((data) => {
-        setData(data);
+        // throw new Error('Network response was not ok');
+        setData(orderCanIUseData(data));
         setLoading(false); // could be useReducer instead
       })
       .catch((err) => {
         setHasError(true);
         setLoading(false);
-        setData(canIUseDataSaved);
+        setData(orderCanIUseData(canIUseDataSaved));
         console.error(err);
       });
   }, []);
@@ -196,6 +200,7 @@ export const CanIUseContextProvider = ({
         setColorScheme,
         setNextFeature,
         canIUseData,
+        setHasError,
       }}
     >
       {children}

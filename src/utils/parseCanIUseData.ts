@@ -3,6 +3,17 @@
 const android_chrome = 'and_chr';
 const ios_safari = 'ios_saf';
 
+export const orderCanIUseData = (data: any) => {
+  return {
+    ...data,
+    data: Object.fromEntries(
+      Object.entries(data.data).sort((a, b) =>
+        a[1].title.localeCompare(b[1].title)
+      )
+    ),
+  };
+};
+
 // Features that we don't actually care about - deprecated or not relevant to mobile/ipad
 const skipFeatures = [
   'asmjs', // deprecated

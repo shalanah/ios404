@@ -347,7 +347,7 @@ export const Text = ({
                           .replace('Proposed Recommendation', 'Proposed')
                           .replace('Recommendation', 'Rec')
                           .replace('Working Draft', 'Draft')
-                          .replace('Living Standard', 'LS')}
+                          .replace(' Living Standard', '')}
                         <ExternalLinkIcon
                           style={{
                             lineHeight: 0,
