@@ -8,7 +8,7 @@ import { useWindowSize } from '@uidotdev/usehooks';
 import styled from 'styled-components';
 import { Links } from '../components/links';
 import { Drawer } from '../components/drawer';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Bowser from 'bowser';
 import { verticalViewWidth } from '../utils/constants';
 import { Search } from '../components/search';
@@ -111,13 +111,11 @@ export default function Home() {
   const { width, height } = useWindowSize();
   const closedHeight = 55;
   const openHeight = Math.max((height || 0) - 400, (height || 0) * 0.6);
-  const browser = Bowser.getParser(window?.navigator?.userAgent);
-  const isFirefox = browser.isBrowser('Firefox');
+  const [isFirefox, setIsFirefox] = useState(false);
 
   useEffect(() => {
-    window.addEventListener('scroll', () => {
-      console.log('scrolling');
-    });
+    const browser = Bowser.getParser(window?.navigator?.userAgent);
+    setIsFirefox(browser.isBrowser('Firefox'));
   }, []);
 
   if (width === null) return null;
