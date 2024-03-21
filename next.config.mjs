@@ -9,7 +9,7 @@ const wPWA = withPWA({
 
 const nextConfig = wPWA({
   reactStrictMode: false,
-  target: 'serverless',
+  output: 'export',
 });
 
 export default nextConfig;
