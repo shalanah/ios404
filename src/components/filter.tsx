@@ -77,9 +77,14 @@ export const Filter = () => {
   }, [open]);
 
   const filteredTotal = (
-    iOSLacking.filter((v) => {
-      return filters.statuses[v?.status];
-    }) || []
+    iOSLacking.filter(
+      (
+        // @ts-ignore
+        v
+      ) => {
+        return filters.statuses[v?.status];
+      }
+    ) || []
   ).length;
 
   return (
