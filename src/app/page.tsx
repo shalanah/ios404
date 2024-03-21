@@ -196,6 +196,8 @@ export default function Home() {
       <DesktopFeaturesDiv>
         <DesktopFeaturesStickyTopCover />
         <Features />
+        {/* Gap at bottom of feature list (acts like padding) */}
+        <div style={{ height: 30 }} />
       </DesktopFeaturesDiv>
       <LinksDiv>
         <Links />
