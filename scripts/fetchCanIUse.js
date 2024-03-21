@@ -3,7 +3,7 @@ const fs = require('fs');
 
 const url =
   'https://raw.githubusercontent.com/Fyrd/caniuse/master/fulldata-json/data-2.0.json';
-const outputFile = 'src/app/utils/canIUseData.json'; // Output JSON file
+const outputFile = 'src/utils/canIUseData.json'; // Output JSON file
 
 async function fetchData() {
   try {

@@ -6,7 +6,7 @@
   "scripts": {
     "fetch-data": "node scripts/fetchCanIUse.js",
     "dev": "next dev",
-    "build": "npm spritesheet && npm fetch-data && next build",
+    "build": "npm run spritesheet && npm run fetch-data && next build",
     "start": "next start",
     "lint": "next lint",
     "spritesheet": "node scripts/buildSpritessheet.ts",
