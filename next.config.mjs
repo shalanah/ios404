@@ -10,6 +10,7 @@ const wPWA = withPWA({
 const nextConfig = wPWA({
   reactStrictMode: false,
   output: 'export',
+  maximumFileSizeToCacheInBytes: 5000000,
 });
 
 export default nextConfig;
