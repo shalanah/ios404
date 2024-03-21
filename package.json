@@ -11,7 +11,7 @@
     "lint": "next lint",
     "spritesheet": "node scripts/buildSpritessheet.ts",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d public"
+    "deploy": "gh-pages -d out"
   },
   "dependencies": {
     "@n8tb1t/use-scroll-position": "^2.0.3",

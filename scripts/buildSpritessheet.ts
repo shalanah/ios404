@@ -4,8 +4,8 @@ const path = require('path');
 const sharp = require('sharp');
 const spritesmith = require('spritesmith');
 
-const imagesDir = path.resolve(__dirname, '../public/imgsOriginal');
-const resizeDir = path.resolve(__dirname, '../public/imgsSmaller');
+const imagesDir = path.resolve(__dirname, '../imgsOriginal');
+const resizeDir = path.resolve(__dirname, '../imgsSmaller');
 const outputDir = path.resolve(__dirname, '../public/sprites');
 
 // Function to resize and save image
