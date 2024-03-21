@@ -147,11 +147,12 @@ export default function Experience() {
 
   if (len === 0 || activeIndex === -1) return null;
 
-  const indexInList = filteredData.findIndex((v) => v.index === activeIndex);
+  // @ts-ignore
+  const index = filteredData.findIndex((v) => v.index === activeIndex);
   let countText =
-    filteredData.length && indexInList !== -1 ? (
+    filteredData.length && index !== -1 ? (
       <>
-        {indexInList + 1}&nbsp;&nbsp;/&nbsp;&nbsp;
+        {index + 1}&nbsp;&nbsp;/&nbsp;&nbsp;
         {filteredData.length}
       </>
     ) : (
