@@ -11,7 +11,6 @@ const wPWA = withPWA({
 const nextConfig = wPWA({
   reactStrictMode: false,
   output: 'export',
-  outDir: 'out',
 });
 
 export default nextConfig;
