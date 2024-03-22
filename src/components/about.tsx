@@ -49,7 +49,7 @@ const FAQ = [
     'Do you track me?',
     'iOS404 use TelemetryDeck to collect anonymized usage data. This helps to understand how our users are using the website and how we can improve it. TelemetryDeck does not collect any personally identifiable information. You can read more about  [TelemetryDeck’s privacy policy](https://telemetrydeck.com/privacy)',
   ],
-  [('', 'Copyright 2024. All Rights Reserved - Shalanah Dawson')],
+  ['', 'Copyright 2024. All Rights Reserved - Shalanah Dawson'],
 ];
 
 export const About = ({ button }: { button: React.ReactNode }) => (

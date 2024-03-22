@@ -18,12 +18,10 @@ import { Filter } from '../components/filter';
 import { GlobalCss } from '@/components/globalCss';
 import TelemetryDeck from '@telemetrydeck/sdk';
 
-const appID = process.env.NEXT_PUBLIC_TELEMETRY_DECK_APP_ID!;
-const randomId = Math.random().toString(36).substring(7);
-
+const appID = process.env.NEXT_PUBLIC_TELEMETRY_DECK_APP_ID;
 const td = new TelemetryDeck({
   appID: appID,
-  clientUser: randomId,
+  clientUser: Math.random().toString(36).substring(7),
 });
 
 const DesktopFeaturesDiv = styled.div`
