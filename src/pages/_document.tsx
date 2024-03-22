@@ -36,6 +36,8 @@ export default function Document() {
           content="https://ios404.com/icons/ios-404-og-1200x630.jpg"
         />
         <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:site" content="@ios404website" />
+        <meta name="twitter:creator" content="@shalanahfaith" />
       </Head>
       <body>
         <Main />
