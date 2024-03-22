@@ -14,7 +14,6 @@ const nextConfig = wPWA({
   images: {
     unoptimized: true,
   },
-  basePath: '/',
 });
 
 export default nextConfig;
