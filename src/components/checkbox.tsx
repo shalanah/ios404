@@ -29,6 +29,10 @@ const CheckboxIndicator = styled(CB.Indicator)`
   svg {
     color: var(--radioColor);
     animation: 0.1s slideUpAndFadeMore;
+    * {
+      stroke: currentColor;
+      stroke-width: 0.5px;
+    }
   }
 `;
 

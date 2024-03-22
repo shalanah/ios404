@@ -7,17 +7,27 @@ import * as Dialog from '@radix-ui/react-dialog';
 import { FilterContent } from './filterContent';
 
 const Button = styled.button`
-  border-radius: 100%;
-  height: 30px;
-  width: 30px;
+  border-radius: 10px;
+  height: 36px;
+  width: 36px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   color: var(--color);
   margin-left: -8px;
   flex-shrink: 0;
+  transition: 0.15s;
   &:hover {
     transition: 0.15s;
+    transform: scale(1);
+    background: var(--modalBg);
+  }
+`;
+
+const ClearButton = styled.button`
+  transition: 0.15s;
+  &:hover {
+    transform: scale(1);
     background: var(--modalBg);
   }
 `;
@@ -32,8 +42,8 @@ const Submit = styled.button`
   font-size: 0.95rem;
   display: flex;
   gap: 10px;
-  align-items: center;
-  justify-content: center;
+  align-items: baseline;
+  justify-content: space-between;
   font-variant-numeric: tabular-nums;
   &:hover {
     transform: scale(1);
@@ -104,7 +114,7 @@ export const Filter = () => {
         open={open}
       >
         <Dialog.Trigger asChild>
-          <Button aria-label="Filter" style={{ marginLeft: 7 }}>
+          <Button aria-label="Filter" style={{ marginLeft: 4 }}>
             <MixerVerticalIcon width={22} height={22} />
           </Button>
         </Dialog.Trigger>
@@ -117,7 +127,10 @@ export const Filter = () => {
                 setOpen(false);
               }}
             >
-              Matching: {filteredTotal} features
+              Close{' '}
+              <span style={{ fontSize: '.8em' }}>
+                Matches {filteredTotal} features
+              </span>
             </Submit>
             <DialogClose>
               <Cross2Icon />
@@ -146,15 +159,15 @@ export const Filter = () => {
           {count}
         </div>
         {!allChecked && (
-          <button
+          <ClearButton
             style={{
               display: 'flex',
               gap: 5,
+              height: 36,
               alignItems: 'center',
-              borderRadius: 20,
+              borderRadius: 10,
               fontSize: '12px',
-              height: 30,
-              padding: '0 5px',
+              padding: '0 10px 0 15px',
             }}
             onClick={(e) => {
               e.stopPropagation();
@@ -172,7 +185,7 @@ export const Filter = () => {
             <span style={{ display: 'flex', padding: '0px 3px' }}>
               <Cross2Icon style={{ margin: 'auto' }} />
             </span>
-          </button>
+          </ClearButton>
         )}
       </div>
     </div>

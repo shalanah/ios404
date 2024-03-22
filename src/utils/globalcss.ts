@@ -4,7 +4,7 @@ const theme = {
     modalBg: 'rgb(41, 44, 49)',
     modalHr: 'rgba(255, 255, 255, 0.2)',
     color: '#d8d8d8',
-    bg: '#161716', //'#161616', //'#272728', //'rgb(26, 26, 26)',
+    bg: '#161616',
     badgeBgNonActive: 'rgb(91, 91, 91)',
     badgeBorderNonActive: 'rgb(91, 91, 91)',
     badgeColorNonActive: '#b7b7b7',

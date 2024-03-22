@@ -138,7 +138,7 @@ export default function Home() {
           content={
             <div
               style={{
-                padding: '0px 30px 20px',
+                padding: '2px 30px 20px',
                 textAlign: 'left',
               }}
             >
