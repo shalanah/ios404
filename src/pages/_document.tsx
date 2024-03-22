@@ -17,6 +17,7 @@ export default function Document() {
           media="(prefers-color-scheme: dark)"
         />
         <link rel="manifest" href="/manifest.json" />
+        <meta property="og:url" content="https://ios404.com" />
         <meta property="og:title" content="iOS404" />
         <meta
           property="og:description"
