@@ -51,8 +51,14 @@ const Submit = styled.button`
 `;
 
 export const Filter = () => {
-  const { statusCounts, filters, setFilters, iOSLacking, filteredData } =
-    useCanIUseContext();
+  const {
+    statusCounts,
+    filters,
+    setFilters,
+    iOSLacking,
+    filteredData,
+    loading,
+  } = useCanIUseContext();
   const nonEmptyStatusFilters = Object.fromEntries(
     Object.entries(filters.statuses).filter(([k, _]) => {
       return statusCounts[k] > 0;
@@ -69,6 +75,9 @@ export const Filter = () => {
     filteredData.length === iOSLacking.length
       ? `${iOSLacking.length} features`
       : `${filteredData.length} features`;
+  if (loading) {
+    count = 'Loading...';
+  }
 
   useEffect(() => {
     // Make sure there is focus on the container element

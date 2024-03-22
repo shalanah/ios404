@@ -49,7 +49,7 @@ const Div = styled.div`
     justify-content: space-between;
     position: relative;
     padding: 13px 0px;
-    :after {
+    &:after {
       content: '';
       position: absolute;
       bottom: -2px;
@@ -79,6 +79,9 @@ const Div = styled.div`
     border-radius: 15px;
     padding: 0px 15px;
     margin: 0px -15px;
+    &:hover {
+      transform: scale(1);
+    }
     &:focus {
       outline: 5px dotted currentColor !important;
       outline-offset: 4px !important;
@@ -332,7 +335,6 @@ export const Text = ({
                       {firstSeen?.[2] || ''}
                     </p>
                   </div>
-
                   <div>
                     <h3>Spec</h3>
                     <a
