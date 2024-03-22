@@ -7,9 +7,24 @@ const inter = Inter_Tight({
   weight: ['100', '200', '300', '400', '500', '700', '800'],
 }); // use for our google font?
 
+// TODO: Move more over to metadata over putting in the head
 export const metadata: Metadata = {
   title: 'iOS404',
   description: 'The missing web features of iOS',
+  keywords: [
+    'iOS',
+    'web',
+    'features',
+    'missing',
+    'webkit',
+    'safari',
+    'web devs',
+    'web development',
+    'web standards',
+    'whatwg',
+    'w3c',
+    'caniuse',
+  ],
 };
 
 export default function RootLayout({
