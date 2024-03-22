@@ -16,6 +16,15 @@ import Features from '../components/features';
 import { ErrorModal } from '../components/errorModal';
 import { Filter } from '../components/filter';
 import { GlobalCss } from '@/components/globalCss';
+import TelemetryDeck from '@telemetrydeck/sdk';
+
+const appID = process.env.NEXT_PUBLIC_TELEMETRY_DECK_APP_ID!;
+const randomId = Math.random().toString(36).substring(7);
+
+const td = new TelemetryDeck({
+  appID: appID,
+  clientUser: randomId,
+});
 
 const DesktopFeaturesDiv = styled.div`
   text-align: left;
@@ -117,6 +126,11 @@ export default function Home() {
   useEffect(() => {
     const browser = Bowser.getParser(window?.navigator?.userAgent);
     setIsFirefox(browser.isBrowser('Firefox'));
+  }, []);
+
+  // send of a signal for page trackings
+  useEffect(() => {
+    td.signal('LoadedHomePage');
   }, []);
 
   // preload our images

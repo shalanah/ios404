@@ -45,7 +45,11 @@ const FAQ = [
     'Who are you?',
     "Hi! 👋 I'm Shalanah Dawson a developer that believes the web should be powerful, approachable, and fun. Find me on [Twitter](https://twitter.com/shalanahfaith), [GitHub](https://github.com/shalanah), or [LinkedIn](https://linkedin.com/in/shalanah).",
   ],
-  ['', 'Copyright 2024. All Rights Reserved - Shalanah Dawson'],
+  [
+    'Do you track me?',
+    'iOS404 use TelemetryDeck to collect anonymized usage data. This helps to understand how our users are using the website and how we can improve it. TelemetryDeck does not collect any personally identifiable information. You can read more about  [TelemetryDeck’s privacy policy](https://telemetrydeck.com/privacy)',
+  ],
+  [('', 'Copyright 2024. All Rights Reserved - Shalanah Dawson')],
 ];
 
 export const About = ({ button }: { button: React.ReactNode }) => (
