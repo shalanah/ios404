@@ -26,6 +26,16 @@ export default function Document() {
           property="og:image"
           content="https://ios404.com/icons/ios-404-og-1200x630.jpg"
         />
+        <meta name="twitter:title" content="iOS404" />
+        <meta
+          name="twitter:description"
+          content="The missing web features of iOS"
+        />
+        <meta
+          name="twitter:image"
+          content="https://ios404.com/icons/ios-404-og-1200x630.jpg"
+        />
+        <meta name="twitter:card" content="summary_large_image" />
       </Head>
       <body>
         <Main />
