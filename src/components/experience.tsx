@@ -194,12 +194,12 @@ export default function Experience() {
                 </Button>
                 <span
                   style={{
-                    fontSize: '.7rem',
+                    fontSize: '.75rem',
                     whiteSpace: 'nowrap',
                     width: '6.5ch',
                     textAlign: 'center',
                     fontVariantNumeric: 'tabular-nums',
-                    opacity: 0.75,
+                    fontWeight: 500,
                   }}
                 >
                   {countText}
