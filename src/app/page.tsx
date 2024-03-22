@@ -15,6 +15,7 @@ import { Search } from '../components/search';
 import Features from '../components/features';
 import { ErrorModal } from '../components/errorModal';
 import { Filter } from '../components/filter';
+import { GlobalCss } from '@/components/globalCss';
 
 const DesktopFeaturesDiv = styled.div`
   text-align: left;
@@ -124,6 +125,7 @@ export default function Home() {
   if (width && width < verticalViewWidth) {
     return (
       <CanIUseContextProvider>
+        <GlobalCss />
         <ErrorModal />
         <MobileCanvasDiv>
           <Canvas flat camera={cameraMobile} style={{ touchAction: 'none' }}>
@@ -165,6 +167,7 @@ export default function Home() {
   // Horizontal View
   return (
     <CanIUseContextProvider>
+      <GlobalCss />
       <ErrorModal />
       <DesktopCanvasDiv style={{ position: isFirefox ? 'fixed' : 'sticky' }}>
         <div

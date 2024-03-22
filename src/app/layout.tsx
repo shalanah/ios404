@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 import { Inter_Tight } from 'next/font/google';
-import { globalCss } from '../utils/globalcss';
 
 const inter = Inter_Tight({
   subsets: ['latin'],
@@ -21,7 +20,6 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <style type="text/css">{globalCss}</style>
         <link
           href="/light-mode-favicon.ico"
           rel="icon"
@@ -44,7 +42,6 @@ export default function RootLayout({
           content="https://ios404.com/icons/ios-404-og-1200x630.jpg"
         />
       </head>
-
       <body className={inter.className}>{children}</body>
     </html>
   );
