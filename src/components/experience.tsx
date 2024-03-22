@@ -8,6 +8,7 @@ import { a, useSpring } from '@react-spring/three';
 import { useDrag } from '@use-gesture/react';
 import { Html } from '@react-three/drei';
 import styled from 'styled-components';
+import { Arrow } from './arrow';
 
 const Button = styled.button`
   width: 40px;
@@ -20,55 +21,30 @@ const Button = styled.button`
   }
 `;
 
-const Arrow = ({
-  left = false,
-  right = false,
-}: {
-  left?: boolean;
-  right?: boolean;
-}) => {
-  let isLeft = left !== undefined ? left : right === false;
-  return (
-    <span
-      style={{
-        width: 15,
-        height: 15,
-        opacity: 1,
-        transformOrigin: 'center',
-        transform: `translateX(${isLeft ? 3 : -3}px) rotate(${
-          isLeft ? -45 : 135
-        }deg) `,
-        border: '2px solid var(--titleColor)',
-        borderBottom: 'none',
-        borderRight: 'none',
-      }}
-    />
-  );
-};
-
 const config = { mass: 0.05, tension: 600, friction: 40 };
 export default function Experience() {
   const { activeIndex, iOSLacking, setNextFeature, filteredData } =
     useCanIUseContext();
   const len = iOSLacking.length;
-  const quarterTurns = useRef(0);
+  const filteredLen = filteredData.length;
+  const turns = useRef(0);
   const prevActiveIndex = usePrevious(activeIndex);
+  // @ts-ignore
+  const pos = filteredData.findIndex((v) => v.index === activeIndex); // actual position in list --- active index + prev active is out of the WHOLE non-filtered list
+  // @ts-ignore
+  const prevPos = filteredData.findIndex((v) => v.index === prevActiveIndex);
 
-  if (prevActiveIndex < activeIndex) {
-    if (activeIndex === len - 1 && prevActiveIndex === 0) {
-      quarterTurns.current -= 1;
-    } else {
-      quarterTurns.current += 1;
-    }
-  } else if (prevActiveIndex > activeIndex) {
-    if (activeIndex === 0 && prevActiveIndex === len - 1) {
-      quarterTurns.current += 1;
-    } else {
-      quarterTurns.current -= 1;
+  if (activeIndex !== -1 && prevActiveIndex !== -1) {
+    if (prevPos < pos) {
+      const looping = pos === filteredLen - 1 && prevPos === 0;
+      turns.current += looping ? -1 : 1;
+    } else if (pos < prevPos) {
+      const looping = pos === 0 && prevPos === filteredLen - 1;
+      turns.current += looping ? 1 : -1;
     }
   }
 
-  let mod = quarterTurns.current % 4;
+  let mod = turns.current % 4;
   if (mod < 0) mod += 4;
 
   let position = [0.1, 58, 51];
@@ -93,7 +69,7 @@ export default function Experience() {
   }
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const rot = [0, (quarterTurns.current * -Math.PI) / 2 - Math.PI / 10, 0];
+  const rot = [0, (turns.current * -Math.PI) / 2 - Math.PI / 10, 0];
   const [spring, api] = useSpring(() => ({
     rotation: rot,
     config,
@@ -107,7 +83,7 @@ export default function Experience() {
   }, [api, rot]);
 
   const bind = useDrag(
-    ({ movement: [mx], last, event }) => {
+    ({ movement: [mx], last }) => {
       const value = Math.min(Math.abs(mx), 44.5); // clamping...
       const sign = Math.sign(mx);
       if (last) {
@@ -116,11 +92,7 @@ export default function Experience() {
           return;
         } else {
           api.start({
-            rotation: [
-              0,
-              (quarterTurns.current * -Math.PI) / 2 - Math.PI / 10,
-              0,
-            ],
+            rotation: [0, (turns.current * -Math.PI) / 2 - Math.PI / 10, 0],
             config,
           });
           return;
@@ -143,16 +115,14 @@ export default function Experience() {
 
   if (len === 0 || activeIndex === -1) return null;
 
-  // @ts-ignore
-  const index = filteredData.findIndex((v) => v.index === activeIndex);
   let countText =
-    filteredData.length && index !== -1 ? (
+    filteredLen && pos !== -1 ? (
       <>
-        {index + 1}&nbsp;&nbsp;/&nbsp;&nbsp;
+        {pos + 1}&nbsp;&nbsp;/&nbsp;&nbsp;
         {filteredData.length}
       </>
     ) : (
-      ''
+      '' // couldn't find the active on in the filtered list
     );
 
   return (
