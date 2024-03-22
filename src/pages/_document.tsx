@@ -17,6 +17,7 @@ export default function Document() {
           media="(prefers-color-scheme: dark)"
         />
         <link rel="manifest" href="/manifest.json" />
+        <meta property="og:image" content="/icons/ios-404-og-1200x630.jpg" />
       </Head>
       <body>
         <Main />

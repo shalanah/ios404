@@ -34,7 +34,7 @@ export default function RootLayout({
         />
         <link rel="manifest" href="/manifest.json" />
       </head>
-      {/* Would like to load this to avoid background flashing */}
+      <meta property="og:image" content="/icons/ios-404-og-1200x630.jpg" />
       <body className={inter.className}>{children}</body>
     </html>
   );
