@@ -83,7 +83,7 @@ export const CanIUseContextProvider = ({
   }, Object.fromEntries(Object.entries(canIUseData?.statuses || {}).map(([k, v]) => [k, 0])));
   const prefersColorScheme = usePrefersColorScheme();
   const [mode, setColorScheme] = useState(prefersColorScheme);
-  const isDarkMode = mode === 'dark';
+  const isDarkMode = mode !== 'light';
   useEffect(() => {
     setColorScheme(prefersColorScheme);
   }, [prefersColorScheme]);
