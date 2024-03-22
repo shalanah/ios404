@@ -22,7 +22,10 @@ export default function Document() {
           property="og:description"
           content="The missing web features of iOS"
         />
-        <meta property="og:image" content="/icons/ios-404-og-1200x630.jpg" />
+        <meta
+          property="og:image"
+          content="https://ios404.com/icons/ios-404-og-1200x630.jpg"
+        />
       </Head>
       <body>
         <Main />
