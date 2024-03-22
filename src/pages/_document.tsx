@@ -1,11 +1,4 @@
 import { Html, Head, Main, NextScript } from 'next/document';
-import { Inter_Tight } from 'next/font/google';
-
-const inter = Inter_Tight({
-  subsets: ['latin'],
-  // 700, 100, 800, 500, 300, 200, 400, "bold", "normal"
-  weight: ['100', '200', '300', '400', '500', '700', '800'],
-}); // use for our google font?
 
 export default function Document() {
   return (
@@ -33,7 +26,7 @@ export default function Document() {
           content="https://ios404.com/icons/ios-404-og-1200x630.jpg"
         />
       </Head>
-      <body className={inter.className}>
+      <body>
         <Main />
         <NextScript />
       </body>
