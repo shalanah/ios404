@@ -128,6 +128,7 @@ export default function Home() {
 
   // send of a signal for page trackings
   useEffect(() => {
+    if (window.location.hostname === 'localhost') return;
     td.signal('LoadedHomePage');
   }, []);
 
