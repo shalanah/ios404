@@ -28,7 +28,7 @@ jobs:
   # Build job
   build:
     runs-on: ubuntu-latest
-    environment: github-pages
+    environment: gh-pages
     env:
       NEXT_PUBLIC_TELEMETRY_DECK_APP_ID: ${{vars.NEXT_PUBLIC_TELEMETRY_DECK_APP_ID}}
     steps:
