@@ -54,8 +54,8 @@ export const Links = () => {
           <DMS
             checked={!isDarkMode}
             size={27}
-            moonColor="currentColor"
-            sunColor="transparent"
+            moonColor="#000"
+            sunColor="#fff"
             onChange={() => {}}
             animationProperties={{
               ...defaultProperties,
