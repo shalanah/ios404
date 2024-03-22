@@ -35,15 +35,15 @@ const FAQ = [
   ],
   [
     'What data source are you using?',
-    'iOS404 uses [caniuse.com](https://caniuse.com) ([caniuse github](https://github.com/Fyrd/caniuse/tree/main)), an open-source project to collect and present data on web browser compatibility.',
+    'iOS404 uses [caniuse.com](https://caniuse.com) ([caniuse github](https://github.com/Fyrd/caniuse/tree/main)), an open-source project to collect and present data on web browser compatibility. Hoping to expand to MDN data in the future --- there are even more missing iOS features in their data.',
   ],
   [
     'How do you determine if something is not supported?',
-    'If Android Chrome supports a feature more than iOS WebKit, that feature is consider missing with special note if "Partially supported". Use filtering to remove less-standard or non-standard features from your search.',
+    'If Android Chrome supports a feature more than iOS WebKit, that feature is consider missing with special note if support is "Partial". Use filtering to remove less-standard or non-standard features from your search.',
   ],
   [
     'Who are you?',
-    "Hi! 👋 I'm Shalanah Dawson a developer that believes the web should be powerful, approachable, and fun. Find me on [LinkedIn](https://linkedin.com/in/shalanah), [GitHub](https://github.com/shalanah), or [Twitter](https://twitter.com/shalanahfaith).",
+    "Hi! 👋 I'm Shalanah Dawson a developer that believes the web should be powerful, approachable, and fun. Find me on [Twitter](https://twitter.com/shalanahfaith), [GitHub](https://github.com/shalanah), or [LinkedIn](https://linkedin.com/in/shalanah).",
   ],
   ['', 'Copyright 2024. All Rights Reserved - Shalanah Dawson'],
 ];

@@ -119,6 +119,19 @@ export default function Home() {
     setIsFirefox(browser.isBrowser('Firefox'));
   }, []);
 
+  // preload our images
+  useEffect(() => {
+    const images = [
+      '/sprites/spritesheet.jpg',
+      '/milkcarton-texture-bake-dark8.jpg',
+      '/milkcarton-texture-bake-light5.jpg',
+    ];
+    images.forEach((src) => {
+      const img = new Image();
+      img.src = src;
+    });
+  }, []);
+
   if (width === null) return null;
 
   // Vertical View
