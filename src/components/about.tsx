@@ -35,11 +35,11 @@ const FAQ = [
   ],
   [
     'What data source are you using?',
-    'iOS404 uses [caniuse.com](https://caniuse.com) ([caniuse github](https://github.com/Fyrd/caniuse/tree/main)), an open-source project to collect and present data on web browser compatibility. Hoping to expand to MDN data in the future --- there are even more missing iOS features in their data.',
+    'iOS404 uses [caniuse.com](https://caniuse.com) ([caniuse github](https://github.com/Fyrd/caniuse/tree/main)) data. In the future, hoping to expand to MDN data as well --- there are even more missing iOS features in MDN data.',
   ],
   [
     'How do you determine if something is not supported?',
-    'If Android Chrome supports a feature more than iOS WebKit, that feature is consider missing with special note if support is "Partial". Use filtering to remove less-standard or non-standard features from your search.',
+    'If Android Chrome supports a feature more than iOS WebKit, that feature is consider missing with special note if support is "Partial". Use the filtering icon to remove less-standard or non-standard features from your search.',
   ],
   [
     'Who are you?',
@@ -47,7 +47,7 @@ const FAQ = [
   ],
   [
     'Do you track me?',
-    'iOS404 use TelemetryDeck to collect anonymized usage data. This helps to understand how our users are using the website and how we can improve it. TelemetryDeck does not collect any personally identifiable information. You can read more about  [TelemetryDeck’s privacy policy](https://telemetrydeck.com/privacy)',
+    'iOS404 uses TelemetryDeck. TelemetryDeck does not collect any personally identifiable information. This helps to understand how our users are using the website and how we can improve it. You can read more about [TelemetryDeck’s privacy policy](https://telemetrydeck.com/privacy)',
   ],
   ['', 'Copyright 2024. All Rights Reserved - Shalanah Dawson'],
 ];
