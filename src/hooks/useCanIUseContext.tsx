@@ -1,6 +1,4 @@
 // @ts-nocheck
-'use client';
-
 import React, {
   useContext,
   createContext,
@@ -10,7 +8,6 @@ import React, {
   useMemo,
 } from 'react';
 import { useHash } from './useHash';
-import usePrefersColorScheme from 'use-prefers-color-scheme';
 import {
   getIOSSafariLacking,
   orderCanIUseData,
@@ -30,8 +27,6 @@ interface CanIUseContextInterface {
   statuses: any;
   filters: any;
   setFilters: (filters: any) => void;
-  isDarkMode: boolean;
-  setColorScheme: (mode: string) => void;
   filteredData: any;
   search: string;
   setSearch: (search: string) => void;
@@ -81,21 +76,6 @@ export const CanIUseContextProvider = ({
     acc[v.status] += 1;
     return acc;
   }, Object.fromEntries(Object.entries(canIUseData?.statuses || {}).map(([k, v]) => [k, 0])));
-  const prefersColorScheme = usePrefersColorScheme();
-  const [mode, setColorScheme] = useState(prefersColorScheme);
-  const isDarkMode = mode !== 'light';
-  useEffect(() => {
-    setColorScheme(prefersColorScheme);
-  }, [prefersColorScheme]);
-  useEffect(() => {
-    if (isDarkMode) {
-      document.documentElement.classList.add('dark');
-      document.documentElement.classList.remove('light');
-    } else {
-      document.documentElement.classList.remove('dark');
-      document.documentElement.classList.add('light');
-    }
-  }, [isDarkMode]);
 
   const [hash, updateHash] = useHash();
   let activeIndex =
@@ -196,8 +176,6 @@ export const CanIUseContextProvider = ({
         filters,
         filteredData,
         setFilters,
-        isDarkMode,
-        setColorScheme,
         setNextFeature,
         canIUseData,
         setHasError,

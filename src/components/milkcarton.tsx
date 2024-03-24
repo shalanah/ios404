@@ -5,12 +5,12 @@ Command: npx gltfjsx@6.2.16 milkcartons-noart.glb
 
 import React from 'react';
 import { useGLTF, useTexture } from '@react-three/drei';
-import useCanIUseContext from '../hooks/useCanIUseContext';
 import {
   type Object3DEventMap,
   type BufferGeometry,
   type Object3D,
 } from 'three';
+import useDarkMode from '../hooks/useDarkMode';
 
 const textureUrlLight = '/milkcarton-texture-bake-light5.jpg';
 const textureUrlDark = '/milkcarton-texture-bake-dark8.jpg';
@@ -23,7 +23,7 @@ type MilkCartonNodes = {
 };
 
 export const Model = () => {
-  const { isDarkMode } = useCanIUseContext();
+  const { isDarkMode } = useDarkMode();
   const scene = useGLTF('/milkcartons-noart.glb');
   const nodes = scene.nodes as MilkCartonNodes['nodes'];
   // @ts-ignore

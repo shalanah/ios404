@@ -2,9 +2,9 @@ import React from 'react';
 import { InfoCircledIcon } from '@radix-ui/react-icons';
 import { About } from './about';
 import styled from 'styled-components';
-import useCanIUseContext from '../hooks/useCanIUseContext';
 import { verticalViewWidth } from '../utils/constants';
 import { DarkModeSwitch, defaultProperties } from 'react-toggle-dark-mode';
+import useDarkMode from '../hooks/useDarkMode';
 
 const DMS = styled(DarkModeSwitch)`
   vector-effect: non-scaling-stroke;
@@ -33,7 +33,7 @@ const Div = styled.div`
 `;
 
 export const Links = () => {
-  const { isDarkMode, setColorScheme } = useCanIUseContext();
+  const { isDarkMode, setColorScheme } = useDarkMode();
   return (
     <Div>
       <p style={{ marginRight: 2, fontWeight: 400 }}>

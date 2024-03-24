@@ -17,6 +17,7 @@ import { Filter } from '../components/filter';
 import { GlobalCss } from '../components/globalCss';
 import { useTelemetryDeck } from '../hooks/useTelemetryDeck';
 import { useIsFirefox } from '../hooks/useIsFirefox';
+import { DarkModeProvider } from '../hooks/useDarkMode';
 
 const DesktopFeaturesDiv = styled.div`
   text-align: left;
@@ -135,41 +136,43 @@ export default function Home() {
   if (width && width < verticalViewWidth) {
     return (
       <CanIUseContextProvider>
-        <GlobalCss />
-        <ErrorModal />
-        <MobileCanvasDiv>
-          <Canvas flat camera={cameraMobile} style={{ touchAction: 'none' }}>
-            <Experience />
-          </Canvas>
-        </MobileCanvasDiv>
-        <LinksDiv>
-          <Links />
-        </LinksDiv>
-        <Drawer
-          height={[openHeight, closedHeight]}
-          content={
-            <div
-              style={{
-                padding: '2px 30px 20px',
-                textAlign: 'left',
-              }}
-            >
-              <Features />
-            </div>
-          }
-          footer={
-            <div
-              style={{
-                padding: '13px 25px 20px',
-                borderTop: '1px solid var(--modalHr)',
-              }}
-            >
-              <Filter />
-              <div style={{ height: 8 }} />
-              <Search />
-            </div>
-          }
-        />
+        <DarkModeProvider>
+          <GlobalCss />
+          <ErrorModal />
+          <MobileCanvasDiv>
+            <Canvas flat camera={cameraMobile} style={{ touchAction: 'none' }}>
+              <Experience />
+            </Canvas>
+          </MobileCanvasDiv>
+          <LinksDiv>
+            <Links />
+          </LinksDiv>
+          <Drawer
+            height={[openHeight, closedHeight]}
+            content={
+              <div
+                style={{
+                  padding: '2px 30px 20px',
+                  textAlign: 'left',
+                }}
+              >
+                <Features />
+              </div>
+            }
+            footer={
+              <div
+                style={{
+                  padding: '13px 25px 20px',
+                  borderTop: '1px solid var(--modalHr)',
+                }}
+              >
+                <Filter />
+                <div style={{ height: 8 }} />
+                <Search />
+              </div>
+            }
+          />
+        </DarkModeProvider>
       </CanIUseContextProvider>
     );
   }
@@ -177,42 +180,44 @@ export default function Home() {
   // Horizontal View
   return (
     <CanIUseContextProvider>
-      <GlobalCss />
-      <ErrorModal />
-      <DesktopCanvasDiv style={{ position: isFirefox ? 'fixed' : 'sticky' }}>
-        <div
-          style={{
-            width: '100vw',
-            position: 'absolute',
-            left: '50%',
-            transform: 'translateX(calc(-50% + 4vw))',
-            top: 0,
-            height: '100dvh',
-          }}
-        >
-          <Canvas
+      <DarkModeProvider>
+        <GlobalCss />
+        <ErrorModal />
+        <DesktopCanvasDiv style={{ position: isFirefox ? 'fixed' : 'sticky' }}>
+          <div
             style={{
-              touchAction: 'none',
+              width: '100vw',
+              position: 'absolute',
+              left: '50%',
+              transform: 'translateX(calc(-50% + 4vw))',
+              top: 0,
+              height: '100dvh',
             }}
-            flat
-            camera={cameraDesktop}
           >
-            <Experience />
-          </Canvas>
-        </div>
-      </DesktopCanvasDiv>
-      <DesktopIntroDiv>
-        <Intro />
-      </DesktopIntroDiv>
-      <DesktopFeaturesDiv>
-        <DesktopFeaturesStickyTopCover />
-        <Features />
-        {/* Gap at bottom of feature list (acts like padding) */}
-        <div style={{ height: 30 }} />
-      </DesktopFeaturesDiv>
-      <LinksDiv>
-        <Links />
-      </LinksDiv>
+            <Canvas
+              style={{
+                touchAction: 'none',
+              }}
+              flat
+              camera={cameraDesktop}
+            >
+              <Experience />
+            </Canvas>
+          </div>
+        </DesktopCanvasDiv>
+        <DesktopIntroDiv>
+          <Intro />
+        </DesktopIntroDiv>
+        <DesktopFeaturesDiv>
+          <DesktopFeaturesStickyTopCover />
+          <Features />
+          {/* Gap at bottom of feature list (acts like padding) */}
+          <div style={{ height: 30 }} />
+        </DesktopFeaturesDiv>
+        <LinksDiv>
+          <Links />
+        </LinksDiv>
+      </DarkModeProvider>
     </CanIUseContextProvider>
   );
 }
