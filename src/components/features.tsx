@@ -6,6 +6,7 @@ import { useEffect, useRef } from 'react';
 import { buttonClass } from '../hooks/useCanIUseContext';
 import styled from 'styled-components';
 import usePrevious from '../hooks/usePrevious';
+import FeaturesEmpty from './featuresEmpty';
 
 const Div = styled.div`
   &:focus-visible {
@@ -112,6 +113,7 @@ export default function Features() {
   const activeInList = filteredData.some((v) => v.index === activeIndex);
   return (
     <Div>
+      <FeaturesEmpty />
       {filteredData.map(({ key, index, ...v }, i) => {
         const active = index === activeIndex;
         return (
@@ -132,16 +134,6 @@ export default function Features() {
             }}
           >
             <h2 className={active ? 'active' : ''}>{v.title} </h2>{' '}
-            {/* <div>{v.categories.join(', ')}</div> */}
-            {/* {v.notes && <div>{v.notes}</div>}
-            {v.keywords && <div>{v.keywords}</div>} */}
-            {/* <div>
-              {v.links.map(({ url, title }, k) => (
-                <span key={k}>
-                  {url} {title}
-                </span>
-              ))}
-            </div> */}
           </button>
         );
       })}

@@ -43,7 +43,7 @@ const Div = styled.div`
   cursor: pointer;
   label {
     width: 100%;
-    padding: 4px 0px;
+    padding: 2px 0px;
     font-size: 0.95rem; // TODO: double check this doesn't do the weird zoomy thing in iOS
     line-height: 1.1;
   }

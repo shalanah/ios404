@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { MixerVerticalIcon, Cross2Icon } from '@radix-ui/react-icons';
 import useCanIUseContext from '../hooks/useCanIUseContext';
 import styled from 'styled-components';
@@ -64,6 +64,7 @@ export const Filter = () => {
       return statusCounts[k] > 0;
     })
   );
+  const ref = useRef<HTMLButtonElement>(null);
   const [open, setOpen] = useState(false);
   const len = Object.keys(nonEmptyStatusFilters).length;
   const numChecked = Object.values(nonEmptyStatusFilters).filter(
@@ -116,20 +117,30 @@ export const Filter = () => {
         color: 'var(--titleColor)',
       }}
     >
-      <Dialog.Root
-        onOpenChange={() => {
-          setOpen(!open);
-        }}
-        open={open}
-      >
+      <Dialog.Root open={open}>
         <Dialog.Trigger asChild>
-          <Button aria-label="Filter" style={{ marginLeft: 4 }}>
+          <Button
+            ref={ref}
+            aria-label="Filter"
+            style={{ marginLeft: 4 }}
+            onClick={() => setOpen(!open)}
+          >
             <MixerVerticalIcon width={22} height={22} />
           </Button>
         </Dialog.Trigger>
         <Dialog.Portal>
           <DialogOverlay />
-          <DialogContent style={{ width: 280 }}>
+          <DialogContent
+            onEscapeKeyDown={() => setOpen(false)}
+            style={{ width: 280 }}
+            onPointerDownOutside={(e) => {
+              if (
+                e.target &&
+                (e.target as HTMLElement).closest('button') !== ref.current
+              )
+                setOpen(false);
+            }}
+          >
             <FilterContent />
             <Submit
               onClick={() => {
@@ -141,7 +152,7 @@ export const Filter = () => {
                 Matches {filteredTotal} features
               </span>
             </Submit>
-            <DialogClose>
+            <DialogClose onClick={() => setOpen(false)}>
               <Cross2Icon />
             </DialogClose>
           </DialogContent>

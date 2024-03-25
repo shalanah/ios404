@@ -13,6 +13,7 @@ import {
   orderCanIUseData,
 } from '../utils/parseCanIUseData';
 import canIUseDataSaved from '../utils/canIUseData.json';
+import { parseMdnData } from '../utils/parseMdnData';
 
 const dataLink =
   'https://raw.githubusercontent.com/Fyrd/caniuse/master/fulldata-json/data-2.0.json';
