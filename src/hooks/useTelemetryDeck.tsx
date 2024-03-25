@@ -48,8 +48,8 @@ export const useTelemetryDeck = () => {
     const vendor = platform.vendor || '';
     const device = platform.type || '';
     const isIpad =
-      navigator.userAgent.includes('Mac') && 'ontouchend' in document;
-    td.clientUser = userId;
+      device !== 'mobile' && vendor === 'Apple' && 'ontouchend' in document;
+    td.clientUser = userId; // not associated with any other data
     td.signal('LoadedHomePage', {
       'country or tz': getCountry(), // trying to obscure tz by using country instead if we can
       vendor,

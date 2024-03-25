@@ -3,9 +3,8 @@ import { Inter_Tight } from 'next/font/google';
 
 const inter = Inter_Tight({
   subsets: ['latin'],
-  // 700, 100, 800, 500, 300, 200, 400, "bold", "normal"
   weight: ['100', '200', '300', '400', '500', '700', '800'],
-}); // use for our google font?
+});
 
 // TODO: Move more over to metadata over putting in the head
 export const metadata: Metadata = {
@@ -24,6 +23,7 @@ export const metadata: Metadata = {
     'whatwg',
     'w3c',
     'caniuse',
+    'ios404',
   ],
 };
 
