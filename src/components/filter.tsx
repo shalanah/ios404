@@ -149,7 +149,8 @@ export const Filter = () => {
             >
               Close{' '}
               <span style={{ fontSize: '.8em' }}>
-                Matches {filteredTotal} features
+                Matches {filteredTotal}{' '}
+                {filteredTotal === 1 ? 'feature' : 'features'}
               </span>
             </Submit>
             <DialogClose onClick={() => setOpen(false)}>
