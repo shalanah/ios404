@@ -1,7 +1,7 @@
 import React from 'react';
 import { MixerVerticalIcon, GlobeIcon } from '@radix-ui/react-icons';
 import useCanIUseContext from '../hooks/useCanIUseContext';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { FilterModal } from './filterModal';
 import { FilterModalContentSpecs } from './filterModalContentSpecs';
 import { FilterModalContentBrowser, icons } from './filterModalContentBrowser';
@@ -75,18 +75,39 @@ const Span = styled.span`
   right: 0;
 `;
 
+const boxShadowShrinkGlow = keyframes`
+  0% {
+    box-shadow: 0 0 0 0px #ff000033;
+  }
+  40% {
+    box-shadow: 0 0 0 0px #ff000033;
+  }
+   50% {
+    box-shadow: 0 0 0 4px #ffaaaa55;
+  }
+  60% {
+    box-shadow: 0 0 0 0px #ff000033;
+  }
+  100% {
+    box-shadow: 0 0 0 0px #ff000033;
+  }
+`;
+
+const Error = styled.div`
+  width: 4px;
+  height: 4px;
+  border-radius: 100%;
+  background: red;
+  position: absolute;
+  top: 3px;
+  right: 5px;
+  animation: ${boxShadowShrinkGlow} 5s infinite alternate;
+`;
+
 export const Filter = () => {
-  const { statusCounts, filters, iOSLacking, filteredData, loading } =
-    useCanIUseContext();
-  const nonEmptyStatusFilters = Object.fromEntries(
-    Object.entries(filters.statuses).filter(([k, _]) => {
-      return statusCounts[k] > 0;
-    })
-  );
-  const len = Object.keys(nonEmptyStatusFilters).length;
-  const numChecked = Object.values(nonEmptyStatusFilters).filter(
-    (v) => v
-  ).length;
+  const { filters, iOSLacking, filteredData, loading } = useCanIUseContext();
+  const len = Object.keys(filters.statuses).length;
+  const numChecked = Object.values(filters.statuses).filter((v) => v).length;
   const filterCount = len - numChecked;
 
   let count =
@@ -116,6 +137,7 @@ export const Filter = () => {
               {filterCount !== 0 && numChecked !== 0 && (
                 <Indicator>{numChecked}</Indicator>
               )}
+              {numChecked === 0 && <Error />}
             </Button>
           }
         >
@@ -133,6 +155,7 @@ export const Filter = () => {
               flexShrink: 0,
             }}
           >
+            {!hasBrowsers && <Error />}
             <div
               style={{
                 width:
@@ -145,16 +168,17 @@ export const Filter = () => {
               <Span
                 key={'none'}
                 style={{
-                  transform: `translate(-2px, 2px)`,
+                  // transform: `translate(-1px, 1px)`,
                   opacity: hasBrowsers ? 0 : 1,
                 }}
               >
                 <GlobeIcon
-                  width={browserLogoSize - 4}
-                  height={browserLogoSize - 4}
+                  width={browserLogoSize}
+                  height={browserLogoSize}
                   // TODO: Look into how to make this accessible... alt? title? etc --- not sure with Radix Icons
                 />
               </Span>
+
               {/* Reversing so it goes Chrome, FF, then Safari, same order as in modal */}
               {Object.entries(filterBrowsersReversed).map(([k, v], i) => {
                 const before = Object.values(filterBrowsersReversed)

@@ -61,11 +61,11 @@ export const FilterModalContentBrowser = ({
         {[
           {
             key: 'and_chr',
-            title: 'Chrome for Android',
+            title: 'Chrome (Android)',
           },
           {
             key: 'and_ff',
-            title: 'Firefox for Android',
+            title: 'Firefox (Android)',
           },
           {
             key: 'safari',

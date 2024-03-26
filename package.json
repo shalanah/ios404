@@ -27,6 +27,7 @@
     "@use-gesture/react": "^10.3.1",
     "bowser": "^2.11.0",
     "leva": "^0.9.35",
+    "lodash": "^4.17.21",
     "next": "14.1.4",
     "next-compose-plugins": "^2.2.1",
     "next-plugin-svgr": "^1.1.10",

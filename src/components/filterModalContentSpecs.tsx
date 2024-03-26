@@ -27,7 +27,7 @@ export const FilterModalContentSpecs = ({
 }: {
   onClose?: () => void;
 }) => {
-  const { statusCounts, statuses, filters, setFilters, iOSLacking } =
+  const { statusCounts, statuses, filters, setFilters, filteredData } =
     useCanIUseContext();
   const nonEmptyStatusFilters = Object.fromEntries(
     Object.entries(filters.statuses).filter(([k, _]) => {
@@ -41,16 +41,8 @@ export const FilterModalContentSpecs = ({
   const indeterminate = numChecked !== len && numChecked > 0;
   const allChecked = numChecked === len;
   const checked = allChecked || (numChecked < len / 2 && numChecked > 0);
-  const filteredTotal = (
-    iOSLacking.filter(
-      (
-        // @ts-ignore
-        v
-      ) => {
-        return filters.statuses[v?.status];
-      }
-    ) || []
-  ).length;
+  // TODO: Make sure we have SOME BROWSERS
+  const filteredTotal = filteredData.length;
   return (
     <>
       <h2
@@ -63,7 +55,7 @@ export const FilterModalContentSpecs = ({
           marginTop: 5,
         }}
       >
-        Filters
+        Specifications
       </h2>
       <div style={{ padding: '15px 0' }}>
         <Checkbox
@@ -81,7 +73,7 @@ export const FilterModalContentSpecs = ({
           }}
           checked={checked}
         >
-          All specifications
+          All Specifications
         </Checkbox>
       </div>
       {[
@@ -167,7 +159,6 @@ export const FilterModalContentSpecs = ({
               </div>
             )}
             {Object.entries(statusCounts).map(([k, v], i) => {
-              if (v === 0) return null;
               const checked = filters.statuses[k];
               if (filterFn(statuses[k])) return null;
               return (
