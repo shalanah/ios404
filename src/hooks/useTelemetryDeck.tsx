@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import TelemetryDeck from '@telemetrydeck/sdk';
 import Bowser from 'bowser';
 import { getCountry } from '../utils/getCountryFromTz';
+import { hash } from 'three/examples/jsm/nodes/Nodes.js';
 
 const getRandomIdentifier = () => {
   return (
@@ -12,7 +13,7 @@ const getRandomIdentifier = () => {
 };
 const appID = process.env.NEXT_PUBLIC_TELEMETRY_DECK_APP_ID!;
 const isLocal = process.env.NEXT_PUBLIC_ENV === 'local';
-const signalForLocal = false; // for testing purposes - turn on locally to test signals
+const signalForLocal = true; // for testing purposes - turn on locally to test signals
 const td = new TelemetryDeck({
   appID: appID,
   clientUser: 'anonymous',
@@ -49,12 +50,15 @@ export const useTelemetryDeck = () => {
     const device = platform.type || '';
     const isIpad =
       device !== 'mobile' && vendor === 'Apple' && 'ontouchend' in document;
+    const searchParams = new URLSearchParams(window.location.search);
     td.clientUser = userId; // not associated with any other data
     td.signal('LoadedHomePage', {
-      'country or tz': getCountry(), // trying to obscure tz by using country instead if we can
-      vendor,
+      'country or tz': getCountry(), // trying to obscure tz by using country - not using ip sniffing uses tz
       device: isIpad ? 'tablet' : device,
-      url: window.location.href, // to understand if people are sharing with site filters or hashes
+      // Site specific data:
+      filteredBrowser: searchParams.get('browsers'), // what browsers are filtered?
+      filteredSpecs: searchParams.get('specsOff'), // what specs are filtered?
+      feature: window.location.hash, // which feature?
     });
   }, []);
 };

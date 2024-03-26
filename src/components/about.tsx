@@ -47,7 +47,7 @@ const FAQ = [
   ],
   [
     'Do you track me?',
-    'iOS404 uses TelemetryDeck. TelemetryDeck does not collect any personally identifiable information. This helps to understand how our users are using the website and how we can improve it. iOS404 sends a best guess on country, device type (phone/tablet/desktop), vendor (Apple/Google). You can read more about [TelemetryDeck’s privacy policy](https://telemetrydeck.com/privacy)',
+    'iOS404 uses TelemetryDeck. TelemetryDeck does not collect any personally identifiable information. iOS404 sends a best guess on country and device type (phone|tablet|desktop) and on load sends which site feature and filters are active. This helps to understand how our users are using the website and how we can improve it. You can read more about [TelemetryDeck’s privacy policy](https://telemetrydeck.com/privacy)',
   ],
   ['', 'Copyright 2024. All Rights Reserved - Shalanah Dawson'],
 ];
