@@ -87,7 +87,7 @@ export const FilterModalContentSpecs = ({
       {[
         {
           title: 'W3C',
-          description: 'standards + specs since 1994',
+          description: 'Standards + specs since 1994',
           filterFn: (v: string) => {
             return !v.startsWith('W3C');
           },
@@ -101,7 +101,7 @@ export const FilterModalContentSpecs = ({
         },
         {
           title: 'WHATWG',
-          description: 'evolving standards since 2004',
+          description: 'Evolving standards since 2004',
           filterFn: (v: string) => {
             return !v.startsWith('WHATWG');
           },
