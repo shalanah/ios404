@@ -1,4 +1,6 @@
 // @ts-nocheck
+// TODO: Really need to go back and do all types
+
 import React, {
   useContext,
   createContext,
@@ -13,7 +15,8 @@ import {
   orderCanIUseData,
 } from '../utils/parseCanIUseData';
 import canIUseDataSaved from '../utils/canIUseData.json';
-import { parseMdnData } from '../utils/parseMdnData';
+import cloneDeep from 'lodash/cloneDeep';
+// import { parseMdnData } from '../utils/parseMdnData';
 
 const dataLink =
   'https://raw.githubusercontent.com/Fyrd/caniuse/master/fulldata-json/data-2.0.json';
@@ -38,6 +41,7 @@ interface CanIUseContextInterface {
   }) => void;
   canIUseData: any;
   setHasError: (error: boolean) => void;
+  filteredByBrowser: any;
 }
 
 // Game state... could probably be broken out into smaller files / hooks
@@ -45,6 +49,49 @@ export const CanIUseContext = createContext<CanIUseContextInterface | null>(
   null
 );
 export const buttonClass = 'feature-list-button';
+
+const defaultFilters = {
+  browsers: {
+    and_chr: true,
+    and_ff: false,
+    safari: false,
+  },
+  statuses: {
+    cr: true,
+    ls: true,
+    other: true,
+    pr: true,
+    rec: true,
+    unoff: true,
+    wd: true,
+  },
+};
+
+const getInitialFiltersFromUrl = () => {
+  const params = new URLSearchParams(window.location.search);
+  const browsers = params.get('browsers');
+  const specsOff = params.get('specsOff');
+  let filters = cloneDeep(defaultFilters);
+  if (browsers) {
+    const browsersOn = browsers.split('_').map((k) => k.replace('and', 'and_'));
+    Object.keys(filters.browsers).forEach((k) => {
+      filters.browsers[k] = browsersOn.includes(k);
+    });
+    // Double check that at least one browser is on
+    if (Object.values(filters.browsers).every((v) => !v)) {
+      filters.browsers.and_chr = true;
+    }
+  }
+  if (specsOff) {
+    const specKeys = Object.keys(filters.statuses);
+    specsOff.split('_').forEach((k) => {
+      if (specKeys.includes(k)) {
+        filters.statuses[k] = false;
+      }
+    });
+  }
+  return filters;
+};
 
 // TODO: Separate out some of these providers?
 export const CanIUseContextProvider = ({
@@ -62,21 +109,7 @@ export const CanIUseContextProvider = ({
   const [search, setSearch] = useState('');
   const [filters, setFilters] = useState<{
     statuses: { [k: string]: boolean };
-  }>({
-    statuses: {
-      cr: true,
-      ls: true,
-      other: true,
-      pr: true,
-      rec: true,
-      unoff: true,
-      wd: true,
-    },
-  });
-  const statusCounts = iOSLacking.reduce((acc, v) => {
-    acc[v.status] += 1;
-    return acc;
-  }, Object.fromEntries(Object.entries(canIUseData?.statuses || {}).map(([k, v]) => [k, 0])));
+  }>(() => getInitialFiltersFromUrl());
 
   const [hash, updateHash] = useHash();
   let activeIndex =
@@ -125,7 +158,20 @@ export const CanIUseContextProvider = ({
       });
   }, []);
 
-  let filteredData = iOSLacking.filter((v) => filters.statuses[v.status]);
+  const hasBrowsers = Object.values(filters.browsers).some((v) => v);
+  const filteredByBrowser = iOSLacking.filter((v) => {
+    return hasBrowsers
+      ? Object.entries(filters.browsers)
+          .filter(([_, on]) => on)
+          .every(([k, on]) => {
+            return on && v.browsers[k].moreThanIOSSafari;
+          })
+      : false;
+  });
+  // Add status filters
+  let filteredData = cloneDeep(filteredByBrowser).filter((v) => {
+    return filters.statuses[v.status];
+  });
   if (search.trim().length > 0) {
     const searchLower = search.trim().toLowerCase();
     filteredData = filteredData.filter((v) => {
@@ -162,6 +208,50 @@ export const CanIUseContextProvider = ({
     }
   };
 
+  // Allow filters to be shareable by adding query strings
+  useEffect(() => {
+    // We're talking low number key/values here... so no need to over-optimize
+    const hasAllSpecs = Object.values(filters.statuses).every((v) => v);
+    const hasNoSpecs = Object.values(filters.statuses).every((v) => !v);
+    const onlyChrome = Object.entries(filters.browsers).every(([k, v]) =>
+      k === 'and_chr' ? v : !v
+    );
+    const noBrowsers = Object.values(filters.browsers).every((v) => !v);
+    let params = new URLSearchParams({
+      ...(onlyChrome || noBrowsers // if default or a bad state do nothing
+        ? {}
+        : {
+            browsers:
+              Object.entries(filters.browsers)
+                .filter(([_, on]) => on)
+                .map(([k]) => k.replace('_', ''))
+                .join('_') || 'none',
+          }),
+      ...(!hasAllSpecs && !hasNoSpecs // if default or a bad state do nothing
+        ? {
+            specsOff: Object.entries(filters.statuses)
+              .filter(([_, on]) => !on)
+              .map(([k]) => k)
+              .join('_'),
+          }
+        : {}),
+    });
+    const previousParams = new URLSearchParams(window.location.search);
+    if (params.toString() !== previousParams.toString()) {
+      const currentHash = window.location.hash;
+      window.history.replaceState(
+        null,
+        '',
+        `${window.location.pathname}?${params.toString()}${currentHash}`
+      );
+    }
+  }, [filters]);
+
+  const statusCounts = filteredByBrowser.reduce((acc, v) => {
+    acc[v.status] += 1;
+    return acc;
+  }, Object.fromEntries(Object.entries(canIUseData?.statuses || {}).map(([k, v]) => [k, 0])));
+
   return (
     <CanIUseContext.Provider
       value={{
@@ -176,6 +266,7 @@ export const CanIUseContextProvider = ({
         statuses: canIUseData?.statuses,
         filters,
         filteredData,
+        filteredByBrowser,
         setFilters,
         setNextFeature,
         canIUseData,

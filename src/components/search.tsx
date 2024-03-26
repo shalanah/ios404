@@ -4,7 +4,7 @@ import useCanIUseContext from '../hooks/useCanIUseContext';
 import styled from 'styled-components';
 
 const Input = styled.input`
-  padding: 10px 10px 10px 38px;
+  padding: 10px 10px 10px 43px;
   border-radius: 12px;
   border: 1px solid var(--modalHr);
   font-size: 16px;

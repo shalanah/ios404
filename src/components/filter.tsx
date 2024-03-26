@@ -1,76 +1,114 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { MixerVerticalIcon, Cross2Icon } from '@radix-ui/react-icons';
+import React from 'react';
+import { MixerVerticalIcon, GlobeIcon } from '@radix-ui/react-icons';
 import useCanIUseContext from '../hooks/useCanIUseContext';
-import styled from 'styled-components';
-import { DialogClose, DialogContent, DialogOverlay } from './dialogStyles';
-import * as Dialog from '@radix-ui/react-dialog';
-import { FilterContent } from './filterContent';
+import styled, { keyframes } from 'styled-components';
+import { FilterModal } from './filterModal';
+import { FilterModalContentSpecs } from './filterModalContentSpecs';
+import { FilterModalContentBrowser, icons } from './filterModalContentBrowser';
+
+const height = 36;
+const radius = 10;
+const iconSize = 22;
+const fontSize = 13;
+
+const Indicator = styled.span`
+  display: inline-block;
+  width: 19px;
+  height: 14px;
+  border-radius: ${radius}px;
+  background: var(--modalBg);
+  color: var(--color);
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  font-size: 10px;
+  line-height: 0px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  border: 1px solid var(--modalHr);
+`;
 
 const Button = styled.button`
-  border-radius: 10px;
-  height: 36px;
-  width: 36px;
+  border-radius: ${radius}px;
+  height: ${height}px;
+  min-width: ${height}px;
+  padding: 0 5px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   color: var(--color);
-  margin-left: -8px;
   flex-shrink: 0;
   transition: 0.15s;
-  &:hover {
-    transition: 0.15s;
-    transform: scale(1);
-    background: var(--modalBg);
-  }
-`;
-
-const ClearButton = styled.button`
-  transition: 0.15s;
+  position: relative;
   &:hover {
     transform: scale(1);
     background: var(--modalBg);
   }
 `;
 
-const Submit = styled.button`
-  display: block;
-  padding: 8px 15px;
-  text-align: center;
-  border-radius: 12px;
-  width: 100%;
-  border: 1px solid currentColor;
-  font-size: 0.95rem;
+const Div = styled.div`
   display: flex;
-  gap: 10px;
-  align-items: baseline;
+  gap: 5px;
+  height: ${height}px;
+  align-items: center;
+  color: var(--titleColor);
   justify-content: space-between;
+  width: 100%;
+  flex-shrink: 0;
+`;
+const Count = styled.div`
+  min-width: 8ch;
+  white-space: nowrap;
   font-variant-numeric: tabular-nums;
-  &:hover {
-    transform: scale(1);
+  color: var(--color);
+  font-size: ${fontSize}px;
+`;
+const Span = styled.span`
+  opacity: 0;
+  transition: 0.2s transform ease-out, 0.1s opacity ease-out;
+  position: absolute;
+  top: 0;
+  pointer-events: none;
+  right: 0;
+`;
+
+const boxShadowShrinkGlow = keyframes`
+  0% {
+    box-shadow: 0 0 0 0px #ff000033;
   }
+  40% {
+    box-shadow: 0 0 0 0px #ff000033;
+  }
+   50% {
+    box-shadow: 0 0 0 4px #ffaaaa55;
+  }
+  60% {
+    box-shadow: 0 0 0 0px #ff000033;
+  }
+  100% {
+    box-shadow: 0 0 0 0px #ff000033;
+  }
+`;
+
+const Error = styled.div`
+  width: 4px;
+  height: 4px;
+  border-radius: 100%;
+  background: red;
+  position: absolute;
+  top: 3px;
+  right: 5px;
+  animation: ${boxShadowShrinkGlow} 5s infinite alternate;
 `;
 
 export const Filter = () => {
-  const {
-    statusCounts,
-    filters,
-    setFilters,
-    iOSLacking,
-    filteredData,
-    loading,
-  } = useCanIUseContext();
-  const nonEmptyStatusFilters = Object.fromEntries(
-    Object.entries(filters.statuses).filter(([k, _]) => {
-      return statusCounts[k] > 0;
-    })
-  );
-  const ref = useRef<HTMLButtonElement>(null);
-  const [open, setOpen] = useState(false);
-  const len = Object.keys(nonEmptyStatusFilters).length;
-  const numChecked = Object.values(nonEmptyStatusFilters).filter(
-    (v) => v
-  ).length;
-  const allChecked = numChecked === len;
+  const { filters, iOSLacking, filteredData, loading } = useCanIUseContext();
+  const len = Object.keys(filters.statuses).length;
+  const numChecked = Object.values(filters.statuses).filter((v) => v).length;
+  const filterCount = len - numChecked;
 
   let count =
     filteredData.length === iOSLacking.length
@@ -80,135 +118,101 @@ export const Filter = () => {
     count = 'Loading...';
   }
 
-  useEffect(() => {
-    // Make sure there is focus on the container element
-    const onKeyUp = (e: KeyboardEvent) => {
-      const el = e.target as HTMLElement;
-      const tagName = el.tagName.toLowerCase();
-      if (['button', 'label', 'svg', 'input'].includes(tagName)) return;
-      if (e.key === 'Enter' && open) {
-        setOpen(false);
-      }
-    };
-    window.addEventListener('keyup', onKeyUp);
-    return () => {
-      window.removeEventListener('keyup', onKeyUp);
-    };
-  }, [open]);
-
-  const filteredTotal = (
-    iOSLacking.filter(
-      (
-        // @ts-ignore
-        v
-      ) => {
-        return filters.statuses[v?.status];
-      }
-    ) || []
-  ).length;
+  const browserCount = Object.values(filters.browsers).filter((v) => v).length;
+  const browserOffset = 16;
+  const browserLogoSize = 27;
+  const hasBrowsers = browserCount > 0;
+  // So order same as in modal Chrome, FF, then safari (it's a list of 3 not to worried about performance here))
+  const filterBrowsersReversed = Object.fromEntries(
+    Object.entries(filters.browsers).reverse()
+  );
 
   return (
-    <div
-      style={{
-        height: 35,
-        display: 'flex',
-        gap: 5,
-        alignItems: 'center',
-        color: 'var(--titleColor)',
-      }}
-    >
-      <Dialog.Root open={open}>
-        <Dialog.Trigger asChild>
+    <Div>
+      <div className="d-flex align-items-center" style={{ gap: 5 }}>
+        <FilterModal
+          button={
+            <Button aria-label="Filter" style={{ marginLeft: 4 }}>
+              <MixerVerticalIcon width={iconSize} height={iconSize} />
+              {filterCount !== 0 && numChecked !== 0 && (
+                <Indicator>{numChecked}</Indicator>
+              )}
+              {numChecked === 0 && <Error />}
+            </Button>
+          }
+        >
+          <FilterModalContentSpecs />
+        </FilterModal>
+        <Count>{count}</Count>
+      </div>
+      <FilterModal
+        button={
           <Button
-            ref={ref}
-            aria-label="Filter"
-            style={{ marginLeft: 4 }}
-            onClick={() => setOpen(!open)}
-          >
-            <MixerVerticalIcon width={22} height={22} />
-          </Button>
-        </Dialog.Trigger>
-        <Dialog.Portal>
-          <DialogOverlay />
-          <DialogContent
-            onEscapeKeyDown={() => setOpen(false)}
-            style={{ width: 280 }}
-            onPointerDownOutside={(e) => {
-              if (
-                e.target &&
-                (e.target as HTMLElement).closest('button') !== ref.current
-              )
-                setOpen(false);
+            aria-label="Comparison browsers"
+            style={{
+              // TODO: same order
+              color: 'var(--color)',
+              flexShrink: 0,
             }}
           >
-            <FilterContent />
-            <Submit
-              onClick={() => {
-                setOpen(false);
+            {!hasBrowsers && <Error />}
+            <div
+              style={{
+                width:
+                  browserLogoSize +
+                  browserOffset * Math.max(browserCount - 1, 0),
+                height: browserLogoSize,
+                position: 'relative',
               }}
             >
-              Close{' '}
-              <span style={{ fontSize: '.8em' }}>
-                Matches {filteredTotal}{' '}
-                {filteredTotal === 1 ? 'feature' : 'features'}
-              </span>
-            </Submit>
-            <DialogClose onClick={() => setOpen(false)}>
-              <Cross2Icon />
-            </DialogClose>
-          </DialogContent>
-        </Dialog.Portal>
-      </Dialog.Root>
-      <div
-        style={{
-          display: 'flex',
-          width: '100%',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-        }}
+              <Span
+                key={'none'}
+                style={{
+                  // transform: `translate(-1px, 1px)`,
+                  opacity: hasBrowsers ? 0 : 1,
+                }}
+              >
+                <GlobeIcon
+                  width={browserLogoSize}
+                  height={browserLogoSize}
+                  // TODO: Look into how to make this accessible... alt? title? etc --- not sure with Radix Icons
+                />
+              </Span>
+
+              {/* Reversing so it goes Chrome, FF, then Safari, same order as in modal */}
+              {Object.entries(filterBrowsersReversed).map(([k, v], i) => {
+                const before = Object.values(filterBrowsersReversed)
+                  .slice(0, i)
+                  .filter((on) => on).length;
+
+                // @ts-ignore
+                const Icon = icons[k];
+                return (
+                  <Span
+                    key={k}
+                    style={{
+                      transform: v
+                        ? `translateX(${-browserOffset * before}px)`
+                        : `translateX(${
+                            -browserOffset * Math.max(before - 1, 0)
+                          }px)`,
+                      opacity: v ? 1 : 0,
+                    }}
+                  >
+                    <Icon
+                      width={browserLogoSize}
+                      height={browserLogoSize}
+                      title={k}
+                    />
+                  </Span>
+                );
+              })}
+            </div>
+          </Button>
+        }
       >
-        <div
-          style={{
-            minWidth: '6.5ch',
-            whiteSpace: 'nowrap',
-            fontVariantNumeric: 'tabular-nums',
-            color: 'var(--color)',
-            fontSize: '14px',
-            opacity: 1,
-          }}
-        >
-          {count}
-        </div>
-        {!allChecked && (
-          <ClearButton
-            style={{
-              display: 'flex',
-              gap: 5,
-              height: 36,
-              alignItems: 'center',
-              borderRadius: 10,
-              fontSize: '12px',
-              padding: '0 10px 0 15px',
-            }}
-            onClick={(e) => {
-              e.stopPropagation();
-              setFilters((prev: any) => {
-                return {
-                  ...prev,
-                  statuses: Object.fromEntries(
-                    Object.keys(prev.statuses).map((k) => [k, true])
-                  ),
-                };
-              });
-            }}
-          >
-            <span>Clear filters</span>{' '}
-            <span style={{ display: 'flex', padding: '0px 3px' }}>
-              <Cross2Icon style={{ margin: 'auto' }} />
-            </span>
-          </ClearButton>
-        )}
-      </div>
-    </div>
+        <FilterModalContentBrowser />
+      </FilterModal>
+    </Div>
   );
 };

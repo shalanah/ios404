@@ -2,9 +2,33 @@ import React from 'react';
 import { Checkbox } from './checkbox';
 import useCanIUseContext from '../hooks/useCanIUseContext';
 import { Badge } from './badge';
+import styled from 'styled-components';
 
-export const FilterContent = () => {
-  const { statusCounts, statuses, filters, setFilters } = useCanIUseContext();
+const Submit = styled.button`
+  display: block;
+  padding: 8px 15px;
+  text-align: center;
+  border-radius: 12px;
+  width: 100%;
+  border: 1px solid currentColor;
+  font-size: 0.95rem;
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+  justify-content: space-between;
+  font-variant-numeric: tabular-nums;
+  &:hover {
+    transform: scale(1);
+  }
+`;
+
+export const FilterModalContentSpecs = ({
+  onClose,
+}: {
+  onClose?: () => void;
+}) => {
+  const { statusCounts, statuses, filters, setFilters, filteredData } =
+    useCanIUseContext();
   const nonEmptyStatusFilters = Object.fromEntries(
     Object.entries(filters.statuses).filter(([k, _]) => {
       return statusCounts[k] > 0;
@@ -17,6 +41,8 @@ export const FilterContent = () => {
   const indeterminate = numChecked !== len && numChecked > 0;
   const allChecked = numChecked === len;
   const checked = allChecked || (numChecked < len / 2 && numChecked > 0);
+  // TODO: Make sure we have SOME BROWSERS
+  const filteredTotal = filteredData.length;
   return (
     <>
       <h2
@@ -24,9 +50,12 @@ export const FilterContent = () => {
           fontSize: '.8rem',
           textTransform: 'uppercase',
           fontWeight: 700,
+          display: 'flex',
+          justifyContent: 'space-between',
+          marginTop: 5,
         }}
       >
-        Filters
+        Specifications
       </h2>
       <div style={{ padding: '15px 0' }}>
         <Checkbox
@@ -44,13 +73,13 @@ export const FilterContent = () => {
           }}
           checked={checked}
         >
-          All specifications
+          All Specifications
         </Checkbox>
       </div>
       {[
         {
           title: 'W3C',
-          description: 'Protocols and guidelines since 1994',
+          description: 'Standards + specs since 1994',
           filterFn: (v: string) => {
             return !v.startsWith('W3C');
           },
@@ -64,7 +93,7 @@ export const FilterContent = () => {
         },
         {
           title: 'WHATWG',
-          description: 'Evolving standards + specs since 2004',
+          description: 'Evolving standards since 2004',
           filterFn: (v: string) => {
             return !v.startsWith('WHATWG');
           },
@@ -106,26 +135,30 @@ export const FilterContent = () => {
                     fontSize: '.8rem',
                     textTransform: 'uppercase',
                     fontWeight: 700,
-                  }}
-                >
-                  {title}
-                </div>
-                <p
-                  style={{
-                    opacity: 0.7,
-                    textAlign: 'right',
-                    fontSize: '.7rem',
-                    lineHeight: 1.25,
+                    width: '100%',
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'baseline',
                     marginBottom: 5,
-                    marginTop: 0,
                   }}
                 >
-                  {description}
-                </p>
+                  <span>{title}</span>
+                  <span
+                    style={{
+                      opacity: 0.7,
+                      textTransform: 'none',
+                      textAlign: 'right',
+                      fontSize: '.7rem',
+                      lineHeight: 1.25,
+                      fontWeight: 400,
+                    }}
+                  >
+                    {description}
+                  </span>
+                </div>
               </div>
             )}
             {Object.entries(statusCounts).map(([k, v], i) => {
-              if (v === 0) return null;
               const checked = filters.statuses[k];
               if (filterFn(statuses[k])) return null;
               return (
@@ -162,6 +195,12 @@ export const FilterContent = () => {
           </div>
         );
       })}
+      <Submit onClick={onClose}>
+        Close{' '}
+        <span style={{ fontSize: '.8em' }}>
+          Matches {filteredTotal} {filteredTotal === 1 ? 'feature' : 'features'}
+        </span>
+      </Submit>
     </>
   );
 };

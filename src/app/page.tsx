@@ -112,7 +112,7 @@ const cameraMobile = {
 export default function Home() {
   const { width, height } = useWindowSize();
   const closedHeight = 55;
-  const openHeight = Math.max((height || 0) - 400, (height || 0) * 0.6);
+  const openHeight = Math.max((height || 0) - 350, (height || 0) * 0.66);
   const isFirefox = useIsFirefox();
 
   useTelemetryDeck();
