@@ -21,8 +21,8 @@ export const FilterModal = ({
       <Dialog.Portal>
         <DialogOverlay />
         <DialogContent
-          onEscapeKeyDown={() => setOpen(false)}
           style={{ width: 280 }}
+          onEscapeKeyDown={() => setOpen(false)}
           onPointerDownOutside={(e) => {
             if (
               e.target &&

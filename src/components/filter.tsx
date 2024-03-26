@@ -178,7 +178,6 @@ export const Filter = () => {
                   // TODO: Look into how to make this accessible... alt? title? etc --- not sure with Radix Icons
                 />
               </Span>
-
               {/* Reversing so it goes Chrome, FF, then Safari, same order as in modal */}
               {Object.entries(filterBrowsersReversed).map(([k, v], i) => {
                 const before = Object.values(filterBrowsersReversed)

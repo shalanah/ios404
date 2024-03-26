@@ -2,7 +2,6 @@ import { useEffect } from 'react';
 import TelemetryDeck from '@telemetrydeck/sdk';
 import Bowser from 'bowser';
 import { getCountry } from '../utils/getCountryFromTz';
-import { hash } from 'three/examples/jsm/nodes/Nodes.js';
 
 const getRandomIdentifier = () => {
   return (
@@ -13,7 +12,7 @@ const getRandomIdentifier = () => {
 };
 const appID = process.env.NEXT_PUBLIC_TELEMETRY_DECK_APP_ID!;
 const isLocal = process.env.NEXT_PUBLIC_ENV === 'local';
-const signalForLocal = true; // for testing purposes - turn on locally to test signals
+const signalForLocal = false; // for testing purposes - turn on locally to test signals
 const td = new TelemetryDeck({
   appID: appID,
   clientUser: 'anonymous',
