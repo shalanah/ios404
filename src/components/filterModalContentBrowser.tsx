@@ -64,8 +64,7 @@ export const FilterModalContentBrowser = ({
         Comparison Browsers
       </h2>
       <p style={{ fontSize: 12.5, marginTop: 5, lineHeight: 1.3 }}>
-        Select browser(s) and show iOS web features that are not supported in
-        comparison.
+        Choose browser(s) to display iOS features missing in comparison.
       </p>
       <div
         style={{
