@@ -44,9 +44,14 @@ export const DialogContent = styled(Dialog.Content).attrs((p) => ({
     outline-offset: 2px;
   }
 `;
-export const DialogOverlay = styled(Dialog.Overlay)`
-  background-color: var(--black-a9);
+
+// Issues in FF so using just a normal div
+export const DialogOverlay = styled.div`
   position: fixed;
-  inset: 0;
-  animation: overlayShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100dvh;
+  z-index: 3;
 `;

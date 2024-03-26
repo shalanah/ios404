@@ -68,7 +68,6 @@ export const Links = () => {
             <button
               aria-label="Learn more about this site"
               style={{ borderRadius: 8, width: 40, height: 40 }}
-              onPointerUp={(e) => e.stopPropagation()}
             >
               <InfoCircledIcon style={{ width: 30, height: 30 }} />
             </button>

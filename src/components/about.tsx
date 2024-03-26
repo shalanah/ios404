@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
 import { Cross2Icon } from '@radix-ui/react-icons';
 import Markdown from 'react-markdown';
@@ -52,28 +52,43 @@ const FAQ = [
   ['', 'Copyright 2024. All Rights Reserved - Shalanah Dawson'],
 ];
 
-export const About = ({ button }: { button: React.ReactNode }) => (
-  <Dialog.Root>
-    <Dialog.Trigger asChild>{button}</Dialog.Trigger>
-    <Dialog.Portal>
-      <DialogOverlay />
-      <DialogContent>
-        <Dl>
-          {FAQ.map(([question, answer], i) => (
-            <React.Fragment key={i}>
-              <dt>
-                <Markdown remarkPlugins={[remarkGfm]}>{question}</Markdown>
-              </dt>
-              <dd>
-                <Markdown remarkPlugins={[remarkGfm]}>{answer}</Markdown>
-              </dd>
-            </React.Fragment>
-          ))}
-        </Dl>
-        <DialogClose>
-          <Cross2Icon />
-        </DialogClose>
-      </DialogContent>
-    </Dialog.Portal>
-  </Dialog.Root>
-);
+export const About = ({ button }: { button: React.ReactNode }) => {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLButtonElement>(null);
+  return (
+    <Dialog.Root open={open}>
+      <Dialog.Trigger asChild ref={ref} onClick={() => setOpen(!open)}>
+        {button}
+      </Dialog.Trigger>
+      <Dialog.Portal>
+        <DialogOverlay />
+        <DialogContent
+          onEscapeKeyDown={() => setOpen(false)}
+          onPointerDownOutside={(e) => {
+            if (
+              e.target &&
+              (e.target as HTMLElement).closest('button') !== ref.current
+            )
+              setOpen(false);
+          }}
+        >
+          <Dl>
+            {FAQ.map(([question, answer], i) => (
+              <React.Fragment key={i}>
+                <dt>
+                  <Markdown remarkPlugins={[remarkGfm]}>{question}</Markdown>
+                </dt>
+                <dd>
+                  <Markdown remarkPlugins={[remarkGfm]}>{answer}</Markdown>
+                </dd>
+              </React.Fragment>
+            ))}
+          </Dl>
+          <DialogClose onClick={() => setOpen(false)}>
+            <Cross2Icon />
+          </DialogClose>
+        </DialogContent>
+      </Dialog.Portal>
+    </Dialog.Root>
+  );
+};
