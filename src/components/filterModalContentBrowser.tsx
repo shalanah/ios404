@@ -46,7 +46,7 @@ export const FilterModalContentBrowser = ({
           fontWeight: 700,
         }}
       >
-        Comparision Browsers
+        Comparison Browsers
       </h2>
       <p style={{ fontSize: 13, marginTop: 5 }}>
         Selecting multiple browsers acts as an intersect.
