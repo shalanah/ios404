@@ -1,5 +1,5 @@
 import React from 'react';
-import { MixerVerticalIcon } from '@radix-ui/react-icons';
+import { MixerVerticalIcon, GlobeIcon } from '@radix-ui/react-icons';
 import useCanIUseContext from '../hooks/useCanIUseContext';
 import styled from 'styled-components';
 import { FilterModal } from './filterModal';
@@ -68,8 +68,11 @@ const Count = styled.div`
 `;
 const Span = styled.span`
   opacity: 0;
+  transition: 0.2s transform ease-out, 0.1s opacity ease-out;
+  position: absolute;
+  top: 0;
+  pointer-events: none;
   right: 0;
-  transition: 0.2s transform, 0.05s opacity;
 `;
 
 export const Filter = () => {
@@ -94,10 +97,14 @@ export const Filter = () => {
     count = 'Loading...';
   }
 
-  const browserCount =
-    Object.values(filters.browsers).filter((v) => v).length - 1;
+  const browserCount = Object.values(filters.browsers).filter((v) => v).length;
   const browserOffset = 16;
   const browserLogoSize = 27;
+  const hasBrowsers = browserCount > 0;
+  // So order same as in modal Chrome, FF, then safari (it's a list of 3 not to worried about performance here))
+  const filterBrowsersReversed = Object.fromEntries(
+    Object.entries(filters.browsers).reverse()
+  );
 
   return (
     <Div>
@@ -121,49 +128,62 @@ export const Filter = () => {
           <Button
             aria-label="Comparison browsers"
             style={{
-              marginLeft: 4,
-              display: 'flex',
-              gap: 2,
-              // TODO: Add padding
               // TODO: same order
-              width: browserLogoSize + browserOffset * browserCount,
               color: 'var(--color)',
               flexShrink: 0,
-              position: 'relative',
-              outline: '2px solid red',
-              height: browserLogoSize,
             }}
           >
-            {Object.entries(filters.browsers).map(([k, v], i) => {
-              const before = Object.values(filters.browsers)
-                .slice(0, i)
-                .filter((on) => on).length;
+            <div
+              style={{
+                width:
+                  browserLogoSize +
+                  browserOffset * Math.max(browserCount - 1, 0),
+                height: browserLogoSize,
+                position: 'relative',
+              }}
+            >
+              <Span
+                key={'none'}
+                style={{
+                  transform: `translate(-2px, 2px)`,
+                  opacity: hasBrowsers ? 0 : 1,
+                }}
+              >
+                <GlobeIcon
+                  width={browserLogoSize - 4}
+                  height={browserLogoSize - 4}
+                  // TODO: Look into how to make this accessible... alt? title? etc --- not sure with Radix Icons
+                />
+              </Span>
+              {/* Reversing so it goes Chrome, FF, then Safari, same order as in modal */}
+              {Object.entries(filterBrowsersReversed).map(([k, v], i) => {
+                const before = Object.values(filterBrowsersReversed)
+                  .slice(0, i)
+                  .filter((on) => on).length;
 
-              console.log(-browserOffset * Math.max(before, 0), 0, v, before);
-              // @ts-ignore
-              const Icon = icons[k];
-              return (
-                <Span
-                  key={k}
-                  style={{
-                    position: 'absolute',
-                    top: 0,
-                    pointerEvents: 'none',
-                    right: 0,
-                    transform: `translateX(${
-                      v ? -browserOffset * Math.max(before, 0) : 0
-                    }px)`,
-                    opacity: v ? 1 : 0,
-                  }}
-                >
-                  <Icon
-                    width={browserLogoSize}
-                    height={browserLogoSize}
-                    title={k}
-                  />
-                </Span>
-              );
-            })}
+                // @ts-ignore
+                const Icon = icons[k];
+                return (
+                  <Span
+                    key={k}
+                    style={{
+                      transform: v
+                        ? `translateX(${-browserOffset * before}px)`
+                        : `translateX(${
+                            -browserOffset * Math.max(before - 1, 0)
+                          }px)`,
+                      opacity: v ? 1 : 0,
+                    }}
+                  >
+                    <Icon
+                      width={browserLogoSize}
+                      height={browserLogoSize}
+                      title={k}
+                    />
+                  </Span>
+                );
+              })}
+            </div>
           </Button>
         }
       >

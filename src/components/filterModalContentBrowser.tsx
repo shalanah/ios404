@@ -35,7 +35,8 @@ export const FilterModalContentBrowser = ({
 }: {
   onClose?: () => void;
 }) => {
-  const { filters, setFilters } = useCanIUseContext();
+  const { filters, setFilters, filteredData } = useCanIUseContext();
+  const filteredTotal = filteredData.length;
   return (
     <>
       <h2
@@ -47,14 +48,16 @@ export const FilterModalContentBrowser = ({
       >
         Comparision Browsers
       </h2>
-      <p style={{ fontSize: 12, marginTop: 5 }}>
-        Chrome for Android is the suggested comparison browser due to market
-        share.
-      </p>
-      <p style={{ fontSize: 12, marginTop: 5 }}>
+      <p style={{ fontSize: 13, marginTop: 5 }}>
         Selecting multiple browsers acts as an intersect.
       </p>
-      <div style={{ margin: '10px 0 15px' }}>
+      <div
+        style={{
+          margin: '10px 0 15px',
+          borderTop: '1px dotted var(--modalHr)',
+          paddingTop: 10,
+        }}
+      >
         {[
           {
             key: 'and_chr',
@@ -108,7 +111,7 @@ export const FilterModalContentBrowser = ({
       <Submit onClick={onClose}>
         Close{' '}
         <span style={{ fontSize: '.8em' }}>
-          {/* Matches {filteredTotal} {filteredTotal === 1 ? 'feature' : 'features'} */}
+          Matches {filteredTotal} {filteredTotal === 1 ? 'feature' : 'features'}
         </span>
       </Submit>
     </>
