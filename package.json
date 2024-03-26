@@ -1,7 +1,8 @@
 {
-  "name": "missingios",
+  "name": "ios404",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
+  "license": "MIT",
   "homepage": "https://ios404.com",
   "scripts": {
     "fetch-data": "node scripts/fetchCanIUse.js",
