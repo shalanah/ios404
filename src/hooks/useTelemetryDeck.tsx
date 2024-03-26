@@ -54,6 +54,7 @@ export const useTelemetryDeck = () => {
       'country or tz': getCountry(), // trying to obscure tz by using country instead if we can
       vendor,
       device: isIpad ? 'tablet' : device,
+      url: window.location.href, // to understand if people are sharing with site filters or hashes
     });
   }, []);
 };
