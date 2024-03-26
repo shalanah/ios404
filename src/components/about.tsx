@@ -39,7 +39,7 @@ const FAQ = [
   ],
   [
     'How do you determine if something is not supported?',
-    'If Android Chrome supports a feature more than iOS WebKit, that feature is consider missing with special note if support is "Partial". Use the filtering icon to remove less-standard or non-standard features from your search.',
+    'If the selected comparison browser(s) (Chrome for Android is the default but others may be selected) supports a feature more than iOS WebKit, then that feature is consider missing with special note if support is "Partial". You can also use the filtering icon to remove less-standard or non-standard features from your search.',
   ],
   [
     'Who are you?',
