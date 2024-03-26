@@ -1,5 +1,7 @@
 // @ts-nocheck
 
+import { CIU } from './canIUseTypes';
+
 const ios_saf = 'ios_saf';
 const compareBrowsers = [
   { key: 'and_chr', title: 'Chrome for Android' },
@@ -7,7 +9,7 @@ const compareBrowsers = [
   { key: 'safari', title: 'Mac Safari (Desktop)' },
 ];
 
-export const orderCanIUseData = (data: any) => {
+export const orderCanIUseData = (data: CIU): CIU => {
   return {
     ...data,
     data: Object.fromEntries(

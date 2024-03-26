@@ -30,6 +30,21 @@ export const icons = {
   and_ff: FirefoxIcon,
 };
 
+const BrowserOpts = [
+  {
+    key: 'and_chr',
+    title: 'Chrome (Android)',
+  },
+  {
+    key: 'and_ff',
+    title: 'Firefox (Android)',
+  },
+  {
+    key: 'safari',
+    title: 'Mac Safari (Desktop)',
+  },
+] as const;
+
 export const FilterModalContentBrowser = ({
   onClose,
 }: {
@@ -59,20 +74,7 @@ export const FilterModalContentBrowser = ({
           paddingTop: 10,
         }}
       >
-        {[
-          {
-            key: 'and_chr',
-            title: 'Chrome (Android)',
-          },
-          {
-            key: 'and_ff',
-            title: 'Firefox (Android)',
-          },
-          {
-            key: 'safari',
-            title: 'Mac Safari (Desktop)',
-          },
-        ].map(({ key, title }) => {
+        {BrowserOpts.map(({ key, title }) => {
           // @ts-ignore
           const Icon = icons[key] || icons.and_chr;
           return (

@@ -1,4 +1,3 @@
-// @ts-nocheck
 // TODO: Really need to go back and do all types
 
 import React, {
@@ -16,20 +15,38 @@ import {
 } from '../utils/parseCanIUseData';
 import canIUseDataSaved from '../utils/canIUseData.json';
 import cloneDeep from 'lodash/cloneDeep';
+import { CIU } from '@/utils/canIUseTypes';
 // import { parseMdnData } from '../utils/parseMdnData';
 
 const dataLink =
   'https://raw.githubusercontent.com/Fyrd/caniuse/master/fulldata-json/data-2.0.json';
+
+type FiltersType = {
+  browsers: {
+    and_chr: boolean;
+    and_ff: boolean;
+    safari: boolean;
+  };
+  statuses: {
+    cr: boolean;
+    ls: boolean;
+    other: boolean;
+    pr: boolean;
+    rec: boolean;
+    unoff: boolean;
+    wd: boolean;
+  };
+};
 
 interface CanIUseContextInterface {
   loading: boolean;
   hasError: boolean;
   iOSLacking: any;
   activeIndex: number;
-  updateHash: (hash: string) => void;
+  updateHash: (newHash: string) => void;
   statusCounts: any;
   statuses: any;
-  filters: any;
+  filters: FiltersType;
   setFilters: (filters: any) => void;
   filteredData: any;
   search: string;
@@ -49,6 +66,9 @@ export const CanIUseContext = createContext<CanIUseContextInterface | null>(
   null
 );
 export const buttonClass = 'feature-list-button';
+
+// keys of browsers
+type BrowserKeys = keyof FiltersType['browsers'];
 
 const defaultFilters = {
   browsers: {
@@ -75,7 +95,8 @@ const getInitialFiltersFromUrl = () => {
   if (browsers) {
     const browsersOn = browsers.split('_').map((k) => k.replace('and', 'and_'));
     Object.keys(filters.browsers).forEach((k) => {
-      filters.browsers[k] = browsersOn.includes(k);
+      filters.browsers[k as keyof FiltersType['browsers']] =
+        browsersOn.includes(k as string);
     });
     // Double check that at least one browser is on
     if (Object.values(filters.browsers).every((v) => !v)) {
@@ -86,7 +107,7 @@ const getInitialFiltersFromUrl = () => {
     const specKeys = Object.keys(filters.statuses);
     specsOff.split('_').forEach((k) => {
       if (specKeys.includes(k)) {
-        filters.statuses[k] = false;
+        filters.statuses[k as keyof FiltersType['statuses']] = false;
       }
     });
   }
@@ -100,16 +121,16 @@ export const CanIUseContextProvider = ({
   children: ReactNode;
 }) => {
   const [loading, setLoading] = useState(true);
-  const [canIUseData, setData] = useState(false);
+  const [canIUseData, setData] = useState<CIU | null>(null);
   const [hasError, setHasError] = useState(false);
   const iOSLacking = useMemo(
     () => getIOSSafariLacking(canIUseData),
     [canIUseData]
   );
   const [search, setSearch] = useState('');
-  const [filters, setFilters] = useState<{
-    statuses: { [k: string]: boolean };
-  }>(() => getInitialFiltersFromUrl());
+  const [filters, setFilters] = useState<FiltersType>(() =>
+    getInitialFiltersFromUrl()
+  );
 
   const [hash, updateHash] = useHash();
   let activeIndex =
@@ -145,7 +166,7 @@ export const CanIUseContextProvider = ({
       .then((res) => {
         return res.json();
       })
-      .then((data) => {
+      .then((data: CIU) => {
         // throw new Error('Network response was not ok');
         setData(orderCanIUseData(data));
         setLoading(false); // could be useReducer instead
@@ -153,7 +174,7 @@ export const CanIUseContextProvider = ({
       .catch((err) => {
         setHasError(true);
         setLoading(false);
-        setData(orderCanIUseData(canIUseDataSaved));
+        setData(orderCanIUseData(canIUseDataSaved as CIU));
         console.error(err);
       });
   }, []);
@@ -170,7 +191,7 @@ export const CanIUseContextProvider = ({
   });
   // Add status filters
   let filteredData = cloneDeep(filteredByBrowser).filter((v) => {
-    return filters.statuses[v.status];
+    return filters.statuses[v.status as keyof FiltersType['statuses']];
   });
   if (search.trim().length > 0) {
     const searchLower = search.trim().toLowerCase();
@@ -202,7 +223,7 @@ export const CanIUseContextProvider = ({
     updateHash(key);
     const el = document.querySelector(`.${buttonClass}[data-index="${index}"]`);
     if (featureActive) {
-      if (el) el.focus(); // scroll ino view
+      if (el) (el as HTMLElement).focus(); // scroll ino view
     } else {
       if (el) el.scrollIntoView({ block: 'nearest' });
     }

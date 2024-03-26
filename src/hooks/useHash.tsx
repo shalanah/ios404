@@ -1,8 +1,8 @@
 import { useEffect, useCallback, useState, use } from 'react';
 
 // Source: https://www.30secondsofcode.org/react/s/use-hash/
-export const useHash = () => {
-  const [hash, setHash] = useState(() => window.location.hash);
+export const useHash = (): [string, (newHash: string) => void] => {
+  const [hash, setHash] = useState<string>(() => window.location.hash);
 
   const hashChangeHandler = useCallback(() => {
     setHash(window.location.hash);
