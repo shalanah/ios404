@@ -64,9 +64,9 @@ export const CanIUseContextProvider = ({
     statuses: { [k: string]: boolean };
   }>({
     browsers: {
-      safari: false,
       and_chr: true,
       and_ff: false,
+      safari: false,
     },
     statuses: {
       cr: true,
@@ -130,15 +130,15 @@ export const CanIUseContextProvider = ({
       });
   }, []);
 
+  const hasBrowsers = Object.values(filters.browsers).some((v) => v);
   let filteredData = iOSLacking.filter((v) => {
-    return (
-      filters.statuses[v.status] &&
-      Object.entries(filters.browsers)
-        .filter(([k, on]) => on)
-        .every(([k, on]) => {
-          return on && v.browsers[k].moreThanIOSSafari;
-        })
-    );
+    return filters.statuses[v.status] && hasBrowsers
+      ? Object.entries(filters.browsers)
+          .filter(([_, on]) => on)
+          .every(([k, on]) => {
+            return on && v.browsers[k].moreThanIOSSafari;
+          })
+      : false;
   });
   if (search.trim().length > 0) {
     const searchLower = search.trim().toLowerCase();
