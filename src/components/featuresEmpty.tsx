@@ -22,7 +22,7 @@ export default function FeaturesEmpty() {
     return <Div>Clear search and/or add specifications.</Div>;
 
   if (hasSearch) return <Div>Clear search.</Div>;
-  if (hasSpecFilters) return <Div>Add more specifications.</Div>;
+  if (hasSpecFilters) return <Div>Add specifications.</Div>;
 
   return null;
 }

@@ -46,6 +46,69 @@ export const CanIUseContext = createContext<CanIUseContextInterface | null>(
 );
 export const buttonClass = 'feature-list-button';
 
+const defaultFilters = {
+  browsers: {
+    and_chr: true,
+    and_ff: false,
+    safari: false,
+  },
+  statuses: {
+    cr: true,
+    ls: true,
+    other: true,
+    pr: true,
+    rec: true,
+    unoff: true,
+    wd: true,
+  },
+};
+
+const getInitialFiltersFromUrl = () => {
+  const params = new URLSearchParams(window.location.search);
+  const browsers = params.get('browsers');
+  const specsOff = params.get('specsOff');
+  // clonse default filters
+
+  let filters = { ...defaultFilters };
+  if (browsers) {
+    const browsersOn = browsers.split('_').map((k) => k.replace('and', 'and_'));
+    Object.keys(filters.browsers).forEach((k) => {
+      filters = {
+        ...filters,
+        browsers: {
+          ...filters.browsers,
+          [k]: browsersOn.includes(k),
+        },
+      };
+    });
+    // Double check that at least one browser is on
+    if (Object.values(filters.browsers).every((v) => !v)) {
+      filters = {
+        ...filters,
+        browsers: {
+          ...filters.browsers,
+          and_chr: true,
+        },
+      };
+    }
+  }
+  if (specsOff) {
+    const specKeys = Object.keys(filters.statuses);
+    specsOff.split('_').forEach((k) => {
+      if (specKeys.includes(k)) {
+        filters = {
+          ...filters,
+          statuses: {
+            ...filters.statuses,
+            [k]: false,
+          },
+        };
+      }
+    });
+  }
+  return filters;
+};
+
 // TODO: Separate out some of these providers?
 export const CanIUseContextProvider = ({
   children,
@@ -62,22 +125,7 @@ export const CanIUseContextProvider = ({
   const [search, setSearch] = useState('');
   const [filters, setFilters] = useState<{
     statuses: { [k: string]: boolean };
-  }>({
-    browsers: {
-      and_chr: true,
-      and_ff: false,
-      safari: false,
-    },
-    statuses: {
-      cr: true,
-      ls: true,
-      other: true,
-      pr: true,
-      rec: true,
-      unoff: true,
-      wd: true,
-    },
-  });
+  }>(() => getInitialFiltersFromUrl());
   const statusCounts = iOSLacking.reduce((acc, v) => {
     acc[v.status] += 1;
     return acc;
@@ -175,6 +223,45 @@ export const CanIUseContextProvider = ({
       if (el) el.scrollIntoView({ block: 'nearest' });
     }
   };
+
+  // Allow filters to be shareable by adding query strings
+  useEffect(() => {
+    // We're talking low number key/values here... so no need to over-optimize
+    const hasAllSpecs = Object.values(filters.statuses).every((v) => v);
+    const hasNoSpecs = Object.values(filters.statuses).every((v) => !v);
+    const onlyChrome = Object.entries(filters.browsers).every(([k, v]) =>
+      k === 'and_chr' ? v : !v
+    );
+    const noBrowsers = Object.values(filters.browsers).every((v) => !v);
+    let params = new URLSearchParams({
+      ...(onlyChrome || noBrowsers // if default or a bad state do nothing
+        ? {}
+        : {
+            browsers:
+              Object.entries(filters.browsers)
+                .filter(([_, on]) => on)
+                .map(([k]) => k.replace('_', ''))
+                .join('_') || 'none',
+          }),
+      ...(!hasAllSpecs && !hasNoSpecs // if default or a bad state do nothing
+        ? {
+            specsOff: Object.entries(filters.statuses)
+              .filter(([_, on]) => !on)
+              .map(([k]) => k)
+              .join('_'),
+          }
+        : {}),
+    });
+    const previousParams = new URLSearchParams(window.location.search);
+    if (params.toString() !== previousParams.toString()) {
+      const currentHash = window.location.hash;
+      window.history.replaceState(
+        null,
+        '',
+        `${window.location.pathname}?${params.toString()}${currentHash}`
+      );
+    }
+  }, [filters]);
 
   return (
     <CanIUseContext.Provider
