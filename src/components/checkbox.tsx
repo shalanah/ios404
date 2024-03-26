@@ -51,13 +51,13 @@ const Div = styled.div`
 
 export const Checkbox = ({
   checked,
-  indeterminate,
+  indeterminate = false,
   onCheckedChange,
   children,
   switchOrder,
 }: {
   checked: boolean;
-  indeterminate: boolean;
+  indeterminate?: boolean;
   onCheckedChange: (checked: boolean) => void;
   children: React.ReactNode;
   switchOrder?: boolean;

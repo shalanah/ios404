@@ -13,7 +13,7 @@ import {
   orderCanIUseData,
 } from '../utils/parseCanIUseData';
 import canIUseDataSaved from '../utils/canIUseData.json';
-import { parseMdnData } from '../utils/parseMdnData';
+// import { parseMdnData } from '../utils/parseMdnData';
 
 const dataLink =
   'https://raw.githubusercontent.com/Fyrd/caniuse/master/fulldata-json/data-2.0.json';
@@ -63,6 +63,11 @@ export const CanIUseContextProvider = ({
   const [filters, setFilters] = useState<{
     statuses: { [k: string]: boolean };
   }>({
+    browsers: {
+      safari: false,
+      and_chr: true,
+      and_ff: false,
+    },
     statuses: {
       cr: true,
       ls: true,
@@ -125,7 +130,16 @@ export const CanIUseContextProvider = ({
       });
   }, []);
 
-  let filteredData = iOSLacking.filter((v) => filters.statuses[v.status]);
+  let filteredData = iOSLacking.filter((v) => {
+    return (
+      filters.statuses[v.status] &&
+      Object.entries(filters.browsers)
+        .filter(([k, on]) => on)
+        .every(([k, on]) => {
+          return on && v.browsers[k].moreThanIOSSafari;
+        })
+    );
+  });
   if (search.trim().length > 0) {
     const searchLower = search.trim().toLowerCase();
     filteredData = filteredData.filter((v) => {
