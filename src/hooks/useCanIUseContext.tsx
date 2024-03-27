@@ -41,7 +41,7 @@ export type FiltersType = {
 export type SpecTypes = keyof FiltersType['statuses'];
 
 type StatusCounts = {
-  [K in keyof FiltersType['statuses']]: number;
+  [K in SpecTypes]: number;
 };
 
 interface CanIUseContextInterface {
@@ -51,7 +51,7 @@ interface CanIUseContextInterface {
   activeIndex: number;
   updateHash: (newHash: string) => void;
   statusCounts: StatusCounts;
-  statuses: any;
+  statuses: { [k: string]: string } | undefined;
   filters: FiltersType;
   setFilters: (filters: any) => void;
   filteredData: any;

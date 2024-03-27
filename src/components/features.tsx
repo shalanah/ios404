@@ -11,9 +11,7 @@ import FeaturesEmpty from './featuresEmpty';
 const Div = styled.div`
   &:focus-visible {
     outline: 2px dotted var(--titleColor);
-    outline-offset: 2px;
   }
-
   h2 {
     font-size: 1.15rem;
     line-height: 1.2;
@@ -28,11 +26,10 @@ const Div = styled.div`
   }
   button {
     display: block;
-    width: 100%;
+    width: calc(100% + 8px);
     padding: 0.45em 0.5em;
-    margin: 0 -0.5em;
+    margin: 0 -4px;
     outline: 2px dotted transparent;
-    outline-offset: 2px 4px;
     transition: 0.3s;
     border-radius: 10px;
     margin-bottom: 2px;

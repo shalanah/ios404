@@ -1,5 +1,3 @@
-import canIUseData from './canIUseData.json';
-
 type CIUUsageGlobal = {
   [k: string]: number;
 };
@@ -33,16 +31,6 @@ type CIUCats = {
   SVG: string[];
 };
 
-const CIUStatuses = {
-  rec: 'W3C Recommendation',
-  pr: 'W3C Proposed Recommendation',
-  cr: 'W3C Candidate Recommendation',
-  wd: 'W3C Working Draft',
-  ls: 'WHATWG Living Standard',
-  other: 'Other',
-  unoff: 'Unofficial / Note',
-} as const;
-
 type Link = {
   url: string;
   title: string;
@@ -53,7 +41,7 @@ type CIUData = {
     title: string;
     description: string;
     spec: string;
-    status: keyof typeof CIUStatuses;
+    status: string;
     links: Link[];
     categories: string[];
     stats: {
@@ -76,7 +64,7 @@ export type CIU = {
   agents: {
     [k: string]: CIUBrowser;
   };
-  statuses: typeof CIUStatuses;
+  statuses: { [k: string]: string };
   cats: CIUCats;
   updated: number;
   data: CIUData;

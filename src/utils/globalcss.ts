@@ -192,6 +192,8 @@ button:focus-visible, input:focus-visible, a:focus-visible {
   outline-offset: 1px !important;
 }
 
+
+
 *, *::before, *::after{
   box-sizing: border-box;
   padding: 0;
@@ -199,6 +201,7 @@ button:focus-visible, input:focus-visible, a:focus-visible {
   -webkit-overflow-scrolling: touch;
   -webkit-tap-highlight-color: transparent;
   font-family: var(--font-inter);
+//  outline: 1px solid red !important;
 }
 
 /* https://www.sarasoueidan.com/blog/accessible-icon-buttons/ */

@@ -163,7 +163,7 @@ export const FilterModalContentSpecs = ({
             )}
             {Object.entries(statusCounts).map(([k, v], i) => {
               const checked = filters.statuses[k as SpecTypes];
-              if (filterFn(statuses[k])) return null;
+              if (filterFn(statuses?.[k] || '')) return null;
               return (
                 <Checkbox
                   switchOrder
@@ -189,7 +189,7 @@ export const FilterModalContentSpecs = ({
                       alignItems: 'center',
                     }}
                   >
-                    <span>{nameFormat(statuses[k])}</span>
+                    <span>{nameFormat(statuses?.[k] || '')}</span>
                     <Badge active={checked}>{v}</Badge>
                   </div>
                 </Checkbox>
