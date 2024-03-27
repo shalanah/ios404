@@ -6,29 +6,15 @@ import React, {
   ReactNode,
   useEffect,
   useMemo,
+  Dispatch,
+  SetStateAction,
 } from 'react';
 import { useHash } from './useHash';
 import { getIOSSafariLacking } from '../utils/parseCanIUseData';
 import cloneDeep from 'lodash/cloneDeep';
 import { useCanIUseData } from './useCanIUseData';
+import { useFilters, type FiltersType } from './useFilters';
 // import { parseMdnData } from '../utils/parseMdnData';
-
-export type FiltersType = {
-  browsers: {
-    and_chr: boolean;
-    and_ff: boolean;
-    safari: boolean;
-  };
-  statuses: {
-    cr: boolean;
-    ls: boolean;
-    other: boolean;
-    pr: boolean;
-    rec: boolean;
-    unoff: boolean;
-    wd: boolean;
-  };
-};
 
 export type SpecTypes = keyof FiltersType['statuses'];
 
@@ -45,7 +31,7 @@ interface CanIUseContextInterface {
   statusCounts: StatusCounts;
   statuses: { [k: string]: string } | undefined;
   filters: FiltersType;
-  setFilters: (filters: any) => void;
+  setFilters: Dispatch<SetStateAction<FiltersType>>;
   filteredData: any;
   search: string;
   setSearch: (search: string) => void;
@@ -65,53 +51,6 @@ export const CanIUseContext = createContext<CanIUseContextInterface | null>(
 );
 export const buttonClass = 'feature-list-button';
 
-// keys of browsers
-type BrowserKeys = keyof FiltersType['browsers'];
-
-const defaultFilters = {
-  browsers: {
-    and_chr: true,
-    and_ff: false,
-    safari: false,
-  },
-  statuses: {
-    cr: true,
-    ls: true,
-    other: true,
-    pr: true,
-    rec: true,
-    unoff: true,
-    wd: true,
-  },
-};
-
-const getInitialFiltersFromUrl = () => {
-  const params = new URLSearchParams(window.location.search);
-  const browsers = params.get('browsers');
-  const specsOff = params.get('specsOff');
-  let filters = cloneDeep(defaultFilters);
-  if (browsers) {
-    const browsersOn = browsers.split('_').map((k) => k.replace('and', 'and_'));
-    Object.keys(filters.browsers).forEach((k) => {
-      filters.browsers[k as keyof FiltersType['browsers']] =
-        browsersOn.includes(k as string);
-    });
-    // Double check that at least one browser is on
-    if (Object.values(filters.browsers).every((v) => !v)) {
-      filters.browsers.and_chr = true;
-    }
-  }
-  if (specsOff) {
-    const specKeys = Object.keys(filters.statuses);
-    specsOff.split('_').forEach((k) => {
-      if (specKeys.includes(k)) {
-        filters.statuses[k as keyof FiltersType['statuses']] = false;
-      }
-    });
-  }
-  return filters;
-};
-
 // TODO: Separate out some of these providers?
 export const CanIUseContextProvider = ({
   children,
@@ -124,10 +63,7 @@ export const CanIUseContextProvider = ({
     [canIUseData]
   );
   const [search, setSearch] = useState('');
-  const [filters, setFilters] = useState<FiltersType>(() =>
-    getInitialFiltersFromUrl()
-  );
-
+  const [filters, setFilters] = useFilters();
   const [hash, updateHash] = useHash();
   let activeIndex =
     iOSLacking.length > 0 ? iOSLacking.findIndex((v) => v.key === hash) : -1;
@@ -194,45 +130,6 @@ export const CanIUseContextProvider = ({
       if (el) el.scrollIntoView({ block: 'nearest' });
     }
   };
-
-  // Allow filters to be shareable by adding query strings
-  useEffect(() => {
-    // We're talking low number key/values here... so no need to over-optimize
-    const hasAllSpecs = Object.values(filters.statuses).every((v) => v);
-    const hasNoSpecs = Object.values(filters.statuses).every((v) => !v);
-    const onlyChrome = Object.entries(filters.browsers).every(([k, v]) =>
-      k === 'and_chr' ? v : !v
-    );
-    const noBrowsers = Object.values(filters.browsers).every((v) => !v);
-    let params = new URLSearchParams({
-      ...(onlyChrome || noBrowsers // if default or a bad state do nothing
-        ? {}
-        : {
-            browsers:
-              Object.entries(filters.browsers)
-                .filter(([_, on]) => on)
-                .map(([k]) => k.replace('_', ''))
-                .join('_') || 'none',
-          }),
-      ...(!hasAllSpecs && !hasNoSpecs // if default or a bad state do nothing
-        ? {
-            specsOff: Object.entries(filters.statuses)
-              .filter(([_, on]) => !on)
-              .map(([k]) => k)
-              .join('_'),
-          }
-        : {}),
-    });
-    const previousParams = new URLSearchParams(window.location.search);
-    if (params.toString() !== previousParams.toString()) {
-      const currentHash = window.location.hash;
-      window.history.replaceState(
-        null,
-        '',
-        `${window.location.pathname}?${params.toString()}${currentHash}`
-      );
-    }
-  }, [filters]);
 
   const statusCounts: StatusCounts = filteredByBrowser.reduce((acc, v) => {
     acc[v.status] += 1;
