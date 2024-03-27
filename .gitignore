@@ -36,6 +36,7 @@ yarn-error.log*
 **/public/workbox-*.js**
 **/public/sw.js**
 **/public/worker-*.js
+**/public/fallback**
 
 # typescript
 *.tsbuildinfo
