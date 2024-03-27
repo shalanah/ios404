@@ -99,7 +99,7 @@ const H1 = styled.h1`
   align-self: stretch;
 `;
 
-export const Text = ({
+export const MilkCartonText = ({
   position,
   index,
   rotation,

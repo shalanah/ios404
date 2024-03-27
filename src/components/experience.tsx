@@ -1,7 +1,7 @@
 import { Suspense, useEffect, useRef } from 'react';
 import { Center } from '@react-three/drei';
 import { Model } from './milkcarton';
-import { Text } from './text';
+import { MilkCartonText } from './milkcartontext';
 import useCanIUseContext from '../hooks/useCanIUseContext';
 import usePrevious from '../hooks/usePrevious';
 import { a, useSpring } from '@react-spring/three';
@@ -132,7 +132,7 @@ export default function Experience() {
         <Center disableZ disableX>
           <a.group {...(spring as any)} {...bind()}>
             <Model />
-            <Text
+            <MilkCartonText
               rotation={rotation}
               index={activeIndex}
               position={position}

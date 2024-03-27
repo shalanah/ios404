@@ -62,7 +62,7 @@ interface CanIUseContextInterface {
     e?: Event;
     featureActive?: boolean;
   }) => void;
-  canIUseData: any;
+  canIUseDataUpdated: number | undefined;
   setHasError: (error: boolean) => void;
   filteredByBrowser: any;
 }
@@ -143,10 +143,17 @@ export const CanIUseContextProvider = ({
     iOSLacking.length > 0 ? iOSLacking.findIndex((v) => v.key === hash) : -1;
   if (activeIndex === -1 && iOSLacking.length > 0) activeIndex = 0;
 
-  // on mount... if hash doesn't exist remove hash
+  // If hash doesn't exist remove hash
   useEffect(() => {
-    if (activeIndex === -1 && iOSLacking.length > 0 && hash) updateHash('');
-  }, [updateHash, activeIndex, iOSLacking.length, hash]);
+    // Let's just remove if ever the hash is not found
+    if (
+      iOSLacking.length > 0 &&
+      activeIndex !== -1 &&
+      hash !== iOSLacking[activeIndex]?.key
+    ) {
+      updateHash('');
+    }
+  }, [updateHash, activeIndex, iOSLacking, hash]);
 
   // MDN DATA: TODO: Later
   // If Safari brings up that caniuse data isn't up-to-date...
@@ -296,7 +303,7 @@ export const CanIUseContextProvider = ({
         filteredByBrowser,
         setFilters,
         setNextFeature,
-        canIUseData,
+        canIUseDataUpdated: canIUseData?.updated,
         setHasError,
       }}
     >

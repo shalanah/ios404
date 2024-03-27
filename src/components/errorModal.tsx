@@ -22,18 +22,17 @@ const Div = styled.div`
 `;
 
 export const ErrorModal = () => {
-  const { hasError, canIUseData, setHasError } = useCanIUseContext();
+  const { hasError, canIUseDataUpdated, setHasError } = useCanIUseContext();
 
   if (!hasError) return null;
 
-  const date = new Date(canIUseData?.updated * 1000).toLocaleDateString(
-    undefined,
-    {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    }
-  );
+  const date = canIUseDataUpdated
+    ? new Date(canIUseDataUpdated * 1000).toLocaleDateString(undefined, {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      })
+    : 'unknown';
   return (
     <Dialog.Root
       open={hasError}
@@ -47,7 +46,11 @@ export const ErrorModal = () => {
           <Div>
             <h2>Using Fallback Data</h2>
             <p>There was an issue grabbing the latest caniuse.com data.</p>
-            <p>No worries, reverting to backup caniuse.com data from {date}.</p>
+            {canIUseDataUpdated && (
+              <p>
+                No worries, reverting to backup caniuse.com data from {date}.
+              </p>
+            )}
           </Div>
           <DialogClose>
             <Cross2Icon />
