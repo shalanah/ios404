@@ -1,5 +1,4 @@
 // TODO: Really need to go back and do all types
-
 import React, {
   useContext,
   createContext,
@@ -9,17 +8,10 @@ import React, {
   useMemo,
 } from 'react';
 import { useHash } from './useHash';
-import {
-  getIOSSafariLacking,
-  orderCanIUseData,
-} from '../utils/parseCanIUseData';
-import canIUseDataSaved from '../utils/canIUseData.json';
+import { getIOSSafariLacking } from '../utils/parseCanIUseData';
 import cloneDeep from 'lodash/cloneDeep';
-import { CIU } from '@/utils/canIUseTypes';
+import { useCanIUseData } from './useCanIUseData';
 // import { parseMdnData } from '../utils/parseMdnData';
-
-const dataLink =
-  'https://raw.githubusercontent.com/Fyrd/caniuse/master/fulldata-json/data-2.0.json';
 
 export type FiltersType = {
   browsers: {
@@ -126,9 +118,7 @@ export const CanIUseContextProvider = ({
 }: {
   children: ReactNode;
 }) => {
-  const [loading, setLoading] = useState(true);
-  const [canIUseData, setData] = useState<CIU | null>(null);
-  const [hasError, setHasError] = useState(false);
+  const { canIUseData, loading, hasError, setHasError } = useCanIUseData();
   const iOSLacking = useMemo(
     () => getIOSSafariLacking(canIUseData),
     [canIUseData]
@@ -154,43 +144,6 @@ export const CanIUseContextProvider = ({
       updateHash('');
     }
   }, [updateHash, activeIndex, iOSLacking, hash]);
-
-  // MDN DATA: TODO: Later
-  // If Safari brings up that caniuse data isn't up-to-date...
-  // Maybe they should work on that --- who do they really have to blame? That's part of their job, right? Right?
-  // useEffect(() => {
-  //   fetch('https://unpkg.com/@mdn/browser-compat-data')
-  //     .then((res) => {
-  //       if (!res.ok) {
-  //         throw new Error('Network response was not ok');
-  //       }
-  //       return res.json();
-  //     })
-  //     .then((data) => {
-  //       parseMdnData(data);
-  //     })
-  //     .catch((err) => {
-  //       console.error(err);
-  //     });
-  // }, []);
-
-  useEffect(() => {
-    fetch(dataLink)
-      .then((res) => {
-        return res.json();
-      })
-      .then((data: CIU) => {
-        // throw new Error('Network response was not ok');
-        setData(orderCanIUseData(data));
-        setLoading(false); // could be useReducer instead
-      })
-      .catch((err) => {
-        setHasError(true);
-        setLoading(false);
-        setData(orderCanIUseData(canIUseDataSaved as CIU));
-        console.error(err);
-      });
-  }, []);
 
   const hasBrowsers = Object.values(filters.browsers).some((v) => v);
   const filteredByBrowser = iOSLacking.filter((v) => {
@@ -285,6 +238,25 @@ export const CanIUseContextProvider = ({
     acc[v.status] += 1;
     return acc;
   }, Object.fromEntries(Object.entries(canIUseData?.statuses || {}).map(([k, v]) => [k, 0])));
+
+  // MDN DATA: TODO: Later
+  // If Safari brings up that caniuse data isn't up-to-date...
+  // Maybe they should work on that --- who do they really have to blame? That's part of their job, right? Right?
+  // useEffect(() => {
+  //   fetch('https://unpkg.com/@mdn/browser-compat-data')
+  //     .then((res) => {
+  //       if (!res.ok) {
+  //         throw new Error('Network response was not ok');
+  //       }
+  //       return res.json();
+  //     })
+  //     .then((data) => {
+  //       parseMdnData(data);
+  //     })
+  //     .catch((err) => {
+  //       console.error(err);
+  //     });
+  // }, []);
 
   return (
     <CanIUseContext.Provider
