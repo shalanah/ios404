@@ -21,7 +21,7 @@ import { CIU } from '@/utils/canIUseTypes';
 const dataLink =
   'https://raw.githubusercontent.com/Fyrd/caniuse/master/fulldata-json/data-2.0.json';
 
-type FiltersType = {
+export type FiltersType = {
   browsers: {
     and_chr: boolean;
     and_ff: boolean;
@@ -38,13 +38,19 @@ type FiltersType = {
   };
 };
 
+export type SpecTypes = keyof FiltersType['statuses'];
+
+type StatusCounts = {
+  [K in keyof FiltersType['statuses']]: number;
+};
+
 interface CanIUseContextInterface {
   loading: boolean;
   hasError: boolean;
   iOSLacking: any;
   activeIndex: number;
   updateHash: (newHash: string) => void;
-  statusCounts: any;
+  statusCounts: StatusCounts;
   statuses: any;
   filters: FiltersType;
   setFilters: (filters: any) => void;
@@ -268,7 +274,7 @@ export const CanIUseContextProvider = ({
     }
   }, [filters]);
 
-  const statusCounts = filteredByBrowser.reduce((acc, v) => {
+  const statusCounts: StatusCounts = filteredByBrowser.reduce((acc, v) => {
     acc[v.status] += 1;
     return acc;
   }, Object.fromEntries(Object.entries(canIUseData?.statuses || {}).map(([k, v]) => [k, 0])));

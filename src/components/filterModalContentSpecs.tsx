@@ -1,6 +1,9 @@
 import React from 'react';
 import { Checkbox } from './checkbox';
-import useCanIUseContext from '../hooks/useCanIUseContext';
+import useCanIUseContext, {
+  FiltersType,
+  SpecTypes,
+} from '../hooks/useCanIUseContext';
 import { Badge } from './badge';
 import styled from 'styled-components';
 
@@ -31,7 +34,7 @@ export const FilterModalContentSpecs = ({
     useCanIUseContext();
   const nonEmptyStatusFilters = Object.fromEntries(
     Object.entries(filters.statuses).filter(([k, _]) => {
-      return statusCounts[k] > 0;
+      return statusCounts[k as SpecTypes] > 0;
     })
   );
   const len = Object.keys(nonEmptyStatusFilters).length;
@@ -159,7 +162,7 @@ export const FilterModalContentSpecs = ({
               </div>
             )}
             {Object.entries(statusCounts).map(([k, v], i) => {
-              const checked = filters.statuses[k];
+              const checked = filters.statuses[k as SpecTypes];
               if (filterFn(statuses[k])) return null;
               return (
                 <Checkbox
@@ -187,7 +190,7 @@ export const FilterModalContentSpecs = ({
                     }}
                   >
                     <span>{nameFormat(statuses[k])}</span>
-                    <Badge active={checked}>{v as string}</Badge>
+                    <Badge active={checked}>{v}</Badge>
                   </div>
                 </Checkbox>
               );
