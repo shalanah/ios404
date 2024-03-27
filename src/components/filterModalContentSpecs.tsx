@@ -1,8 +1,15 @@
 import React from 'react';
 import { Checkbox } from './checkbox';
-import useCanIUseContext, { SpecTypes } from '../hooks/useCanIUseContext';
+import useCanIUseContext from '../hooks/useCanIUseContext';
 import { Badge } from './badge';
 import styled from 'styled-components';
+import { FiltersType } from '../hooks/useFilters';
+
+export type SpecTypes = keyof FiltersType['statuses'];
+
+type StatusCounts = {
+  [K in SpecTypes]: number;
+};
 
 const Submit = styled.button`
   display: block;
@@ -27,8 +34,15 @@ export const FilterModalContentSpecs = ({
 }: {
   onClose?: () => void;
 }) => {
-  const { statusCounts, statuses, filters, setFilters, filteredData } =
+  const { filteredByBrowserOnly, statuses, filters, setFilters, filteredData } =
     useCanIUseContext();
+  const statusCounts: StatusCounts = filteredByBrowserOnly.reduce(
+    (acc: { [k: string]: number }, v: { status: 'string' } & any) => {
+      acc[v.status] += 1;
+      return acc;
+    },
+    Object.fromEntries(Object.keys(statuses || {}).map((k) => [k, 0]))
+  );
   const nonEmptyStatusFilters = Object.fromEntries(
     Object.entries(filters.statuses).filter(([k, _]) => {
       return statusCounts[k as SpecTypes] > 0;

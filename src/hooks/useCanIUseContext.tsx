@@ -16,19 +16,12 @@ import { useCanIUseData } from './useCanIUseData';
 import { useFilters, type FiltersType } from './useFilters';
 // import { parseMdnData } from '../utils/parseMdnData';
 
-export type SpecTypes = keyof FiltersType['statuses'];
-
-type StatusCounts = {
-  [K in SpecTypes]: number;
-};
-
 interface CanIUseContextInterface {
   loading: boolean;
   hasError: boolean;
   iOSMissingFeatures: any;
   activeIndex: number;
   updateHash: (newHash: string) => void;
-  statusCounts: StatusCounts;
   statuses: { [k: string]: string } | undefined;
   filters: FiltersType;
   setFilters: Dispatch<SetStateAction<FiltersType>>;
@@ -134,11 +127,6 @@ export const CanIUseContextProvider = ({
     }
   };
 
-  const statusCounts: StatusCounts = filteredByBrowserOnly.reduce((acc, v) => {
-    acc[v.status] += 1;
-    return acc;
-  }, Object.fromEntries(Object.entries(canIUseData?.statuses || {}).map(([k, v]) => [k, 0])));
-
   // MDN DATA: TODO: Later
   // If Safari brings up that caniuse data isn't up-to-date...
   // Maybe they should work on that --- who do they really have to blame? That's part of their job, right? Right?
@@ -163,7 +151,6 @@ export const CanIUseContextProvider = ({
       value={{
         search,
         setSearch,
-        statusCounts,
         loading,
         hasError,
         iOSMissingFeatures,
