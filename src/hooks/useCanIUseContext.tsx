@@ -10,7 +10,7 @@ import React, {
   SetStateAction,
 } from 'react';
 import { useHash } from './useHash';
-import { getIOSSafariLacking } from '../utils/parseCanIUseData';
+import { getIOSMissingFeatures } from '../utils/parseCanIUseData';
 import cloneDeep from 'lodash/cloneDeep';
 import { useCanIUseData } from './useCanIUseData';
 import { useFilters, type FiltersType } from './useFilters';
@@ -25,7 +25,7 @@ type StatusCounts = {
 interface CanIUseContextInterface {
   loading: boolean;
   hasError: boolean;
-  iOSLacking: any;
+  iOSMissingFeatures: any;
   activeIndex: number;
   updateHash: (newHash: string) => void;
   statusCounts: StatusCounts;
@@ -42,7 +42,7 @@ interface CanIUseContextInterface {
   }) => void;
   canIUseDataUpdated: number | undefined;
   setHasError: (error: boolean) => void;
-  filteredByBrowser: any;
+  filteredByBrowserOnly: any;
 }
 
 // Game state... could probably be broken out into smaller files / hooks
@@ -58,31 +58,34 @@ export const CanIUseContextProvider = ({
   children: ReactNode;
 }) => {
   const { canIUseData, loading, hasError, setHasError } = useCanIUseData();
-  const iOSLacking = useMemo(
-    () => getIOSSafariLacking(canIUseData),
+  const iOSMissingFeatures = useMemo(
+    () => getIOSMissingFeatures(canIUseData),
     [canIUseData]
   );
   const [search, setSearch] = useState('');
   const [filters, setFilters] = useFilters();
   const [hash, updateHash] = useHash();
+
   let activeIndex =
-    iOSLacking.length > 0 ? iOSLacking.findIndex((v) => v.key === hash) : -1;
-  if (activeIndex === -1 && iOSLacking.length > 0) activeIndex = 0;
+    iOSMissingFeatures.length > 0
+      ? iOSMissingFeatures.findIndex((v) => v.key === hash)
+      : -1;
+  if (activeIndex === -1 && iOSMissingFeatures.length > 0) activeIndex = 0;
 
   // If hash doesn't exist remove hash
   useEffect(() => {
     // Let's just remove if ever the hash is not found
     if (
-      iOSLacking.length > 0 &&
+      iOSMissingFeatures.length > 0 &&
       activeIndex !== -1 &&
-      hash !== iOSLacking[activeIndex]?.key
+      hash !== iOSMissingFeatures[activeIndex]?.key
     ) {
       updateHash('');
     }
-  }, [updateHash, activeIndex, iOSLacking, hash]);
+  }, [updateHash, activeIndex, iOSMissingFeatures, hash]);
 
   const hasBrowsers = Object.values(filters.browsers).some((v) => v);
-  const filteredByBrowser = iOSLacking.filter((v) => {
+  const filteredByBrowserOnly = iOSMissingFeatures.filter((v) => {
     return hasBrowsers
       ? Object.entries(filters.browsers)
           .filter(([_, on]) => on)
@@ -92,7 +95,7 @@ export const CanIUseContextProvider = ({
       : false;
   });
   // Add status filters
-  let filteredData = cloneDeep(filteredByBrowser).filter((v) => {
+  let filteredData = cloneDeep(filteredByBrowserOnly).filter((v) => {
     return filters.statuses[v.status as keyof FiltersType['statuses']];
   });
   if (search.trim().length > 0) {
@@ -131,7 +134,7 @@ export const CanIUseContextProvider = ({
     }
   };
 
-  const statusCounts: StatusCounts = filteredByBrowser.reduce((acc, v) => {
+  const statusCounts: StatusCounts = filteredByBrowserOnly.reduce((acc, v) => {
     acc[v.status] += 1;
     return acc;
   }, Object.fromEntries(Object.entries(canIUseData?.statuses || {}).map(([k, v]) => [k, 0])));
@@ -163,13 +166,13 @@ export const CanIUseContextProvider = ({
         statusCounts,
         loading,
         hasError,
-        iOSLacking,
+        iOSMissingFeatures,
         updateHash,
         activeIndex,
         statuses: canIUseData?.statuses,
         filters,
-        filteredData,
-        filteredByBrowser,
+        filteredData, // browsers and specs applied
+        filteredByBrowserOnly, // specs not applied
         setFilters,
         setNextFeature,
         canIUseDataUpdated: canIUseData?.updated,

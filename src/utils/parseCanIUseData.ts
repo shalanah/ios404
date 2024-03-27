@@ -75,7 +75,7 @@ const getFirstSeen = ({
   };
 };
 
-export const getIOSSafariLacking = (canIUseData: any) => {
+export const getIOSMissingFeatures = (canIUseData: any) => {
   if (!canIUseData) return [];
   // TODO: Make sure this is memorized?
   const { data, agents } = canIUseData;

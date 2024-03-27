@@ -23,9 +23,9 @@ const Button = styled.button`
 
 const config = { mass: 0.05, tension: 600, friction: 40 };
 export default function Experience() {
-  const { activeIndex, iOSLacking, setNextFeature, filteredData } =
+  const { activeIndex, iOSMissingFeatures, setNextFeature, filteredData } =
     useCanIUseContext();
-  const len = iOSLacking.length;
+  const len = iOSMissingFeatures.length;
   const filteredLen = filteredData.length;
   const turns = useRef(0);
   const prevActiveIndex = usePrevious(activeIndex);

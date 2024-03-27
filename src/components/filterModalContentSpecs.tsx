@@ -1,9 +1,6 @@
 import React from 'react';
 import { Checkbox } from './checkbox';
-import useCanIUseContext, {
-  FiltersType,
-  SpecTypes,
-} from '../hooks/useCanIUseContext';
+import useCanIUseContext, { SpecTypes } from '../hooks/useCanIUseContext';
 import { Badge } from './badge';
 import styled from 'styled-components';
 

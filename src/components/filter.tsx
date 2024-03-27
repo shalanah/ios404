@@ -105,14 +105,15 @@ const Error = styled.div`
 `;
 
 export const Filter = () => {
-  const { filters, iOSLacking, filteredData, loading } = useCanIUseContext();
+  const { filters, iOSMissingFeatures, filteredData, loading } =
+    useCanIUseContext();
   const len = Object.keys(filters.statuses).length;
   const numChecked = Object.values(filters.statuses).filter((v) => v).length;
   const filterCount = len - numChecked;
 
   let count =
-    filteredData.length === iOSLacking.length
-      ? `${iOSLacking.length} features`
+    filteredData.length === iOSMissingFeatures.length
+      ? `${iOSMissingFeatures.length} features`
       : `${filteredData.length} features`;
   if (loading) {
     count = 'Loading...';

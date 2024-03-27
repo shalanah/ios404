@@ -105,7 +105,7 @@ export const MilkCartonText = ({
   rotation,
   bind, // assures that we can also swipe on <a> tags
 }) => {
-  const { iOSLacking, statuses } = useCanIUseContext();
+  const { iOSMissingFeatures, statuses } = useCanIUseContext();
   const {
     title,
     description,
@@ -116,7 +116,7 @@ export const MilkCartonText = ({
     key,
     notes_by_num,
     desktopSafariStat,
-  } = iOSLacking[index];
+  } = iOSMissingFeatures[index];
 
   const iosMacSame = safariStat.slice(0, 1) === desktopSafariStat.slice(0, 1);
 
