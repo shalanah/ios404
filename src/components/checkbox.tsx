@@ -46,6 +46,10 @@ const Div = styled.div`
     padding: 2px 0px;
     font-size: 0.95rem; // TODO: double check this doesn't do the weird zoomy thing in iOS
     line-height: 1.1;
+    @media (max-width: 768px) {
+      font-size: 1rem;
+      padding: 4px 0px;
+    }
   }
 `;
 
