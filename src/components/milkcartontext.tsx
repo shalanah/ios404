@@ -28,6 +28,24 @@ const Div = styled.div`
   * {
     touch-action: none !important;
   } */
+  .description {
+    text-align: left;
+    text-transform: none;
+    font-size: 35px;
+    line-height: 1.35;
+    margin-bottom: 30px;
+    font-weight: 500;
+    text-wrap: balance;
+    @media (max-width: 768px) {
+      font-weight: 700;
+      font-size: 36px;
+    }
+  }
+  .description .long {
+    @media (max-width: 768px) {
+      opacity: 0.8;
+    }
+  }
   .description code {
     background: var(--codeBg);
     color: var(--codeColor);
@@ -61,17 +79,25 @@ const Div = styled.div`
       opacity: 0.05;
     }
   }
-  .stats h3 {
+  .stats {
     font-size: 29px;
+    @media (max-width: 768px) {
+      font-size: 32px;
+    }
+  }
+  .stats h3 {
+    font-size: inherit;
     width: 100px;
     flex-shrink: 0;
     font-weight: 500;
     opacity: 0.8;
+    @media (max-width: 768px) {
+      font-weight: 800;
+      opacity: 0.6;
+    }
   }
   .stats p {
     color: var(--titleColor);
-    font-size: 29px;
-    font-weight: 800;
   }
   a {
     text-decoration: underline;
@@ -195,18 +221,7 @@ export const MilkCartonText = ({
                   />
                 </a>
               </h2>
-              <div
-                style={{
-                  textAlign: 'left',
-                  textTransform: 'none',
-                  fontSize: 35,
-                  lineHeight: 1.35,
-                  marginBottom: 30,
-                  fontWeight: 500,
-                  textWrap: 'balance',
-                }}
-                className={'description'}
-              >
+              <div className={'description'}>
                 {Object.entries(notes_by_num).length > 0 && (
                   <ul
                     style={{
@@ -236,9 +251,11 @@ export const MilkCartonText = ({
                     })}
                   </ul>
                 )}
-                <Markdown remarkPlugins={[remarkGfm, addCanIUseUrlBack]}>
-                  {description}
-                </Markdown>
+                <div className="long">
+                  <Markdown remarkPlugins={[remarkGfm, addCanIUseUrlBack]}>
+                    {description}
+                  </Markdown>
+                </div>
               </div>
             </div>
             <div
