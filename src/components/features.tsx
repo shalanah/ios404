@@ -18,11 +18,18 @@ const Div = styled.div`
     transition: 0.1s color ease-out;
     font-weight: 200;
     color: var(--color);
+    @media (max-width: 768px) {
+      font-weight: 400;
+      opacity: 0.6;
+    }
   }
   h2.active {
     position: relative;
     font-weight: 700;
     color: var(--titleColor) !important;
+    @media (max-width: 768px) {
+      opacity: 1;
+    }
   }
   button {
     display: block;
