@@ -86,7 +86,7 @@ const DesktopCanvasDiv = styled.div`
 const MobileCanvasDiv = styled.div`
   position: absolute;
   left: 0;
-  top: -40px; /// making room for features div
+  top: -50px; /// making room for features div
   height: 100dvh;
   width: 100vw;
   z-index: 0;
