@@ -23,8 +23,13 @@ const Button = styled.button`
 
 const config = { mass: 0.05, tension: 600, friction: 40 };
 export default function Experience() {
-  const { activeIndex, iOSMissingFeatures, setNextFeature, filteredData } =
-    useCanIUseContext();
+  const {
+    activeIndex,
+    iOSMissingFeatures,
+    setNextFeature,
+    filteredData,
+    doNotRotate,
+  } = useCanIUseContext();
   const len = iOSMissingFeatures.length;
   const filteredLen = filteredData.length;
   const turns = useRef(0);
@@ -34,7 +39,7 @@ export default function Experience() {
   // @ts-ignore
   const prevPos = filteredData.findIndex((v) => v.index === prevActiveIndex);
 
-  if (activeIndex !== -1 && prevActiveIndex !== -1) {
+  if (activeIndex !== -1 && prevActiveIndex !== -1 && !doNotRotate) {
     if (prevPos < pos) {
       const looping = pos === filteredLen - 1 && prevPos === 0;
       turns.current += looping ? -1 : 1;
@@ -87,8 +92,9 @@ export default function Experience() {
       const value = Math.min(Math.abs(mx), 44.5); // clamping...
       const sign = Math.sign(mx);
       if (last) {
+        console.log({ value, filteredDatalength: filteredData.length });
         if (value > 35 && filteredData.length > 1) {
-          setNextFeature({ forwards: sign === -1 });
+          setNextFeature({ forwards: sign === -1, action: 'swipe' });
           return;
         } else {
           api.start({
@@ -155,7 +161,11 @@ export default function Experience() {
               >
                 <Button
                   onClick={() =>
-                    setNextFeature({ forwards: false, featureActive: false })
+                    setNextFeature({
+                      forwards: false,
+                      featureActive: false,
+                      action: 'arrows',
+                    })
                   }
                   className="d-flex justify-content-center align-items-center justify-content-center"
                 >
@@ -177,7 +187,11 @@ export default function Experience() {
                 <Button
                   className="d-flex justify-content-center align-items-center"
                   onClick={() =>
-                    setNextFeature({ forwards: true, featureActive: false })
+                    setNextFeature({
+                      forwards: true,
+                      featureActive: false,
+                      action: 'arrows',
+                    })
                   }
                 >
                   <Arrow right />

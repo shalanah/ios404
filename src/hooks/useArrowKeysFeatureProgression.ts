@@ -29,6 +29,7 @@ export const useArrowKeysFeatureProgression = () => {
       setNextFeature({
         e,
         forwards: ['ArrowDown', 'ArrowRight'].includes(e.key),
+        action: 'keys',
       });
     };
     document.addEventListener('keyup', onKeyUp);
