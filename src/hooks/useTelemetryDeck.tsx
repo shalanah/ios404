@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import TelemetryDeck from '@telemetrydeck/sdk';
 import Bowser from 'bowser';
-import { getCountry } from '../utils/getCountryFromTz';
 
 const getRandomIdentifier = () => {
   return (
@@ -52,7 +51,7 @@ export const useTelemetryDeck = () => {
     const searchParams = new URLSearchParams(window.location.search);
     td.clientUser = userId; // not associated with any other data
     td.signal('LoadedHomePage', {
-      'country or tz': getCountry(), // trying to obscure tz by using country - not using ip sniffing uses tz
+      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
       device: isIpad ? 'tablet' : device,
       // Site specific data:
       filteredBrowser: searchParams.get('browsers'), // what browsers are filtered?
