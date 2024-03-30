@@ -9,7 +9,7 @@ import React, {
   Dispatch,
   SetStateAction,
 } from 'react';
-import { useHash } from './useHash';
+import { ActionType, useHash } from './useHash';
 import {
   getIOSMissingFeatures,
   IOSMissingFeaturesType,
@@ -19,11 +19,12 @@ import { useCanIUseData } from './useCanIUseData';
 import { useFilters, type FiltersType } from './useFilters';
 // import { parseMdnData } from '../utils/parseMdnData';
 
+// TODO: Continue type checking + CLEANUP (more sharing of types)
 interface CanIUseContextInterface {
   loading: boolean;
   hasError: boolean;
   activeIndex: number;
-  updateHash: (newHash: string) => void;
+  updateHash: (newHash: string, action: ActionType) => void;
   statuses: { [k: string]: string } | undefined;
   filters: FiltersType;
   setFilters: Dispatch<SetStateAction<FiltersType>>;
@@ -33,6 +34,7 @@ interface CanIUseContextInterface {
     forwards: boolean;
     e?: Event;
     featureActive?: boolean;
+    action: ActionType;
   }) => void;
   canIUseDataUpdated: number | undefined;
   setHasError: (error: boolean) => void;
@@ -40,6 +42,8 @@ interface CanIUseContextInterface {
   filteredData: IOSMissingFeaturesType;
   filteredByBrowserOnly: IOSMissingFeaturesType;
   activeInFilteredData: boolean;
+  actionType: ActionType;
+  doNotRotate: boolean;
 }
 
 // Game state... could probably be broken out into smaller files / hooks
@@ -50,8 +54,10 @@ export const buttonClass = 'feature-list-button';
 
 // TODO: Separate out some of these providers?
 export const CanIUseContextProvider = ({
+  verticalView = false,
   children,
 }: {
+  verticalView?: boolean;
   children: ReactNode;
 }) => {
   const { canIUseData, loading, hasError, setHasError } = useCanIUseData();
@@ -61,7 +67,7 @@ export const CanIUseContextProvider = ({
   );
   const [search, setSearch] = useState('');
   const [filters, setFilters] = useFilters();
-  const [hash, updateHash] = useHash();
+  const { hash, updateHash, actionType } = useHash();
 
   let activeIndex =
     iOSMissingFeatures.length > 0
@@ -77,7 +83,7 @@ export const CanIUseContextProvider = ({
       activeIndex !== -1 &&
       hash !== iOSMissingFeatures[activeIndex]?.key
     ) {
-      updateHash('');
+      updateHash('', 'load');
     }
   }, [updateHash, activeIndex, iOSMissingFeatures, hash]);
 
@@ -102,14 +108,17 @@ export const CanIUseContextProvider = ({
     });
   }
 
+  // useCallback?
   const setNextFeature = ({
     forwards,
     e,
     featureActive = true,
+    action,
   }: {
     forwards: boolean;
     e?: Event;
     featureActive?: boolean;
+    action: ActionType;
   }) => {
     const len = filteredData.length;
     if (len < 1) return;
@@ -122,7 +131,7 @@ export const CanIUseContextProvider = ({
     }
     if (e) e.preventDefault(); // prevent scrolling down
     const { key, index } = filteredData[filteredIndex];
-    updateHash(key);
+    updateHash(key, action);
     const el = document.querySelector(`.${buttonClass}[data-index="${index}"]`);
     if (featureActive) {
       if (el) (el as HTMLElement).focus(); // scroll ino view
@@ -169,6 +178,8 @@ export const CanIUseContextProvider = ({
         canIUseDataUpdated: canIUseData?.updated,
         setHasError,
         activeInFilteredData: filteredData.some((v) => v.index === activeIndex),
+        actionType,
+        doNotRotate: verticalView && actionType === 'button', // too distracting with drawer open
       }}
     >
       {children}
