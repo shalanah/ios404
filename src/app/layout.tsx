@@ -7,6 +7,7 @@ const inter = Inter_Tight({
 });
 
 // TODO: Move more over to metadata over putting in the head
+// TODO: Figure out how to add viewport meta tag : see chrome issue : https://stackoverflow.com/a/77879573/2824643
 export const metadata: Metadata = {
   title: 'iOS404',
   description: 'The missing web features of iOS',
@@ -56,6 +57,10 @@ export default function RootLayout({
         <meta
           property="og:image"
           content="https://ios404.com/icons/ios-404-og-1200x630.jpg"
+        />
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1.0, interactive-widget=resizes-content"
         />
         <meta name="twitter:title" content="iOS404" />
         <meta

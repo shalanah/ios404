@@ -1,5 +1,3 @@
-'use client';
-
 import useCanIUseContext from '../hooks/useCanIUseContext';
 import { buttonClass } from '../hooks/useCanIUseContext';
 import styled from 'styled-components';
@@ -61,7 +59,7 @@ export default function Features() {
             data-index={index} // to focus on load
             className={buttonClass + (active ? ' active' : '')}
             onClick={(e) => {
-              updateHash(key);
+              updateHash(key, 'button');
               // Safari doesn't think buttons deserve focus... 🤷‍♀️?
               // - https://stackoverflow.com/questions/42758815/safari-focus-event-doesnt-work-on-button-element
               e.currentTarget.focus();

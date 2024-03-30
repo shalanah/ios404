@@ -1,13 +1,23 @@
-import { useEffect, useCallback, useState, use } from 'react';
+import { useEffect, useCallback, useState } from 'react';
 
-// Source: https://www.30secondsofcode.org/react/s/use-hash/
-export const useHash = (): [string, (newHash: string) => void] => {
-  const [hash, setHash] = useState<string>(() => window.location.hash);
+export type ActionType = 'button' | 'load' | 'arrows' | 'keys' | 'swipe';
+type HashType = string;
+
+// Inspiration: https://www.30secondsofcode.org/react/s/use-hash/
+export const useHash = () => {
+  const [{ hash, actionType }, setHash] = useState<{
+    hash: HashType;
+    actionType: ActionType;
+  }>(() => {
+    return {
+      hash: window?.location?.hash || '',
+      actionType: 'load',
+    };
+  });
 
   const hashChangeHandler = useCallback(() => {
-    setHash(window.location.hash);
+    setHash({ hash: window?.location?.hash || '', actionType: 'load' });
   }, []);
-
   useEffect(() => {
     window.addEventListener('hashchange', hashChangeHandler);
     return () => {
@@ -16,15 +26,15 @@ export const useHash = (): [string, (newHash: string) => void] => {
   }, [hashChangeHandler]);
 
   const updateHash = useCallback(
-    (newHash: string) => {
+    (newHash: HashType, action: ActionType) => {
       if (newHash !== hash) {
         const urlWithoutHash = window.location.href.split('#')[0];
         window.history.replaceState(null, '', `${urlWithoutHash}#${newHash}`);
-        setHash(`#${newHash}`);
+        setHash({ hash: `#${newHash}`, actionType: action });
       }
     },
     [hash]
   );
 
-  return [hash.slice(1), updateHash];
+  return { hash: hash.slice(1), updateHash, actionType };
 };

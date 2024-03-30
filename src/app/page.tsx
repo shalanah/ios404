@@ -135,7 +135,7 @@ export default function Home() {
   // Vertical View
   if (width && width < verticalViewWidth) {
     return (
-      <CanIUseContextProvider>
+      <CanIUseContextProvider verticalView>
         <DarkModeProvider>
           <GlobalCss />
           <ErrorModal />
