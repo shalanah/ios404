@@ -62,7 +62,7 @@ export const Intro = () => {
         style={{
           marginLeft: -8,
           marginRight: -8,
-          color: 'var(--titleColor)',
+          color: 'var(--titleFg)',
           lineHeight: 1.35,
           fontSize: '.95rem',
           fontWeight: 400,

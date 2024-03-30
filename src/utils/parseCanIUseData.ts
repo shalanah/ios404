@@ -75,7 +75,7 @@ const getFirstSeen = ({
   };
 };
 
-export const getIOSMissingFeatures = (canIUseData: any) => {
+export const getIOSMissingFeatures = (canIUseData: CIU | null) => {
   if (!canIUseData) return [];
   // TODO: Make sure this is memorized?
   const { data, agents } = canIUseData;
@@ -133,3 +133,5 @@ export const getIOSMissingFeatures = (canIUseData: any) => {
     });
   return safariDoesNotSupport;
 };
+
+export type IOSMissingFeaturesType = ReturnType<typeof getIOSMissingFeatures>;

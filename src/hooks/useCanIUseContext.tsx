@@ -10,7 +10,10 @@ import React, {
   SetStateAction,
 } from 'react';
 import { useHash } from './useHash';
-import { getIOSMissingFeatures } from '../utils/parseCanIUseData';
+import {
+  getIOSMissingFeatures,
+  IOSMissingFeaturesType,
+} from '../utils/parseCanIUseData';
 import cloneDeep from 'lodash/cloneDeep';
 import { useCanIUseData } from './useCanIUseData';
 import { useFilters, type FiltersType } from './useFilters';
@@ -19,13 +22,11 @@ import { useFilters, type FiltersType } from './useFilters';
 interface CanIUseContextInterface {
   loading: boolean;
   hasError: boolean;
-  iOSMissingFeatures: any;
   activeIndex: number;
   updateHash: (newHash: string) => void;
   statuses: { [k: string]: string } | undefined;
   filters: FiltersType;
   setFilters: Dispatch<SetStateAction<FiltersType>>;
-  filteredData: any;
   search: string;
   setSearch: (search: string) => void;
   setNextFeature: (args: {
@@ -35,7 +36,10 @@ interface CanIUseContextInterface {
   }) => void;
   canIUseDataUpdated: number | undefined;
   setHasError: (error: boolean) => void;
-  filteredByBrowserOnly: any;
+  iOSMissingFeatures: IOSMissingFeaturesType;
+  filteredData: IOSMissingFeaturesType;
+  filteredByBrowserOnly: IOSMissingFeaturesType;
+  activeInFilteredData: boolean;
 }
 
 // Game state... could probably be broken out into smaller files / hooks
@@ -164,6 +168,7 @@ export const CanIUseContextProvider = ({
         setNextFeature,
         canIUseDataUpdated: canIUseData?.updated,
         setHasError,
+        activeInFilteredData: filteredData.some((v) => v.index === activeIndex),
       }}
     >
       {children}

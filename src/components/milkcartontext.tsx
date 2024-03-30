@@ -97,7 +97,7 @@ const Div = styled.div`
     }
   }
   .stats p {
-    color: var(--titleColor);
+    color: var(--titleFg);
   }
   a {
     text-decoration: underline;

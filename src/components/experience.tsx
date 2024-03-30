@@ -14,7 +14,7 @@ const Button = styled.button`
   width: 40px;
   height: 40px;
   border-radius: 8px;
-  color: var(--color);
+  color: var(--fg);
   flex-shrink: 0;
   &:focus {
     outline: 2.5px dotted currentColor;

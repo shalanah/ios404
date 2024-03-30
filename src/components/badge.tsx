@@ -15,11 +15,11 @@ const Span = styled.span`
   font-weight: 700;
   transition: 0.2s;
   background: var(--badgeBgNonActive);
-  color: var(--badgeColorNonActive);
+  color: var(--badgeFgNonActive);
   border: 1px solid var(--badgeBorderNonActive);
   &.active {
     background: var(--badgeBg);
-    color: var(--badgeColor);
+    color: var(--badgeFg);
     border: 1px solid var(--badgeBorder);
   }
 `;

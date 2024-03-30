@@ -6,7 +6,6 @@ import styled from 'styled-components';
 import { FiltersType } from '../hooks/useFilters';
 
 export type SpecTypes = keyof FiltersType['statuses'];
-
 type StatusCounts = {
   [K in SpecTypes]: number;
 };
@@ -36,7 +35,7 @@ export const FilterModalContentSpecs = ({
 }) => {
   const { filteredByBrowserOnly, statuses, filters, setFilters, filteredData } =
     useCanIUseContext();
-  const statusCounts: StatusCounts = filteredByBrowserOnly.reduce(
+  const statusCounts = filteredByBrowserOnly.reduce(
     (acc: { [k: string]: number }, v: { status: 'string' } & any) => {
       acc[v.status] += 1;
       return acc;
@@ -135,7 +134,7 @@ export const FilterModalContentSpecs = ({
             {title && description && (
               <div
                 style={{
-                  color: 'var(--titleColor)',
+                  color: 'var(--titleFg)',
                   width: '100%',
                   flexShrink: 0,
                   display: 'flex',

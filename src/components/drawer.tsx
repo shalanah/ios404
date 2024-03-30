@@ -43,7 +43,7 @@ const ClickArea = styled.div`
   border: 2px dotted transparent;
   border-radius: 30px 30px 0px 0px;
   &:focus-visible {
-    border: 2px dotted var(--titleColor);
+    border: 2px dotted var(--titleFg);
     outline: none;
   }
 `;

@@ -3,22 +3,22 @@ const theme = {
     modalShadow: '#000',
     modalBg: 'rgb(41, 44, 49)',
     modalHr: 'rgba(255, 255, 255, 0.2)',
-    color: '#d8d8d8',
+    fg: '#d8d8d8',
     bg: '#161616',
     badgeBgNonActive: 'rgb(60, 60, 60)',
     badgeBorderNonActive: 'rgb(60, 60, 60)',
-    badgeColorNonActive: '#b7b7b7',
+    badgeFgNonActive: '#b7b7b7',
     badgeBg: '#007991',
-    badgeColor: '#d3ffff',
+    badgeFg: '#d3ffff',
     badgeBorder: '#25c2e56e',
     codeBg: '#d7d7d7',
     codeColor: '#000',
     codeBorder: '#222',
     radioBg: '#fff',
-    radioColor: 'var(--bg)',
+    radioFg: 'var(--bg)',
     radioEmptyBg: 'var(--bg)',
     radioOutline: '#fff',
-    titleColor: '#fff',
+    titleFg: '#fff',
     vignette:
       'radial-gradient(ellipse at center, rgba(0,0,0,0) 50%, rgba(30,30,30,.6) 100%)',
     partial: 'yellow',
@@ -27,22 +27,22 @@ const theme = {
     modalBg: '#fff',
     modalHr: '#afdaeb',
     modalShadow: 'rgba(0, 0, 0, 0.5)',
-    color: '#555',
+    fg: '#555',
     bg: '#cce9f4',
     badgeBgNonActive: '#f7f7f7',
-    badgeColorNonActive: '#777',
+    badgeFgNonActive: '#777',
     badgeBorderNonActive: '#eee',
     badgeBg: '#008bcc',
-    badgeColor: '#ffffff',
+    badgeFg: '#ffffff',
     badgeBorder: '#0896c6',
     codeBg: '#f9f9f988', // '#f5f5f5',
     codeColor: '#000',
     codeBorder: '#5c5c5c',
     radioBg: '#fff',
-    radioColor: 'var(--color)',
+    radioFg: 'var(--fg)',
     radioEmptyBg: '#eee',
     radioOutline: '#ccc',
-    titleColor: '#333',
+    titleFg: '#333',
     vignette:
       'radial-gradient(ellipse at center, rgba(255, 255, 255, 0) 50%, rgba(242, 216, 216, .5) 100%)',
     partial: '#005364',
@@ -178,7 +178,7 @@ button, input, a, [role="button"] {
     transform: scale(1.2);
   }
   button:hover, input:hover, a:hover, [role="button"]:hover {
-    // outline: 2px dotted var(--titleColor) !important;
+    // outline: 2px dotted var(--titleFg) !important;
     // outline-offset: 2px !important;
   }
 }
@@ -188,7 +188,7 @@ button:active,  a:active {
 }
 
 button:focus-visible, input:focus-visible, a:focus-visible {
-  outline: 2px dotted var(--titleColor) !important;
+  outline: 2px dotted var(--titleFg) !important;
   outline-offset: 1px !important;
 }
 
@@ -222,7 +222,7 @@ strong {
 html,
 body {
   background: var(--bg);
-  color: var(--color);
+  color: var(--fg);
   text-align: center;
   line-height: 1.4;
   font-weight: normal;
@@ -240,7 +240,7 @@ body {
 }
 
 svg {
-  color:var(--titleColor)
+  color:var(--titleFg)
 }
 
 h1,
@@ -251,7 +251,7 @@ h5,
 h6,
 strong,
 .header {
-  color: var(--titleColor);
+  color: var(--titleFg);
   font-weight: 400;
 }
 

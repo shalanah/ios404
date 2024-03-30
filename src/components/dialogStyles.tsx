@@ -40,7 +40,7 @@ export const DialogContent = styled(Dialog.Content).attrs((p) => ({
   overflow: auto;
   z-index: 4;
   &:focus {
-    outline: 2px dotted var(--color);
+    outline: 2px dotted var(--fg);
     outline-offset: 2px;
   }
 `;

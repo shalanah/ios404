@@ -12,7 +12,7 @@ const Dl = styled.dl`
     text-underline-offset: 0.2em;
   }
   dt {
-    color: var(--titleColor);
+    color: var(--titleFg);
     line-height: 1.2;
     font-size: 0.9rem;
     font-weight: 700;

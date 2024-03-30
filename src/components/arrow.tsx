@@ -6,7 +6,7 @@ const Span = styled.span`
   height: 15px;
   opacity: 1;
   transform-origin: center;
-  border: 2px solid var(--titleColor);
+  border: 2px solid var(--titleFg);
   border-bottom: none;
   border-right: none;
 `;

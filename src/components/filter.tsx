@@ -17,7 +17,7 @@ const Indicator = styled.span`
   height: 14px;
   border-radius: ${radius}px;
   background: var(--modalBg);
-  color: var(--color);
+  color: var(--fg);
   position: absolute;
   top: -2px;
   right: -2px;
@@ -39,7 +39,7 @@ const Button = styled.button`
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  color: var(--color);
+  color: var(--fg);
   flex-shrink: 0;
   transition: 0.15s;
   position: relative;
@@ -54,7 +54,7 @@ const Div = styled.div`
   gap: 5px;
   height: ${height}px;
   align-items: center;
-  color: var(--titleColor);
+  color: var(--titleFg);
   justify-content: space-between;
   width: 100%;
   flex-shrink: 0;
@@ -63,7 +63,7 @@ const Count = styled.div`
   min-width: 8ch;
   white-space: nowrap;
   font-variant-numeric: tabular-nums;
-  color: var(--color);
+  color: var(--fg);
   font-size: ${fontSize}px;
 `;
 const Span = styled.span`
@@ -153,7 +153,7 @@ export const Filter = () => {
               aria-label="Comparison browsers"
               style={{
                 // TODO: same order
-                color: 'var(--color)',
+                color: 'var(--fg)',
                 flexShrink: 0,
               }}
             >

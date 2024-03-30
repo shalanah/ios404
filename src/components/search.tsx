@@ -10,9 +10,9 @@ const Input = styled.input`
   font-size: 16px;
   width: 100%;
   background: var(--modalBg);
-  color: var(--color);
+  color: var(--fg);
   &::placeholder {
-    color: var(--color);
+    color: var(--fg);
   }
 `;
 
