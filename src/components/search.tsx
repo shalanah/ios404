@@ -39,7 +39,6 @@ export const Search = () => {
         }}
       />
       <span
-        aria-label="Search"
         style={{
           position: 'absolute',
           pointerEvents: 'none',
