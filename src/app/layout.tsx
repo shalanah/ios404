@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, ResolvedViewport, Viewport } from 'next';
 import { Inter_Tight } from 'next/font/google';
 
 const inter = Inter_Tight({
@@ -6,8 +6,12 @@ const inter = Inter_Tight({
   weight: ['100', '200', '300', '400', '500', '700', '800'],
 });
 
-// TODO: Move more over to metadata over putting in the head
-// TODO: Figure out how to add viewport meta tag : see chrome issue : https://stackoverflow.com/a/77879573/2824643
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1.0,
+  interactiveWidget: 'resizes-content', // See android chrome issue : https://stackoverflow.com/a/77879573/2824643
+};
+
 export const metadata: Metadata = {
   title: 'iOS404',
   description: 'The missing web features of iOS',
@@ -26,6 +30,36 @@ export const metadata: Metadata = {
     'caniuse',
     'ios404',
   ],
+  icons: [
+    {
+      url: '/light-mode-favicon.ico',
+      rel: 'icon',
+      media: '(prefers-color-scheme: light)',
+    },
+    {
+      url: '/dark-mode-favicon.ico',
+      rel: 'icon',
+      media: '(prefers-color-scheme: dark)',
+    },
+  ],
+
+  manifest: '/manifest.json',
+  twitter: {
+    title: 'iOS404',
+    description: 'The missing web features of iOS',
+    images: 'https://ios404.com/icons/ios-404-og-1200x630.jpg',
+    card: 'summary_large_image',
+    site: '@ios404website',
+    creator: '@shalanahfaith',
+  },
+  // viewport,
+  openGraph: {
+    type: 'website',
+    url: 'https://ios404.com',
+    title: 'iOS404',
+    description: 'The missing web features of iOS',
+    images: 'https://ios404.com/icons/ios-404-og-1200x630.jpg',
+  },
 };
 
 export default function RootLayout({
@@ -35,46 +69,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <head>
-        <link
-          href="/light-mode-favicon.ico"
-          rel="icon"
-          media="(prefers-color-scheme: light)"
-        />
-        <link
-          href="/dark-mode-favicon.ico"
-          rel="icon"
-          media="(prefers-color-scheme: dark)"
-        />
-        <link rel="manifest" href="/manifest.json" />
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://ios404.com" />
-        <meta property="og:title" content="iOS404" />
-        <meta
-          property="og:description"
-          content="The missing web features of iOS"
-        />
-        <meta
-          property="og:image"
-          content="https://ios404.com/icons/ios-404-og-1200x630.jpg"
-        />
-        <meta
-          name="viewport"
-          content="width=device-width, initial-scale=1.0, interactive-widget=resizes-content"
-        />
-        <meta name="twitter:title" content="iOS404" />
-        <meta
-          name="twitter:description"
-          content="The missing web features of iOS"
-        />
-        <meta
-          name="twitter:image"
-          content="https://ios404.com/icons/ios-404-og-1200x630.jpg"
-        />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:site" content="@ios404website" />
-        <meta name="twitter:creator" content="@shalanahfaith" />
-      </head>
       <body className={inter.className}>{children}</body>
     </html>
   );
