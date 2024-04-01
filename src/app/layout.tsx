@@ -1,4 +1,4 @@
-import type { Metadata, ResolvedViewport, Viewport } from 'next';
+import type { Metadata } from 'next';
 import { Inter_Tight } from 'next/font/google';
 
 const inter = Inter_Tight({
