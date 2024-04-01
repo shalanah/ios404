@@ -52,7 +52,6 @@ export const metadata: Metadata = {
     site: '@ios404website',
     creator: '@shalanahfaith',
   },
-  // viewport,
   openGraph: {
     type: 'website',
     url: 'https://ios404.com',
