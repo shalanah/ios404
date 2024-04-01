@@ -92,7 +92,6 @@ export default function Experience() {
       const value = Math.min(Math.abs(mx), 44.5); // clamping...
       const sign = Math.sign(mx);
       if (last) {
-        console.log({ value, filteredDatalength: filteredData.length });
         if (value > 35 && filteredData.length > 1) {
           setNextFeature({ forwards: sign === -1, action: 'swipe' });
           return;
