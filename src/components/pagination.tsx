@@ -56,7 +56,7 @@ export const Pagination = () => {
   let large = paginationHeight > 90;
   let arrowSize = large ? 15 : 12;
   let buttonSize = large ? 40 : 25;
-  let bottom = large ? paginationHeight * 0.75 : paginationHeight / 2;
+  let bottom = large ? paginationHeight * 0.76 : paginationHeight / 2;
   // center vertically if smaller
   let transform = large
     ? 'translate3D(-50%, 100%, 0)'

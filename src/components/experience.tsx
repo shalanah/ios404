@@ -1,4 +1,4 @@
-import { Ref, Suspense, useEffect, useRef } from 'react';
+import { Suspense, useEffect, useRef } from 'react';
 import { Model } from './milkcarton';
 import { MilkCartonText } from './milkcartontext';
 import useCanIUseContext from '../hooks/useCanIUseContext';

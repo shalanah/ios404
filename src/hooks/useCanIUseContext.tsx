@@ -48,6 +48,8 @@ interface CanIUseContextInterface {
   paginationHeight: number | null;
   setPaginationHeight: Dispatch<SetStateAction<number | null>>;
   verticalView: boolean;
+  scale: number;
+  setScale: Dispatch<SetStateAction<number>>;
 }
 
 // Game state... could probably be broken out into smaller files / hooks
@@ -145,6 +147,7 @@ export const CanIUseContextProvider = ({
   };
 
   const [paginationHeight, setPaginationHeight] = useState<number | null>(null);
+  const [scale, setScale] = useState(1);
 
   // MDN DATA: TODO: Later
   // If Safari brings up that caniuse data isn't up-to-date...
@@ -192,6 +195,8 @@ export const CanIUseContextProvider = ({
         actionType,
         doNotRotate: verticalView && actionType === 'button', // too distracting with drawer open
         verticalView,
+        scale,
+        setScale,
       }}
     >
       {children}

@@ -16,6 +16,7 @@ const textureUrlLight = '/milkcarton-texture-bake-light5.jpg';
 const textureUrlDark = '/milkcarton-texture-bake-dark8.jpg';
 
 export const cartonSide = 50; // distance to edge of carton - from Blender model
+export const cartonHeight = 172; // height of carton - from Blender model
 
 type MilkCartonNodes = {
   nodes: {

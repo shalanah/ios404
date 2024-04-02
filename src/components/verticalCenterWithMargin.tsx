@@ -1,63 +1,67 @@
-import { Box3, Vector3, Group } from 'three';
-import React from 'react';
+import { Vector3 } from 'three';
+import React, { useEffect, useLayoutEffect } from 'react';
 import { useThree } from '@react-three/fiber';
-import { cartonSide } from './milkcarton';
+import { cartonHeight, cartonSide } from './milkcarton';
 import useCanIUseContext from '@/hooks/useCanIUseContext';
-
-// This is a modified version of the Center component from @react-three/drei
+import { a, SpringProps, useSpring } from '@react-spring/three';
 
 type Props = {
-  /** See https://threejs.org/docs/index.html?q=box3#api/en/math/Box3.setFromObject */
-  precise?: boolean;
-  /** Optional cacheKey to keep the component from recalculating on every render */
-  cacheKey?: any;
-  minMargin?: number;
   children?: React.ReactNode;
+  scale?: number;
 };
 
-export const VerticalCenterWithMargin = ({
-  precise = true,
-  cacheKey = 0,
-  children = null,
-}: Props) => {
-  const { setPaginationHeight, paginationHeight, verticalView } =
-    useCanIUseContext();
-  const outer = React.useRef<Group>(null!);
-  const inner = React.useRef<Group>(null!);
-  const { camera, size } = useThree();
-  React.useLayoutEffect(() => {
-    outer.current.matrixWorld.identity();
-    const box3 = new Box3().setFromObject(inner.current, precise);
-    const center = new Vector3();
-    box3.getCenter(center);
-    const verticalOffset = verticalView ? 10 : 3; // visual centering top part of milk carton less important + recedes
+const getYPosition = (verticalView: boolean) => {
+  const centerY = cartonHeight / 2;
+  const verticalOffset = verticalView && window.innerHeight < 600 ? 10 : 0; // visual centering top part of milk carton less important + recedes
 
-    // pixel position of bottom of carton
-    const cartonBottomPos = new Vector3(
-      0,
-      -center.y + verticalOffset,
-      cartonSide
-    );
-    const mouseCoords = cartonBottomPos.project(camera);
+  return -centerY + verticalOffset;
+};
+
+// const config = { mass: 0.05, tension: 600, friction: 40 };
+const config = {
+  mass: 0.25,
+  tension: 800,
+  friction: 30,
+};
+
+export const VerticalCenterWithMargin = ({ children = null }: Props) => {
+  const { setPaginationHeight, paginationHeight, verticalView, scale } =
+    useCanIUseContext();
+  const { camera, size } = useThree();
+
+  const y = getYPosition(verticalView);
+  const position = [0, y, -cartonSide * (scale - 1)];
+
+  const [spring, api] = useSpring(() => ({
+    scale,
+    position,
+    config,
+  }));
+  useEffect(() => {
+    api.start({
+      scale,
+      position,
+      config,
+    });
+  }, [api, scale, position, config]);
+
+  useLayoutEffect(() => {
+    const cartonBottomPos = new Vector3(0, y, cartonSide);
+    const mouseCoords = cartonBottomPos.project(camera); // help figure out how much pagination space we have
     const margin = Math.round(((mouseCoords.y + 1) / 2) * size.height);
     if (margin !== paginationHeight) {
       setPaginationHeight(margin);
     }
-
-    outer.current.position.set(0, -center.y + verticalOffset, 0);
-  }, [
-    cacheKey,
-    precise,
-    camera,
-    size,
-    paginationHeight,
-    setPaginationHeight,
-    verticalView,
-  ]);
+  }, [y, camera, size, paginationHeight, setPaginationHeight]);
 
   return (
-    <group ref={outer}>
-      <group ref={inner}>{children}</group>
-    </group>
+    <a.group
+      {...(spring as SpringProps)}
+      // scale={scale}
+      // // @ts-ignore
+      // position={position}
+    >
+      {children}
+    </a.group>
   );
 };
