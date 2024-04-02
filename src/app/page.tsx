@@ -98,20 +98,11 @@ const MobileCanvasDiv = styled.div`
   }
 `;
 
-const cameraDesktop = {
-  // position: [-77, -40.2, 242],
+const camera = {
   position: [0, -30, 254],
   fov: 56,
-  near: 0.1,
-  far: 10000, // seems a bit much... TODO: double check
-} as const;
-
-const cameraMobile = {
-  // position: [0, -40.2, 242],
-  position: [0, -30, 254],
-  fov: 55,
-  near: 0.1,
-  far: 10000, // seems a bit much... TODO: double check
+  near: 120,
+  far: 450,
 } as const;
 
 export default function Home() {
@@ -150,7 +141,7 @@ export default function Home() {
               bottom: closedHeight,
             }}
           >
-            <Canvas flat camera={cameraMobile}>
+            <Canvas flat camera={camera}>
               <Experience />
             </Canvas>
             <Pagination />
@@ -205,7 +196,7 @@ export default function Home() {
               height: '100dvh',
             }}
           >
-            <Canvas flat camera={cameraDesktop}>
+            <Canvas flat camera={camera}>
               <Experience />
             </Canvas>
             <Pagination />

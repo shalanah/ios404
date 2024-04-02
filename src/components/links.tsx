@@ -48,9 +48,11 @@ const Button = styled.button`
   }
 `;
 
-const min = 1;
-const max = 1.5;
-const step = 0.05;
+export const scaleOpts = {
+  min: 1,
+  max: 1.5,
+  step: 0.05,
+};
 
 const iconSize = 30;
 const iconStyle = { width: iconSize, height: iconSize };
@@ -64,7 +66,35 @@ export const Links = () => {
       <p style={{ marginRight: 2, fontWeight: 400 }}>
         No affiliation with Apple or iOS
       </p>
-      <div>
+      <div className="d-flex align-items-center">
+        <Button
+          disabled={scale >= scaleOpts.max}
+          aria-label="Zoom in"
+          onClick={() =>
+            setScale((s) => Math.min(s + scaleOpts.step, scaleOpts.max))
+          }
+        >
+          <ZoomInIcon
+            style={{
+              width: iconSize,
+              height: iconSize,
+            }}
+          />
+        </Button>
+        <Button
+          disabled={scale <= scaleOpts.min}
+          aria-label="Zoom out"
+          onClick={() =>
+            setScale((s) => Math.max(s - scaleOpts.step, scaleOpts.min))
+          }
+        >
+          <ZoomOutIcon
+            style={{
+              width: iconSize,
+              height: iconSize,
+            }}
+          />
+        </Button>
         <Button
           aria-label="Toggle dark mode"
           onClick={() => setColorScheme(isDarkMode ? 'light' : 'dark')}
@@ -80,20 +110,6 @@ export const Links = () => {
               springConfig: { mass: 2, tension: 250, friction: 35 },
             }}
           />
-        </Button>
-        <Button
-          disabled={scale >= max}
-          aria-label="Zoom in"
-          onClick={() => setScale((s) => Math.min(s + step, max))}
-        >
-          <ZoomInIcon style={iconStyle} />
-        </Button>
-        <Button
-          disabled={scale <= min}
-          aria-label="Zoom out"
-          onClick={() => setScale((s) => Math.max(s - step, min))}
-        >
-          <ZoomOutIcon style={iconStyle} />
         </Button>
         <About
           button={
