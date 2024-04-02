@@ -2,8 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 
 const Span = styled.span`
-  width: 15px;
-  height: 15px;
   opacity: 1;
   transform-origin: center;
   border: 2px solid var(--titleFg);
@@ -12,9 +10,11 @@ const Span = styled.span`
 `;
 
 export const Arrow = ({
+  size = 15,
   left = false,
   right = false,
 }: {
+  size?: number;
   left?: boolean;
   right?: boolean;
 }) => {
@@ -22,6 +22,8 @@ export const Arrow = ({
   return (
     <Span
       style={{
+        width: size,
+        height: size,
         transform: `translateX(${isLeft ? 3 : -3}px) rotate(${
           isLeft ? -45 : 135
         }deg) `,

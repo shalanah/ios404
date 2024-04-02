@@ -18,6 +18,7 @@ import { GlobalCss } from '../components/globalCss';
 import { useTelemetryDeck } from '../hooks/useTelemetryDeck';
 import { useIsFirefox } from '../hooks/useIsFirefox';
 import { DarkModeProvider } from '../hooks/useDarkMode';
+import { Pagination } from '@/components/pagination';
 
 const DesktopFeaturesDiv = styled.div`
   text-align: left;
@@ -81,30 +82,34 @@ const DesktopCanvasDiv = styled.div`
   top: 0;
   z-index: 0;
   touch-action: none;
+  * {
+    touch-action: none;
+  }
 `;
 
 const MobileCanvasDiv = styled.div`
   position: absolute;
   left: 0;
-  top: -50px; /// making room for features div
-  height: 100dvh;
   width: 100vw;
   z-index: 0;
   touch-action: none;
+  * {
+    touch-action: none;
+  }
 `;
 
 const cameraDesktop = {
   // position: [-77, -40.2, 242],
-  position: [-77, -30, 242],
+  position: [0, -30, 254],
   fov: 56,
   near: 0.1,
   far: 10000, // seems a bit much... TODO: double check
 } as const;
 
 const cameraMobile = {
-  // position: [-77, -40.2, 242],
-  position: [-77, -30, 242],
-  fov: 60,
+  // position: [0, -40.2, 242],
+  position: [0, -30, 254],
+  fov: 55,
   near: 0.1,
   far: 10000, // seems a bit much... TODO: double check
 } as const;
@@ -139,10 +144,16 @@ export default function Home() {
         <DarkModeProvider>
           <GlobalCss />
           <ErrorModal />
-          <MobileCanvasDiv>
-            <Canvas flat camera={cameraMobile} style={{ touchAction: 'none' }}>
+          <MobileCanvasDiv
+            style={{
+              height: window.innerHeight - closedHeight,
+              bottom: closedHeight,
+            }}
+          >
+            <Canvas flat camera={cameraMobile}>
               <Experience />
             </Canvas>
+            <Pagination />
           </MobileCanvasDiv>
           <LinksDiv>
             <Links />
@@ -194,15 +205,10 @@ export default function Home() {
               height: '100dvh',
             }}
           >
-            <Canvas
-              style={{
-                touchAction: 'none',
-              }}
-              flat
-              camera={cameraDesktop}
-            >
+            <Canvas flat camera={cameraDesktop}>
               <Experience />
             </Canvas>
+            <Pagination />
           </div>
         </DesktopCanvasDiv>
         <DesktopIntroDiv>

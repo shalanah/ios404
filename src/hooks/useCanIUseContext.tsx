@@ -42,8 +42,12 @@ interface CanIUseContextInterface {
   filteredData: IOSMissingFeaturesType;
   filteredByBrowserOnly: IOSMissingFeaturesType;
   activeInFilteredData: boolean;
+  position: number;
   actionType: ActionType;
   doNotRotate: boolean;
+  paginationHeight: number | null;
+  setPaginationHeight: Dispatch<SetStateAction<number | null>>;
+  verticalView: boolean;
 }
 
 // Game state... could probably be broken out into smaller files / hooks
@@ -140,6 +144,8 @@ export const CanIUseContextProvider = ({
     }
   };
 
+  const [paginationHeight, setPaginationHeight] = useState<number | null>(null);
+
   // MDN DATA: TODO: Later
   // If Safari brings up that caniuse data isn't up-to-date...
   // Maybe they should work on that --- who do they really have to blame? That's part of their job, right? Right?
@@ -159,9 +165,13 @@ export const CanIUseContextProvider = ({
   //     });
   // }, []);
 
+  const pos = filteredData.findIndex((v) => v.index === activeIndex); // actual position in list --- active index + prev active is out of the WHOLE non-filtered list
+
   return (
     <CanIUseContext.Provider
       value={{
+        paginationHeight,
+        setPaginationHeight,
         search,
         setSearch,
         loading,
@@ -177,9 +187,11 @@ export const CanIUseContextProvider = ({
         setNextFeature,
         canIUseDataUpdated: canIUseData?.updated,
         setHasError,
-        activeInFilteredData: filteredData.some((v) => v.index === activeIndex),
+        activeInFilteredData: filteredData && pos !== -1,
+        position: pos,
         actionType,
         doNotRotate: verticalView && actionType === 'button', // too distracting with drawer open
+        verticalView,
       }}
     >
       {children}

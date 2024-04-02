@@ -38,16 +38,28 @@ const FAQ = [
     'iOS404 uses [caniuse.com](https://caniuse.com) ([caniuse github](https://github.com/Fyrd/caniuse/tree/main)) data. In the future, hoping to expand to MDN data as well --- there are even more missing iOS features in MDN data.',
   ],
   [
+    'What browsers can I compare to iOS WebKit?',
+    'You can select from Chrome for Android, Firefox for Android, and/or Safari Desktop. Click on the browser icon to select or deselect a browser. The default comparison browser is Chrome for Android.',
+  ],
+  [
+    'How do I filter out non-standard specifications?',
+    'Click on the filter icon to remove less-standard or non-standard specifications from your search.',
+  ],
+  [
     'How do you determine if something is not supported?',
-    'If the selected comparison browser(s) (Chrome for Android is the default but others may be selected) supports a feature more than iOS WebKit, then that feature is consider missing with special note if support is "Partial". You can also use the filtering icon to remove less-standard or non-standard specifications from your search.',
+    'If the selected comparison browser(s) supports a feature more than iOS WebKit, then that feature is consider missing with special note if support is "Partial".',
   ],
   [
     'Who are you?',
     "Hi! 👋 I'm Shalanah Dawson a developer that believes the web should be powerful, approachable, and fun. Find me on [Twitter](https://twitter.com/shalanahfaith), [GitHub](https://github.com/shalanah), or [LinkedIn](https://linkedin.com/in/shalanah).",
   ],
   [
+    'How do I report a bug or ask a feature for iOS404?',
+    'Thank you for your help in making iOS404 better! Open an issue on [GitHub](https://github.com/shalanah/iOS404/issues).',
+  ],
+  [
     'Do you track me?',
-    'iOS404 uses TelemetryDeck. TelemetryDeck does not collect any personally identifiable information. iOS404 sends a best guess on timezone and device type (phone|tablet|desktop) and on load sends which site feature and filters are active. This helps to understand how our users are using the website and how we can improve it. You can read more about [TelemetryDeck’s privacy policy](https://telemetrydeck.com/privacy)',
+    'iOS404 uses TelemetryDeck. TelemetryDeck does not collect any personally identifiable information. iOS404 sends a best guess on timezone and device type ("phone", "tablet" or "desktop") and on load sends which site feature and specification filters are active. This helps to understand how our users are using the website and how we can improve it. You can read more about [TelemetryDeck’s privacy policy](https://telemetrydeck.com/privacy)',
   ],
   ['', 'Copyright 2024. All Rights Reserved - Shalanah Dawson'],
 ];

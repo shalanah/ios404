@@ -1,6 +1,4 @@
-## Getting Started
-
-First, run the development server:
+## Running locally
 
 ```bash
 nvm use
@@ -12,7 +10,7 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Deploy
 
-Deploying a static site (no server) using github actions.
+Deployed via github actions.
 
 Sources:
 
