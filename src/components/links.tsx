@@ -49,7 +49,8 @@ const Button = styled.button`
 `;
 
 export const scaleOpts = {
-  min: 1,
+  min: 0.9,
+  default: 1,
   max: 1.5,
   step: 0.05,
 };

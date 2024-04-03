@@ -23,8 +23,8 @@ const config = {
   friction: 30,
 };
 
-export const startCameraPosArray = [0, -30, 254] as const;
-const startCameraPos = new Vector3(...startCameraPosArray);
+export const startCameraPosArray = [0, -30, 254] as const; // for around scale 1
+const startCameraPos = new Vector3(0, -40, 254); // for scale .9
 const endCameraPos = new Vector3(0, 0, 254);
 
 const setCameraPosition = (camera: Camera, scale: number) => {
