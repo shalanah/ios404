@@ -23,11 +23,10 @@ function addCanIUseUrlBack() {
 }
 
 const Div = styled.div`
-  /* touch-action: none !important;
-  pointer-events: none !important;
+  touch-action: none;
   * {
-    touch-action: none !important;
-  } */
+    touch-action: none;
+  }
   .description {
     text-align: left;
     text-transform: none;
