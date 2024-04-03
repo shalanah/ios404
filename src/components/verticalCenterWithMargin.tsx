@@ -10,14 +10,12 @@ type Props = {
   children?: React.ReactNode;
 };
 
-const getYPosition = () =>
-  // verticalView: boolean
-  {
-    const centerY = cartonHeight / 2;
-    // visual centering top part of milk carton less important + recedes
-    // const verticalOffset = verticalView && window.innerHeight < 600 ? 0 : 0;
-    return -centerY + 0;
-  };
+const getYPosition = (verticalView: boolean) => {
+  const centerY = cartonHeight / 2;
+  // visual centering top part of milk carton less important + recedes
+  const verticalOffset = verticalView && window.innerHeight < 800 ? -2 : 0;
+  return -centerY + verticalOffset;
+};
 
 const config = {
   mass: 0.25,
@@ -47,7 +45,7 @@ export const VerticalCenterWithMargin = ({ children = null }: Props) => {
     useCanIUseContext();
   const { camera, size } = useThree();
 
-  const y = getYPosition();
+  const y = getYPosition(verticalView);
   const position = [0, y, -cartonSide * (scale - 1)];
 
   const [spring] = useSpring(
