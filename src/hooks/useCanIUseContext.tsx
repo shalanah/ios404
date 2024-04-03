@@ -17,7 +17,11 @@ import {
 import cloneDeep from 'lodash/cloneDeep';
 import { useCanIUseData } from './useCanIUseData';
 import { useFilters, type FiltersType } from './useFilters';
+import { scaleOpts } from '../components/links';
 // import { parseMdnData } from '../utils/parseMdnData';
+
+const clamp = (num: number, min: number, max: number) =>
+  Math.min(Math.max(num, min), max);
 
 // TODO: Continue type checking + CLEANUP (more sharing of types)
 interface CanIUseContextInterface {
@@ -147,7 +151,16 @@ export const CanIUseContextProvider = ({
   };
 
   const [paginationHeight, setPaginationHeight] = useState<number | null>(null);
-  const [scale, setScale] = useState(1);
+  const [scale, setScale] = useState(() => {
+    return clamp(
+      Number(localStorage.getItem('scale') || 1),
+      scaleOpts.min,
+      scaleOpts.max
+    ); // TODO: maybe also round via steps if they change in the future
+  });
+  useEffect(() => {
+    localStorage.setItem('scale', String(scale)); // remember user's preference for scale
+  }, [scale]);
 
   // MDN DATA: TODO: Later
   // If Safari brings up that caniuse data isn't up-to-date...

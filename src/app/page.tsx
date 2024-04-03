@@ -18,7 +18,8 @@ import { GlobalCss } from '../components/globalCss';
 import { useTelemetryDeck } from '../hooks/useTelemetryDeck';
 import { useIsFirefox } from '../hooks/useIsFirefox';
 import { DarkModeProvider } from '../hooks/useDarkMode';
-import { Pagination } from '@/components/pagination';
+import { Pagination } from '../components/pagination';
+import { startCameraPosArray } from '../components/verticalCenterWithMargin';
 
 const DesktopFeaturesDiv = styled.div`
   text-align: left;
@@ -99,11 +100,16 @@ const MobileCanvasDiv = styled.div`
 `;
 
 const camera = {
-  position: [0, -30, 254],
+  position: startCameraPosArray,
   fov: 56,
   near: 120,
   far: 450,
 } as const;
+
+const cameraMobile = {
+  ...camera,
+  fov: 60,
+};
 
 export default function Home() {
   const { width, height } = useWindowSize();
@@ -141,7 +147,7 @@ export default function Home() {
               bottom: closedHeight,
             }}
           >
-            <Canvas flat camera={camera}>
+            <Canvas flat camera={cameraMobile}>
               <Experience />
             </Canvas>
             <Pagination />

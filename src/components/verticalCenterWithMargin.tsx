@@ -1,4 +1,4 @@
-import { Vector3 } from 'three';
+import { Camera, Vector3 } from 'three';
 import React, { useLayoutEffect } from 'react';
 import { useThree } from '@react-three/fiber';
 import { cartonHeight, cartonSide } from './milkcarton';
@@ -23,8 +23,22 @@ const config = {
   friction: 30,
 };
 
-const startCameraPos = new Vector3(0, -30, 254);
+export const startCameraPosArray = [0, -30, 254] as const;
+const startCameraPos = new Vector3(...startCameraPosArray);
 const endCameraPos = new Vector3(0, 0, 254);
+
+const setCameraPosition = (camera: Camera, scale: number) => {
+  const cameraPos = camera.position;
+  const percent =
+    ((scale - scaleOpts.min) * 1.5) / (scaleOpts.max - scaleOpts.min); // let's make it lerp faster 1.5x
+  const newPosition = startCameraPos
+    .clone()
+    .lerp(endCameraPos, Math.min(percent, 1));
+  if (!newPosition.equals(cameraPos)) {
+    camera.position.copy(newPosition);
+    camera.lookAt(0, 0, 0);
+  }
+};
 
 export const VerticalCenterWithMargin = ({ children = null }: Props) => {
   const { setPaginationHeight, paginationHeight, verticalView, scale } =
@@ -41,21 +55,17 @@ export const VerticalCenterWithMargin = ({ children = null }: Props) => {
       config,
       onChange: {
         scale: (v: number) => {
-          const cameraPos = camera.position;
-          const percent =
-            ((v - scaleOpts.min) * 1.5) / (scaleOpts.max - scaleOpts.min); // let's make it lerp faster 1.5x
-          const newPosition = startCameraPos
-            .clone()
-            .lerp(endCameraPos, Math.min(percent, 1));
-          if (!newPosition.equals(cameraPos)) {
-            camera.position.copy(newPosition);
-            camera.lookAt(0, 0, 0);
-          }
+          setCameraPosition(camera, v);
         },
       },
     }),
     [scale, position, config]
   );
+
+  useLayoutEffect(() => {
+    // On first load set the camera position especially if we're not at scale 1
+    setCameraPosition(camera, scale);
+  }, []);
 
   // Get pagination space - static from scale 1 (will update though with window resize)
   useLayoutEffect(() => {
