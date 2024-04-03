@@ -143,7 +143,7 @@ export default function Home() {
           <ErrorModal />
           <MobileCanvasDiv
             style={{
-              height: window.innerHeight - closedHeight,
+              height: '100dvh',
               bottom: closedHeight,
             }}
           >
