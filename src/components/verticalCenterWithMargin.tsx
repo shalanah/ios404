@@ -10,12 +10,14 @@ type Props = {
   children?: React.ReactNode;
 };
 
-const getYPosition = (verticalView: boolean) => {
-  const centerY = cartonHeight / 2;
-  // visual centering top part of milk carton less important + recedes
-  const verticalOffset = verticalView && window.innerHeight < 600 ? 10 : 0;
-  return -centerY + verticalOffset;
-};
+const getYPosition = () =>
+  // verticalView: boolean
+  {
+    const centerY = cartonHeight / 2;
+    // visual centering top part of milk carton less important + recedes
+    // const verticalOffset = verticalView && window.innerHeight < 600 ? 0 : 0;
+    return -centerY + 0;
+  };
 
 const config = {
   mass: 0.25,
