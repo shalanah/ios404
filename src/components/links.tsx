@@ -74,12 +74,7 @@ export const Links = () => {
             setScale((s) => Math.min(s + scaleOpts.step, scaleOpts.max))
           }
         >
-          <ZoomInIcon
-            style={{
-              width: iconSize,
-              height: iconSize,
-            }}
-          />
+          <ZoomInIcon style={iconStyle} />
         </Button>
         <Button
           disabled={scale <= scaleOpts.min}
@@ -88,12 +83,7 @@ export const Links = () => {
             setScale((s) => Math.max(s - scaleOpts.step, scaleOpts.min))
           }
         >
-          <ZoomOutIcon
-            style={{
-              width: iconSize,
-              height: iconSize,
-            }}
-          />
+          <ZoomOutIcon style={iconStyle} />
         </Button>
         <Button
           aria-label="Toggle dark mode"

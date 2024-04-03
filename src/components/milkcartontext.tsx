@@ -23,6 +23,7 @@ function addCanIUseUrlBack() {
 }
 
 const Div = styled.div`
+  touch-action: none;
   * {
     touch-action: none;
   }

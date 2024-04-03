@@ -49,10 +49,7 @@ const FAQ = [
     'How do you determine if something is not supported?',
     'If the selected comparison browser(s) supports a feature more than iOS WebKit, then that feature is consider missing with special note if support is "Partial".',
   ],
-  [
-    'Who are you?',
-    "Hi! 👋 I'm Shalanah Dawson a developer that believes the web should be powerful, approachable, and fun. Find me on [Twitter](https://twitter.com/shalanahfaith), [GitHub](https://github.com/shalanah), or [LinkedIn](https://linkedin.com/in/shalanah).",
-  ],
+
   [
     'How do I report a bug or ask a feature for iOS404?',
     'Thank you for your help in making iOS404 better! Open an issue on [GitHub](https://github.com/shalanah/iOS404/issues).',
@@ -60,6 +57,10 @@ const FAQ = [
   [
     'Do you track me?',
     'iOS404 uses TelemetryDeck. TelemetryDeck does not collect any personally identifiable information. iOS404 sends a best guess on timezone and device type ("phone", "tablet" or "desktop") and on load sends which site feature and specification filters are active. This helps to understand how our users are using the website and how we can improve it. You can read more about [TelemetryDeck’s privacy policy](https://telemetrydeck.com/privacy)',
+  ],
+  [
+    'Who are you?',
+    "Hi! 👋 I'm Shalanah Dawson a developer that believes the web should be powerful, approachable, and fun. Find me on [Twitter](https://twitter.com/shalanahfaith), [GitHub](https://github.com/shalanah), or [LinkedIn](https://linkedin.com/in/shalanah).",
   ],
   ['', 'Copyright 2024. All Rights Reserved - Shalanah Dawson'],
 ];
