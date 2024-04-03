@@ -47,7 +47,7 @@ export const VerticalCenterWithMargin = ({ children = null }: Props) => {
     useCanIUseContext();
   const { camera, size } = useThree();
 
-  const y = getYPosition(verticalView);
+  const y = getYPosition();
   const position = [0, y, -cartonSide * (scale - 1)];
 
   const [spring] = useSpring(
