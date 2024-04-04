@@ -201,6 +201,7 @@ button:focus-visible, input:focus-visible, a:focus-visible {
   -webkit-overflow-scrolling: touch;
   -webkit-tap-highlight-color: transparent;
   font-family: var(--font-inter);
+  -webkit-touch-callout: none; /* disable long press iOS menu for now --- conflicts with use-gesture drag */
 //  outline: 1px solid red !important;
 }
 
