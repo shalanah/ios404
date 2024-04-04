@@ -65,6 +65,7 @@ export const VerticalCenterWithMargin = ({ children = null }: Props) => {
   useLayoutEffect(() => {
     // On first load set the camera position especially if we're not at scale 1
     setCameraPosition(camera, scale);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Get pagination space - static from scale 1 (will update though with window resize)
