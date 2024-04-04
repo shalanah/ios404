@@ -95,7 +95,10 @@ export default function Experience() {
   // Backup for desktop
   const bind = useGesture(
     { onDrag },
-    { drag: dragOpts, pointer: { touch: true } }
+    {
+      drag: dragOpts,
+      pointer: { touch: true }, // try to avoid pointerCancel events use mouse instead
+    }
   );
 
   if (len === 0 || activeIndex === -1) return null;
