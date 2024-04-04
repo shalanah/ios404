@@ -13,7 +13,7 @@ type Props = {
 const getYPosition = (verticalView: boolean) => {
   const centerY = cartonHeight / 2;
   // visual centering top part of milk carton less important + recedes
-  const verticalOffset = verticalView && window.innerHeight < 800 ? -2 : 0;
+  const verticalOffset = verticalView ? -3 : 0;
   return -centerY + verticalOffset;
 };
 

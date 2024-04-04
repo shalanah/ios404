@@ -8,7 +8,7 @@ import { useWindowSize } from '@uidotdev/usehooks';
 import styled from 'styled-components';
 import { Links } from '../components/links';
 import { Drawer } from '../components/drawer';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { verticalViewWidth } from '../utils/constants';
 import { Search } from '../components/search';
 import Features from '../components/features';
@@ -16,7 +16,7 @@ import { ErrorModal } from '../components/errorModal';
 import { Filter } from '../components/filter';
 import { GlobalCss } from '../components/globalCss';
 import { useTelemetryDeck } from '../hooks/useTelemetryDeck';
-import { useIsFirefox } from '../hooks/useIsFirefox';
+import { useBrowserFixes } from '../hooks/useBrowserFixes';
 import { DarkModeProvider } from '../hooks/useDarkMode';
 import { Pagination } from '../components/pagination';
 import { startCameraPosArray } from '../components/verticalCenterWithMargin';
@@ -115,7 +115,7 @@ export default function Home() {
   const { width, height } = useWindowSize();
   const closedHeight = 55;
   const openHeight = Math.max((height || 0) - 350, (height || 0) * 0.66);
-  const isFirefox = useIsFirefox();
+  const { isFirefox, isIPadOrIPhone } = useBrowserFixes();
 
   useTelemetryDeck();
 
@@ -132,6 +132,30 @@ export default function Home() {
     });
   }, []);
 
+  const [iosSafarKey, setIosSafariKey] = useState(0);
+  useEffect(() => {
+    if (isIPadOrIPhone) {
+      // use ref instead???
+      const visibilityChange = () => {
+        if (document.visibilityState === 'visible') {
+          setIosSafariKey((prev) => prev + 1);
+        }
+      };
+      // really shouldn't happen - but in the odd cases that it does - if the pointer: touch: true doesn't work
+      const onPointerCancel = () => {
+        setIosSafariKey((prev) => prev + 1);
+      };
+      document.addEventListener('visibilitychange', visibilityChange);
+      let el = document.getElementById('r3f');
+      el?.addEventListener('pointercancel', onPointerCancel);
+      return () => {
+        document.removeEventListener('visibilitychange', visibilityChange);
+        el?.removeEventListener('pointercancel', onPointerCancel);
+        el = null;
+      };
+    }
+  }, [isIPadOrIPhone, iosSafarKey]);
+
   if (width === null) return null;
 
   // Vertical View
@@ -147,7 +171,7 @@ export default function Home() {
               bottom: closedHeight,
             }}
           >
-            <Canvas flat camera={cameraMobile}>
+            <Canvas flat camera={cameraMobile} id={'r3f'} key={iosSafarKey}>
               <Experience />
             </Canvas>
             <Pagination />
@@ -202,7 +226,7 @@ export default function Home() {
               height: '100dvh',
             }}
           >
-            <Canvas flat camera={camera}>
+            <Canvas flat camera={camera} id={'r3f'}>
               <Experience />
             </Canvas>
             <Pagination />

@@ -1,13 +1,19 @@
-import { Suspense, useEffect, useRef } from 'react';
+import { Suspense } from 'react';
 import { Model } from './milkcarton';
 import { MilkCartonText } from './milkcartontext';
 import useCanIUseContext from '../hooks/useCanIUseContext';
-import usePrevious from '../hooks/usePrevious';
 import { a, useSpring } from '@react-spring/three';
-import { useGesture } from '@use-gesture/react';
+import { Handler, useGesture } from '@use-gesture/react';
 import { VerticalCenterWithMargin } from './verticalCenterWithMargin';
+import { useBrowserFixes } from '@/hooks/useBrowserFixes';
+import { Plane } from '@react-three/drei';
 
-const getTextRotationAndPosition = (turns: number) => {
+const getTextRotationAndPosition = (
+  turns: number
+): {
+  position: [number, number, number];
+  rotation: [number, number, number];
+} => {
   let mod = turns % 4;
   if (mod < 0) mod += 4;
   switch (mod) {
@@ -40,75 +46,56 @@ const config = { mass: 0.05, tension: 600, friction: 40 };
 export default function Experience() {
   const {
     activeIndex,
-    iOSMissingFeatures,
     setNextFeature,
     filteredData,
-    doNotRotate,
-    position: pos,
+    turns,
+    iOSMissingFeatures,
   } = useCanIUseContext();
+  const { isIPadOrIPhone } = useBrowserFixes();
+  const rot = [0, (turns * -Math.PI) / 2, 0];
   const len = iOSMissingFeatures.length;
-  const filteredLen = filteredData.length;
-  const turns = useRef(0);
-  const prevActiveIndex = usePrevious(activeIndex);
 
-  if (activeIndex !== -1 && prevActiveIndex !== -1 && !doNotRotate) {
-    const prevPos = filteredData.findIndex((v) => v.index === prevActiveIndex);
-    if (prevPos < pos) {
-      const looping = pos === filteredLen - 1 && prevPos === 0;
-      turns.current += looping ? -1 : 1;
-    } else if (pos < prevPos) {
-      const looping = pos === 0 && prevPos === filteredLen - 1;
-      turns.current += looping ? 1 : -1;
-    }
-  }
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const rot = [0, (turns.current * -Math.PI) / 2, 0];
-  const [spring, api] = useSpring(() => ({
-    rotation: rot,
-    config,
-  }));
-
-  useEffect(() => {
-    api.start({
+  const [spring, api] = useSpring(
+    () => ({
       rotation: rot,
       config,
-    });
-  }, [api, rot]);
+    }),
+    [rot]
+  );
 
-  const bind = useGesture(
-    {
-      onDrag: ({ movement: [mx], last }) => {
-        const value = Math.min(Math.abs(mx), 44.5); // clamping...
-        const sign = Math.sign(mx);
-        if (last) {
-          if (value > 35 && filteredData.length > 1) {
-            setNextFeature({ forwards: sign === -1, action: 'swipe' });
-            return;
-          } else {
-            api.start({
-              rotation: [0, (turns.current * -Math.PI) / 2, 0],
-              config,
-            });
-            return;
-          }
-        }
+  const dragOpts = {
+    axis: 'x',
+    filterTaps: true,
+  } as const;
+
+  const onDrag: Handler<
+    'drag',
+    PointerEvent | MouseEvent | TouchEvent | KeyboardEvent
+  > = ({ movement: [mx], last }) => {
+    const value = Math.min(Math.abs(mx), 44.5); // clamping...
+    const sign = Math.sign(mx);
+    if (last) {
+      if (value > 35 && filteredData.length > 1) {
+        setNextFeature({ forwards: sign === -1, action: 'swipe' });
+        return;
+      } else {
         api.start({
-          rotation: [
-            rot[0],
-            rot[1] + (Math.PI / (360 * 2)) * value * sign,
-            rot[2],
-          ],
+          rotation: [0, (turns * -Math.PI) / 2, 0],
           config,
         });
-      },
-    },
-    {
-      drag: {
-        axis: 'x',
-        filterTaps: true,
-      },
+        return;
+      }
     }
+    api.start({
+      rotation: [rot[0], rot[1] + (Math.PI / (360 * 2)) * value * sign, rot[2]],
+      config,
+    });
+  };
+
+  // Backup for desktop
+  const bind = useGesture(
+    { onDrag },
+    { drag: dragOpts, pointer: { touch: true } }
   );
 
   if (len === 0 || activeIndex === -1) return null;
@@ -118,14 +105,23 @@ export default function Experience() {
       {/* <Perf position="top-right" /> */}
       <Suspense fallback={null}>
         <VerticalCenterWithMargin>
-          <a.group {...(spring as any)} {...bind()}>
+          <a.group {...(spring as any)}>
             <Model />
             <MilkCartonText
               index={activeIndex}
-              {...getTextRotationAndPosition(turns?.current)}
-              bind={bind}
+              {...getTextRotationAndPosition(turns)}
+              bind={isIPadOrIPhone ? undefined : bind} // needed for desktop mainly - breaks on iPhones
             />
           </a.group>
+          {/* @ts-ignore */}
+          <Plane args={[300, 300]} position={[0, 0, 100]} {...bind()}>
+            <meshBasicMaterial
+              attach="material"
+              color="white"
+              opacity={0}
+              transparent
+            />
+          </Plane>
         </VerticalCenterWithMargin>
       </Suspense>
     </>

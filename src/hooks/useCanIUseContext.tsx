@@ -8,6 +8,7 @@ import React, {
   useMemo,
   Dispatch,
   SetStateAction,
+  useRef,
 } from 'react';
 import { ActionType, useHash } from './useHash';
 import {
@@ -18,6 +19,7 @@ import cloneDeep from 'lodash/cloneDeep';
 import { useCanIUseData } from './useCanIUseData';
 import { useFilters, type FiltersType } from './useFilters';
 import { scaleOpts } from '../components/links';
+import usePrevious from './usePrevious';
 // import { parseMdnData } from '../utils/parseMdnData';
 
 const clamp = (num: number, min: number, max: number) =>
@@ -54,6 +56,7 @@ interface CanIUseContextInterface {
   verticalView: boolean;
   scale: number;
   setScale: Dispatch<SetStateAction<number>>;
+  turns: number;
 }
 
 // Game state... could probably be broken out into smaller files / hooks
@@ -183,6 +186,21 @@ export const CanIUseContextProvider = ({
 
   const pos = filteredData.findIndex((v) => v.index === activeIndex); // actual position in list --- active index + prev active is out of the WHOLE non-filtered list
 
+  const filteredLen = filteredData.length;
+  const turns = useRef(0);
+  const prevActiveIndex = usePrevious(activeIndex);
+  const doNotRotate = verticalView && actionType === 'button'; // too distracting with drawer open
+  if (activeIndex !== -1 && prevActiveIndex !== -1 && !doNotRotate) {
+    const prevPos = filteredData.findIndex((v) => v.index === prevActiveIndex);
+    if (prevPos < pos) {
+      const looping = pos === filteredLen - 1 && prevPos === 0;
+      turns.current += looping ? -1 : 1;
+    } else if (pos < prevPos) {
+      const looping = pos === 0 && prevPos === filteredLen - 1;
+      turns.current += looping ? 1 : -1;
+    }
+  }
+
   return (
     <CanIUseContext.Provider
       value={{
@@ -206,10 +224,11 @@ export const CanIUseContextProvider = ({
         activeInFilteredData: filteredData && pos !== -1,
         position: pos,
         actionType,
-        doNotRotate: verticalView && actionType === 'button', // too distracting with drawer open
+        doNotRotate,
         verticalView,
         scale,
         setScale,
+        turns: turns?.current,
       }}
     >
       {children}
