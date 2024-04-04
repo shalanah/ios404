@@ -26,6 +26,7 @@ const clamp = (num: number, min: number, max: number) =>
   Math.min(Math.max(num, min), max);
 
 // TODO: Continue type checking + CLEANUP (more sharing of types)
+// TODO: Break apart into smaller hooks? Use state management?
 interface CanIUseContextInterface {
   loading: boolean;
   hasError: boolean;

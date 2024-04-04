@@ -1,14 +1,12 @@
 'use client';
 
-import { Canvas } from '@react-three/fiber';
-import Experience from '../components/experience';
 import { CanIUseContextProvider } from '../hooks/useCanIUseContext';
 import { Intro } from '../components/intro';
 import { useWindowSize } from '@uidotdev/usehooks';
 import styled from 'styled-components';
 import { Links } from '../components/links';
 import { Drawer } from '../components/drawer';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { verticalViewWidth } from '../utils/constants';
 import { Search } from '../components/search';
 import Features from '../components/features';
@@ -19,7 +17,7 @@ import { useTelemetryDeck } from '../hooks/useTelemetryDeck';
 import { useBrowserFixes } from '../hooks/useBrowserFixes';
 import { DarkModeProvider } from '../hooks/useDarkMode';
 import { Pagination } from '../components/pagination';
-import { startCameraPosArray } from '../components/verticalCenterWithMargin';
+import { ThreeCanvas } from '@/components/threeCanvas';
 
 const DesktopFeaturesDiv = styled.div`
   text-align: left;
@@ -92,6 +90,7 @@ const MobileCanvasDiv = styled.div`
   position: absolute;
   left: 0;
   width: 100vw;
+  height: 100dvh;
   z-index: 0;
   touch-action: none;
   * {
@@ -99,23 +98,11 @@ const MobileCanvasDiv = styled.div`
   }
 `;
 
-const camera = {
-  position: startCameraPosArray,
-  fov: 56,
-  near: 120,
-  far: 450,
-} as const;
-
-const cameraMobile = {
-  ...camera,
-  fov: 60,
-};
-
 export default function Home() {
   const { width, height } = useWindowSize();
   const closedHeight = 55;
   const openHeight = Math.max((height || 0) - 350, (height || 0) * 0.66);
-  const { isFirefox, isIPhone } = useBrowserFixes();
+  const { isFirefox } = useBrowserFixes();
 
   useTelemetryDeck();
 
@@ -132,30 +119,6 @@ export default function Home() {
     });
   }, []);
 
-  const [iosSafarKey, setIosSafariKey] = useState(0);
-  useEffect(() => {
-    if (isIPhone) {
-      // use ref instead???
-      const visibilityChange = () => {
-        if (document.visibilityState === 'visible') {
-          setIosSafariKey((prev) => prev + 1);
-        }
-      };
-      // really shouldn't happen - but in the odd cases that it does - if the pointer: touch: true doesn't work
-      const onPointerCancel = () => {
-        setIosSafariKey((prev) => prev + 1);
-      };
-      document.addEventListener('visibilitychange', visibilityChange);
-      let el = document.getElementById('r3f');
-      el?.addEventListener('pointercancel', onPointerCancel);
-      return () => {
-        document.removeEventListener('visibilitychange', visibilityChange);
-        el?.removeEventListener('pointercancel', onPointerCancel);
-        el = null;
-      };
-    }
-  }, [isIPhone, iosSafarKey]);
-
   if (width === null) return null;
 
   // Vertical View
@@ -165,15 +128,8 @@ export default function Home() {
         <DarkModeProvider>
           <GlobalCss />
           <ErrorModal />
-          <MobileCanvasDiv
-            style={{
-              height: '100dvh',
-              bottom: closedHeight,
-            }}
-          >
-            <Canvas flat camera={cameraMobile} id={'r3f'} key={iosSafarKey}>
-              <Experience />
-            </Canvas>
+          <MobileCanvasDiv style={{ bottom: closedHeight }}>
+            <ThreeCanvas />
             <Pagination />
           </MobileCanvasDiv>
           <LinksDiv>
@@ -226,9 +182,7 @@ export default function Home() {
               height: '100dvh',
             }}
           >
-            <Canvas flat camera={camera} id={'r3f'}>
-              <Experience />
-            </Canvas>
+            <ThreeCanvas />
             <Pagination />
           </div>
         </DesktopCanvasDiv>
