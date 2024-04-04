@@ -115,7 +115,7 @@ export default function Home() {
   const { width, height } = useWindowSize();
   const closedHeight = 55;
   const openHeight = Math.max((height || 0) - 350, (height || 0) * 0.66);
-  const { isFirefox, isIPadOrIPhone } = useBrowserFixes();
+  const { isFirefox, isIPhone } = useBrowserFixes();
 
   useTelemetryDeck();
 
@@ -134,7 +134,7 @@ export default function Home() {
 
   const [iosSafarKey, setIosSafariKey] = useState(0);
   useEffect(() => {
-    if (isIPadOrIPhone) {
+    if (isIPhone) {
       // use ref instead???
       const visibilityChange = () => {
         if (document.visibilityState === 'visible') {
@@ -154,7 +154,7 @@ export default function Home() {
         el = null;
       };
     }
-  }, [isIPadOrIPhone, iosSafarKey]);
+  }, [isIPhone, iosSafarKey]);
 
   if (width === null) return null;
 

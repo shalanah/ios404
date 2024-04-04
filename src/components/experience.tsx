@@ -51,7 +51,7 @@ export default function Experience() {
     turns,
     iOSMissingFeatures,
   } = useCanIUseContext();
-  const { isIPadOrIPhone } = useBrowserFixes();
+  const { isIPhone } = useBrowserFixes();
   const rot = [0, (turns * -Math.PI) / 2, 0];
   const len = iOSMissingFeatures.length;
 
@@ -110,7 +110,7 @@ export default function Experience() {
             <MilkCartonText
               index={activeIndex}
               {...getTextRotationAndPosition(turns)}
-              bind={isIPadOrIPhone ? undefined : bind} // needed for desktop mainly - breaks on iPhones
+              bind={isIPhone ? undefined : bind} // needed for desktop mainly - breaks on iPhones
             />
           </a.group>
           {/* @ts-ignore */}
