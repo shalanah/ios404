@@ -13,7 +13,7 @@ type Props = {
 const getYPosition = (verticalView: boolean) => {
   const centerY = cartonHeight / 2;
   // visual centering top part of milk carton less important + recedes
-  const verticalOffset = verticalView && window.innerHeight < 800 ? -2 : 0;
+  const verticalOffset = verticalView ? -3 : 0;
   return -centerY + verticalOffset;
 };
 
@@ -65,6 +65,7 @@ export const VerticalCenterWithMargin = ({ children = null }: Props) => {
   useLayoutEffect(() => {
     // On first load set the camera position especially if we're not at scale 1
     setCameraPosition(camera, scale);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Get pagination space - static from scale 1 (will update though with window resize)

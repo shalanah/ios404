@@ -1,1 +1,1 @@
-export const verticalViewWidth = 930;
+export const verticalViewWidth = 1200;

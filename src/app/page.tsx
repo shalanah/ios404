@@ -1,7 +1,5 @@
 'use client';
 
-import { Canvas } from '@react-three/fiber';
-import Experience from '../components/experience';
 import { CanIUseContextProvider } from '../hooks/useCanIUseContext';
 import { Intro } from '../components/intro';
 import { useWindowSize } from '@uidotdev/usehooks';
@@ -16,10 +14,10 @@ import { ErrorModal } from '../components/errorModal';
 import { Filter } from '../components/filter';
 import { GlobalCss } from '../components/globalCss';
 import { useTelemetryDeck } from '../hooks/useTelemetryDeck';
-import { useIsFirefox } from '../hooks/useIsFirefox';
+import { useBrowserFixes } from '../hooks/useBrowserFixes';
 import { DarkModeProvider } from '../hooks/useDarkMode';
 import { Pagination } from '../components/pagination';
-import { startCameraPosArray } from '../components/verticalCenterWithMargin';
+import { ThreeCanvas } from '@/components/threeCanvas';
 
 const DesktopFeaturesDiv = styled.div`
   text-align: left;
@@ -92,6 +90,7 @@ const MobileCanvasDiv = styled.div`
   position: absolute;
   left: 0;
   width: 100vw;
+  height: 100dvh;
   z-index: 0;
   touch-action: none;
   * {
@@ -99,23 +98,11 @@ const MobileCanvasDiv = styled.div`
   }
 `;
 
-const camera = {
-  position: startCameraPosArray,
-  fov: 56,
-  near: 120,
-  far: 450,
-} as const;
-
-const cameraMobile = {
-  ...camera,
-  fov: 60,
-};
-
 export default function Home() {
   const { width, height } = useWindowSize();
   const closedHeight = 55;
   const openHeight = Math.max((height || 0) - 350, (height || 0) * 0.66);
-  const isFirefox = useIsFirefox();
+  const { isFirefox } = useBrowserFixes();
 
   useTelemetryDeck();
 
@@ -141,15 +128,8 @@ export default function Home() {
         <DarkModeProvider>
           <GlobalCss />
           <ErrorModal />
-          <MobileCanvasDiv
-            style={{
-              height: '100dvh',
-              bottom: closedHeight,
-            }}
-          >
-            <Canvas flat camera={cameraMobile}>
-              <Experience />
-            </Canvas>
+          <MobileCanvasDiv style={{ bottom: closedHeight }}>
+            <ThreeCanvas />
             <Pagination />
           </MobileCanvasDiv>
           <LinksDiv>
@@ -202,9 +182,7 @@ export default function Home() {
               height: '100dvh',
             }}
           >
-            <Canvas flat camera={camera}>
-              <Experience />
-            </Canvas>
+            <ThreeCanvas />
             <Pagination />
           </div>
         </DesktopCanvasDiv>

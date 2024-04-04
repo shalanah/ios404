@@ -13,7 +13,7 @@ import { Image } from './image';
 const rightHandWidth = 450;
 
 function addCanIUseUrlBack() {
-  return (tree) => {
+  return (tree: any) => {
     visit(tree, 'link', (node) => {
       if (node.url.startsWith('/')) {
         node.url = `https://caniuse.com${node.url}`;
@@ -128,7 +128,12 @@ export const MilkCartonText = ({
   position,
   index,
   rotation,
-  bind, // assures that we can also swipe on <a> tags
+  bind, // assures that we can also swipe on <a> tags - mostly for mouse and not touch screens
+}: {
+  position: [number, number, number];
+  index: number;
+  rotation: [number, number, number];
+  bind?: any;
 }) => {
   const { iOSMissingFeatures, statuses } = useCanIUseContext();
   const {
@@ -158,13 +163,13 @@ export const MilkCartonText = ({
       style={{
         width: 1000,
         touchAction: 'none',
-        fontSmoothing: 'antialiased',
+        fontSmooth: 'antialiased',
         height: 1150,
         pointerEvents: 'none',
       }}
       side={THREE.FrontSide} // Required
     >
-      <Div {...bind()}>
+      <Div {...(bind ? bind() : {})}>
         <div
           style={{
             position: 'absolute',
@@ -293,15 +298,6 @@ export const MilkCartonText = ({
                   }}
                   width={rightHandWidth}
                   height={rightHandWidth}
-                  // src={`/imgs/${key}.png`}
-                  // width={rightHandWidth}
-                  // height={rightHandWidth}
-                  // style={{
-                  //   textTransform: 'none',
-                  //   objectFit: 'cover',
-                  //   opacity: 0.85,
-                  //   // mixBlendMode: 'luminosity',
-                  // }}
                 />
               </div>
               <div
