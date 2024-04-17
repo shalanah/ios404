@@ -116,14 +116,14 @@ export const getIOSMissingFeatures = (canIUseData: CIU | null) => {
       );
 
       const desktopSafariStat = v.stats.safari[safariVersion];
-      const safariStat = v.stats[ios_saf][iosVersion];
+      const iOSWebkitStat = v.stats[ios_saf][iosVersion];
       return {
         ...v,
         desktopSafariStat,
         key: k,
         firstSeen,
         noBrowserFullSupport, // TODO: make a note that no browser full supports this feature
-        safariStat,
+        iOSWebkitStat,
         browsers,
       };
     })

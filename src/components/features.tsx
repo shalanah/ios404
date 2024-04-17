@@ -6,7 +6,8 @@ import { useArrowKeysFeatureProgression } from '@/hooks/useArrowKeysFeatureProgr
 import { useScrollToActiveFeatureOnLoad } from '@/hooks/useScrollToActiveFeatureOnLoad';
 
 const Button = styled.button`
-  display: block;
+  display: flex;
+  gap: 10px;
   width: calc(100% + 8px);
   padding: 0.45em 0.5em;
   margin: 0 -4px;
@@ -41,6 +42,17 @@ const Button = styled.button`
   }
 `;
 
+const Dot = styled.span`
+  width: 5px;
+  height: 5px;
+  margin-top: 0.42em;
+  color: var(--dotNo);
+  background: currentColor;
+  flex-shrink: 0;
+  border-radius: 50%;
+  margin-left: 5px;
+`;
+
 export default function Features() {
   const { activeIndex, updateHash, filteredData, activeInFilteredData } =
     useCanIUseContext();
@@ -49,7 +61,7 @@ export default function Features() {
   return (
     <div>
       <FeaturesEmpty />
-      {filteredData.map(({ key, index, ...v }, i) => {
+      {filteredData.map(({ key, index, iOSWebkitStat, ...v }, i) => {
         const active = index === activeIndex;
         return (
           <Button
@@ -65,6 +77,13 @@ export default function Features() {
               e.currentTarget.focus();
             }}
           >
+            <Dot
+              style={{
+                color: iOSWebkitStat.startsWith('a')
+                  ? 'var(--dotPartial)'
+                  : 'var(--dotNo)',
+              }}
+            />
             {v.title}
           </Button>
         );

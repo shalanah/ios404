@@ -88,9 +88,9 @@ const Feature = styled.div`
     font-size: 36px;
   }
   code {
+    font-family: monospace;
     background: var(--codeBg);
     color: var(--codeColor);
-    outline: 1px solid var(--codeBorder);
     font-size: 0.75em;
     padding: 0.1em 0.4em;
     border-radius: 0.4em;
@@ -141,7 +141,6 @@ const Col2 = styled.div`
 const Ul = styled.ul`
   margin-bottom: 15px;
   font-weight: 700;
-  color: var(--partial);
 `;
 
 const Badge = styled.div`
@@ -154,7 +153,7 @@ const Badge = styled.div`
 const Stats = styled.div`
   width: ${rightHandWidth}px;
   font-size: 29px;
-  margin-top: 22px;
+  margin-top: 30px;
   @media (max-width: 768px) {
     font-size: 32px;
   }
@@ -203,7 +202,19 @@ const externalLinkStyle: CSSProperties = {
   height: 35,
   marginLeft: 5,
   position: 'relative',
-  top: 6,
+  top: 6.5,
+};
+
+const getSupportColor = (support: string, type: string = 'note') => {
+  switch (support.slice(0, 1).toLowerCase()) {
+    case 'n':
+      return `var(--${type}No)`;
+    case 'a':
+      return `var(--${type}Partial)`;
+    case 'y':
+    default:
+      return `var(--${type}Y, green)`;
+  }
 };
 
 export const MilkCartonText = ({
@@ -222,7 +233,7 @@ export const MilkCartonText = ({
   const {
     title,
     description,
-    safariStat,
+    iOSWebkitStat,
     firstSeen, // TODO: Type this better ...  use object over array?
     spec,
     key,
@@ -234,7 +245,8 @@ export const MilkCartonText = ({
   let [firstSeenBrowser = '', dateSupported = '0', firstSeenVersion = ''] =
     firstSeen;
 
-  const iosMacSame = safariStat.slice(0, 1) === desktopSafariStat.slice(0, 1);
+  const iosMacSame =
+    iOSWebkitStat.slice(0, 1) === desktopSafariStat.slice(0, 1);
   const firstSeenDate: number = Number(dateSupported);
   const date = new Date(firstSeenDate * 1000).getFullYear();
   const age = new Date().getFullYear() - date;
@@ -279,10 +291,18 @@ export const MilkCartonText = ({
             <Feature>
               {/* Feature Notes */}
               {Object.entries(notes_by_num).length > 0 && (
-                <Ul>
+                <Ul
+                  key={iOSWebkitStat.startsWith('a') ? 'a' : 'no'}
+                  style={{
+                    background: getSupportColor(iOSWebkitStat, 'note'),
+                    color: 'transparent',
+                    WebkitBackgroundClip: 'text',
+                    backgroundClip: 'text',
+                  }}
+                >
                   {Object.entries(notes_by_num).map(([num, note]) => {
                     if (
-                      !safariStat
+                      !iOSWebkitStat
                         .replaceAll(' ', '')
                         .replaceAll(/a|n|y/gi, '')
                         .split('#')
@@ -315,7 +335,7 @@ export const MilkCartonText = ({
                 // TODO: alt text - support type
                 name={'text'}
                 imageKey={`${isDarkMode ? 'dark' : 'light'}-${
-                  safariStat.startsWith('a') ? 'partial' : 'no'
+                  iOSWebkitStat.startsWith('a') ? 'partial' : 'no'
                 }`}
                 // Want a bit of an oversized circle
                 width={rightHandWidth + 45}
@@ -333,12 +353,24 @@ export const MilkCartonText = ({
             <Stats>
               <div>
                 <h3>{iosMacSame ? 'iOS / Mac Safari' : 'iOS'}</h3>
-                <p>{getSupportText(safariStat)}</p>
+                <p
+                  style={{
+                    color: getSupportColor(iOSWebkitStat, 'spec'),
+                  }}
+                >
+                  {getSupportText(iOSWebkitStat)}
+                </p>
               </div>
               {!iosMacSame && (
                 <div>
                   <h3>Mac Safari</h3>
-                  <p>{getSupportText(desktopSafariStat)}</p>
+                  <p
+                    style={{
+                      color: getSupportColor(desktopSafariStat, 'spec'),
+                    }}
+                  >
+                    {getSupportText(desktopSafariStat)}
+                  </p>
                 </div>
               )}
               <div>
