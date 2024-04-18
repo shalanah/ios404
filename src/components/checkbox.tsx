@@ -40,10 +40,11 @@ const Div = styled.div`
   display: flex;
   gap: 6px;
   align-items: center;
+  line-height: 0;
   cursor: pointer;
+  margin: 4px 0px;
   label {
     width: 100%;
-    padding: 2px 0px;
     font-size: 0.95rem; // TODO: double check this doesn't do the weird zoomy thing in iOS
     line-height: 1.1;
     @media (max-width: 768px) {

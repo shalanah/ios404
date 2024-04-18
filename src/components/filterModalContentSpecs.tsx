@@ -6,15 +6,12 @@ import styled from 'styled-components';
 import { FiltersType } from '../hooks/useFilters';
 
 export type SpecTypes = keyof FiltersType['statuses'];
-type StatusCounts = {
-  [K in SpecTypes]: number;
-};
 
 const Submit = styled.button`
   display: block;
   padding: 8px 15px;
   text-align: center;
-  border-radius: 12px;
+  border-radius: 8px;
   width: 100%;
   border: 1px solid currentColor;
   font-size: 0.95rem;
@@ -23,9 +20,50 @@ const Submit = styled.button`
   align-items: baseline;
   justify-content: space-between;
   font-variant-numeric: tabular-nums;
+  margin-top: 10px;
+  cursor: pointer;
   &:hover {
     transform: scale(1);
   }
+`;
+const Header = styled.header`
+  color: var(--titleFg);
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 8px;
+  gap: 3px;
+  h4 {
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+  p {
+    opacity: 0.8;
+    font-size: 0.7rem;
+    line-height: 1.25;
+  }
+`;
+const Section = styled.section`
+  padding: 5px 0;
+`;
+const H2 = styled.h2`
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  font-weight: 700;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 5px;
+`;
+const LabelWithBadge = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 6px;
+`;
+const Hr = styled.hr`
+  border: 0;
+  border-top: 1px dotted var(--modalHr);
+  margin: 10px 0 15px;
 `;
 
 export const FilterModalContentSpecs = ({
@@ -58,21 +96,11 @@ export const FilterModalContentSpecs = ({
   const filteredTotal = filteredData.length;
   return (
     <>
-      <h2
-        style={{
-          fontSize: '.8rem',
-          textTransform: 'uppercase',
-          fontWeight: 700,
-          display: 'flex',
-          justifyContent: 'space-between',
-          marginTop: 5,
-        }}
-      >
-        Specifications
-      </h2>
-      <div style={{ padding: '15px 0' }}>
+      {/* TODO: Add MDN vs Caniuse here */}
+      {/* <Hr /> */}
+      <H2>Specifications</H2>
+      <Section>
         <Checkbox
-          switchOrder
           indeterminate={indeterminate}
           onCheckedChange={() => {
             setFilters((prev: any) => {
@@ -88,7 +116,7 @@ export const FilterModalContentSpecs = ({
         >
           All Specifications
         </Checkbox>
-      </div>
+      </Section>
       {[
         {
           title: 'W3C',
@@ -115,6 +143,7 @@ export const FilterModalContentSpecs = ({
           },
         },
         {
+          title: 'More',
           filterFn: (v: string) => {
             return v.startsWith('W3C') || v.startsWith('WHATWG');
           },
@@ -124,59 +153,18 @@ export const FilterModalContentSpecs = ({
         },
       ].map(({ title, description, filterFn, nameFormat }, i) => {
         return (
-          <div
-            key={i}
-            style={{
-              padding: '15px 0',
-              borderTop: '1px dotted var(--modalHr)',
-            }}
-          >
-            {title && description && (
-              <div
-                style={{
-                  color: 'var(--titleFg)',
-                  width: '100%',
-                  flexShrink: 0,
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: 3,
-                  alignItems: 'baseline',
-                }}
-              >
-                <div
-                  style={{
-                    fontSize: '.8rem',
-                    textTransform: 'uppercase',
-                    fontWeight: 700,
-                    width: '100%',
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'baseline',
-                    marginBottom: 5,
-                  }}
-                >
-                  <span>{title}</span>
-                  <span
-                    style={{
-                      opacity: 0.7,
-                      textTransform: 'none',
-                      textAlign: 'right',
-                      fontSize: '.7rem',
-                      lineHeight: 1.25,
-                      fontWeight: 400,
-                    }}
-                  >
-                    {description}
-                  </span>
-                </div>
-              </div>
+          <Section key={i}>
+            {(title || description) && (
+              <Header>
+                {title && <h4>{title}</h4>}
+                {description && <p>{description}</p>}
+              </Header>
             )}
             {Object.entries(statusCounts).map(([k, v], i) => {
               const checked = filters.statuses[k as SpecTypes];
               if (filterFn(statuses?.[k] || '')) return null;
               return (
                 <Checkbox
-                  switchOrder
                   key={k}
                   checked={checked}
                   indeterminate={false}
@@ -192,20 +180,14 @@ export const FilterModalContentSpecs = ({
                     });
                   }}
                 >
-                  <div
-                    style={{
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      alignItems: 'center',
-                    }}
-                  >
-                    <span>{nameFormat(statuses?.[k] || '')}</span>
+                  <LabelWithBadge>
                     <Badge active={checked}>{v}</Badge>
-                  </div>
+                    <span>{nameFormat(statuses?.[k] || '')}</span>
+                  </LabelWithBadge>
                 </Checkbox>
               );
             })}
-          </div>
+          </Section>
         );
       })}
       <Submit onClick={onClose}>
