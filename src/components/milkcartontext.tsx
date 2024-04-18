@@ -205,15 +205,15 @@ const externalLinkStyle: CSSProperties = {
   top: 6.5,
 };
 
-const getSupportColor = (support: string, type: string = 'note') => {
+const getSupportColor = (support: string) => {
   switch (support.slice(0, 1).toLowerCase()) {
     case 'n':
-      return `var(--${type}No)`;
+      return `var(--specNo)`;
     case 'a':
-      return `var(--${type}Partial)`;
+      return `var(--specPartial)`;
     case 'y':
     default:
-      return `var(--${type}Y, green)`;
+      return `var(--specY, green)`;
   }
 };
 
@@ -292,12 +292,8 @@ export const MilkCartonText = ({
               {/* Feature Notes */}
               {Object.entries(notes_by_num).length > 0 && (
                 <Ul
-                  key={iOSWebkitStat.startsWith('a') ? 'a' : 'no'}
                   style={{
-                    background: getSupportColor(iOSWebkitStat, 'note'),
-                    color: 'transparent',
-                    WebkitBackgroundClip: 'text',
-                    backgroundClip: 'text',
+                    color: getSupportColor(iOSWebkitStat),
                   }}
                 >
                   {Object.entries(notes_by_num).map(([num, note]) => {
@@ -355,7 +351,7 @@ export const MilkCartonText = ({
                 <h3>{iosMacSame ? 'iOS / Mac Safari' : 'iOS'}</h3>
                 <p
                   style={{
-                    color: getSupportColor(iOSWebkitStat, 'spec'),
+                    color: getSupportColor(iOSWebkitStat),
                   }}
                 >
                   {getSupportText(iOSWebkitStat)}
@@ -366,7 +362,7 @@ export const MilkCartonText = ({
                   <h3>Mac Safari</h3>
                   <p
                     style={{
-                      color: getSupportColor(desktopSafariStat, 'spec'),
+                      color: getSupportColor(desktopSafariStat),
                     }}
                   >
                     {getSupportText(desktopSafariStat)}
@@ -381,7 +377,7 @@ export const MilkCartonText = ({
                 </p>
               </div>
               <div>
-                <h3>First found</h3>
+                <h3>First seen</h3>
                 <p>
                   {firstSeenBrowser.replace(
                     'Chrome for Android',
