@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import { visit } from 'unist-util-visit';
 import { SpriteImage } from './spriteImage';
 import useDarkMode from '@/hooks/useDarkMode';
-import { CSSProperties } from 'react';
+import { CSSProperties, useEffect, useRef } from 'react';
 
 const rightHandWidth = 450;
 
@@ -250,6 +250,21 @@ export const MilkCartonText = ({
   const firstSeenDate: number = Number(dateSupported);
   const date = new Date(firstSeenDate * 1000).getFullYear();
   const age = new Date().getFullYear() - date;
+  const ref = useRef<HTMLDivElement>(null!);
+  // Prevent a tag dragging from preventing milk carton turning
+  useEffect(() => {
+    if (ref.current) {
+      const containerEl = ref.current;
+      const onDragStart = (e: Event) => {
+        const el = e.target as HTMLElement;
+        if (el.closest('a')) e.preventDefault();
+      };
+      containerEl.addEventListener('dragstart', onDragStart);
+      return () => {
+        containerEl.removeEventListener('dragstart', onDragStart);
+      };
+    }
+  }, []);
   return (
     <Html
       rotation={rotation}
@@ -265,16 +280,12 @@ export const MilkCartonText = ({
         pointerEvents: 'none',
       }}
     >
-      <Container {...(bind ? bind() : {})}>
+      <Container {...(bind ? bind() : {})} ref={ref}>
         <H1>Missing</H1>
         <Cols>
           <Col1>
             <H2>
-              <a
-                onDragStart={(e) => e.preventDefault()} // TODO: Maybe... put this on a listener on the container instead? --- would also help with the nested links in the description
-                href={`https://caniuse.com/${key}`}
-                target="_blank"
-              >
+              <a href={`https://caniuse.com/${key}`} target="_blank">
                 {title}
                 <ExternalLinkIcon
                   style={{
@@ -388,11 +399,7 @@ export const MilkCartonText = ({
               </div>
               <div>
                 <h3>Spec</h3>
-                <a
-                  onDragStart={(e) => e.preventDefault()}
-                  href={spec}
-                  target="_blank"
-                >
+                <a href={spec} target="_blank">
                   <p>
                     {getShortSpecName(statuses ? statuses[status] : '')}
                     <ExternalLinkIcon style={externalLinkStyle} />
@@ -401,11 +408,7 @@ export const MilkCartonText = ({
               </div>
               <div>
                 <h3>Data</h3>
-                <a
-                  onDragStart={(e) => e.preventDefault()}
-                  href={`https://caniuse.com/${key}`}
-                  target="_blank"
-                >
+                <a href={`https://caniuse.com/${key}`} target="_blank">
                   <p>
                     {'Caniuse'}
                     <ExternalLinkIcon style={externalLinkStyle} />
