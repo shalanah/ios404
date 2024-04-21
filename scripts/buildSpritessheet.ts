@@ -4,25 +4,21 @@ const path = require('path');
 const sharp = require('sharp');
 const spritesmith = require('spritesmith');
 
-const imagesDir = path.resolve(__dirname, '../badgesOriginal');
-const resizeDir = path.resolve(__dirname, '../badgesSmaller');
+const imagesDir = path.resolve(__dirname, '../imgsOriginal');
+const resizeDir = path.resolve(__dirname, '../imgsSmaller');
 const outputDir = path.resolve(__dirname, '../public/sprites');
-const isPngOutput = true;
-const outputExt = isPngOutput ? '.png' : '.jpg';
-
-const size = 504; // same size as the original
 
 // Function to resize and save image
 async function resizeAndSaveImage(imagePath, outputDir) {
   try {
     // Resize image to 400x400px
     const resizedImageBuffer = await sharp(imagePath)
-      .resize({ width: size, height: size })
-      // .jpeg({ quality: 60 })
+      .resize({ width: 300, height: 300 })
+      .jpeg({ quality: 60 })
       .toBuffer();
 
     // Generate output file path
-    const filename = path.basename(imagePath).replace(/\.\w+$/, outputExt);
+    const filename = path.basename(imagePath).replace(/\.\w+$/, '.jpg');
     const outputFilePath = path.join(resizeDir, filename);
 
     // Save resized image
@@ -64,10 +60,10 @@ fs.readdir(imagesDir, async (err, files) => {
     }
 
     // Write spritesheet image as JPG
-    const spritesheetFilePath = path.join(outputDir, 'spritesheet' + outputExt);
+    const spritesheetFilePath = path.join(outputDir, 'spritesheet.jpg');
     // turn into jpg
     sharp(result.image)
-      // .jpeg({ quality: 60 })
+      .jpeg({ quality: 60 })
       .toBuffer()
       .then((buffer) => {
         fs.writeFileSync(spritesheetFilePath, buffer);
@@ -78,7 +74,6 @@ fs.readdir(imagesDir, async (err, files) => {
       });
 
     // Write spritesheet metadata
-
     fs.writeFileSync(
       path.join(outputDir, 'spritesheet.json'),
       JSON.stringify(
@@ -86,12 +81,12 @@ fs.readdir(imagesDir, async (err, files) => {
           [
             'metadata',
             {
-              width: size,
-              height: size,
+              width: 300,
+              height: 300,
               fullWidth: result.properties.width,
               fullHeight: result.properties.height,
-              columns: Math.round(result.properties.width / size),
-              rows: Math.round(result.properties.height / size),
+              columns: Math.round(result.properties.width / 300),
+              rows: Math.round(result.properties.height / 300),
             },
           ],
           ...Object.entries(result.coordinates).map(([file, coords]) => [
@@ -100,7 +95,7 @@ fs.readdir(imagesDir, async (err, files) => {
               .split('/')
               .at(-1)
               .replace(/\.\w+$/, ''),
-            [Math.round(coords.x / size), Math.round(coords.y / size)], //, coords.width, coords.height], for now... all are 300x300
+            [Math.round(coords.x / 300), Math.round(coords.y / 300)], //, coords.width, coords.height], for now... all are 300x300
           ]),
         ])
       )

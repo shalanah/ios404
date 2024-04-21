@@ -4,12 +4,12 @@ import {
   ZoomInIcon,
   ZoomOutIcon,
 } from '@radix-ui/react-icons';
-import { About } from './about';
+import { About } from '../modals/about';
 import styled from 'styled-components';
-import { verticalViewWidth } from '../utils/constants';
+import { verticalViewWidth, scaleOpts } from '../utils/constants';
 import { DarkModeSwitch, defaultProperties } from 'react-toggle-dark-mode';
 import useDarkMode from '../hooks/useDarkMode';
-import useCanIUseContext from '@/hooks/useCanIUseContext';
+import useZoomContext from '@/hooks/useZoomContext';
 
 const DMS = styled(DarkModeSwitch)`
   vector-effect: non-scaling-stroke;
@@ -23,7 +23,7 @@ const Div = styled.div`
   gap: 10px;
   align-items: center;
   width: 100%;
-  justify-content: flex-end;
+  justify-content: space-between;
   > div {
     display: flex;
   }
@@ -31,9 +31,6 @@ const Div = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-  }
-  @media (max-width: ${verticalViewWidth}px) {
-    justify-content: space-between;
   }
 `;
 
@@ -48,41 +45,29 @@ const Button = styled.button`
   }
 `;
 
-export const scaleOpts = {
-  min: 0.9,
-  default: 1,
-  max: 1.5,
-  step: 0.05,
-};
-
 const iconSize = 30;
 const iconStyle = { width: iconSize, height: iconSize };
 
 export const Links = () => {
   const { isDarkMode, setColorScheme } = useDarkMode();
-  const { scale, setScale } = useCanIUseContext();
-
+  const { scale, increaseScale, decreaseScale } = useZoomContext();
   return (
     <Div>
-      <p style={{ marginRight: 2, fontWeight: 400 }}>
-        No affiliation with Apple or iOS
+      <p style={{ marginRight: 2, fontWeight: 400, textAlign: 'left' }}>
+        Not affiliated with iOS or Apple
       </p>
       <div className="d-flex align-items-center">
         <Button
           disabled={scale >= scaleOpts.max}
           aria-label="Zoom in"
-          onClick={() =>
-            setScale((s) => Math.min(s + scaleOpts.step, scaleOpts.max))
-          }
+          onClick={increaseScale}
         >
           <ZoomInIcon style={iconStyle} />
         </Button>
         <Button
           disabled={scale <= scaleOpts.min}
           aria-label="Zoom out"
-          onClick={() =>
-            setScale((s) => Math.max(s - scaleOpts.step, scaleOpts.min))
-          }
+          onClick={decreaseScale}
         >
           <ZoomOutIcon style={iconStyle} />
         </Button>

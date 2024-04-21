@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { Cross2Icon, MagnifyingGlassIcon } from '@radix-ui/react-icons';
-import useCanIUseContext from '../hooks/useCanIUseContext';
+import useMainContext from '../hooks/useMainContext';
 import styled from 'styled-components';
 
 const Input = styled.input`
@@ -17,7 +17,7 @@ const Input = styled.input`
 `;
 
 export const Search = () => {
-  const { search, setSearch } = useCanIUseContext();
+  const { search, setSearch } = useMainContext();
   const ref = useRef<HTMLInputElement>(null);
   return (
     <div style={{ position: 'relative' }}>

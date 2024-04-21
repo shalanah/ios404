@@ -1,13 +1,8 @@
-// @ts-nocheck
-
 import { CIU } from './canIUseTypes';
+import { MissingFeatureType, SupportType } from './missingFeature';
+import { compareBrowsers } from './constants';
 
 const ios_saf = 'ios_saf';
-const compareBrowsers = [
-  { key: 'and_chr', title: 'Chrome for Android' },
-  { key: 'and_ff', title: 'Firefox for Android' },
-  { key: 'safari', title: 'Mac Safari (Desktop)' },
-];
 
 export const orderCanIUseData = (data: CIU): CIU => {
   return {
@@ -25,9 +20,8 @@ const skipFeatures = [
   'webkit-user-drag', // draggable taking its place
   'asmjs', // deprecated
   'do-not-track', // not adopted
-  'filesystem', // might no longer be maintained but still supported in chrome
+  'filesystem', // no longer be maintained but still supported in chrome
   'sql-storage', // deprecating maybe drop later?,
-  'battery-status', // remove because due to fingerprinting - really they should just limit the api some
   'feature-policy', // deprecated
 ] as const;
 
@@ -36,12 +30,12 @@ const getCompareBrowserSupport = ({ stats, agents }) => {
   const iOSStatus = stats[ios_saf][iOSVersion];
   const iOSN = iOSStatus.startsWith('n');
   const iOSA = iOSStatus.startsWith('a');
-  return compareBrowsers.map(({ key }) => {
+  return compareBrowsers.map(({ ciuKey: key }) => {
     const version = agents[key].current_version;
     const support = stats[key][version];
-    const moreThanIOSSafari =
+    const betterSupport =
       (iOSN && !support.startsWith('n')) || (iOSA && support.startsWith('y'));
-    return { key, support, moreThanIOSSafari };
+    return { key, support, betterSupport };
   });
 };
 
@@ -75,7 +69,8 @@ const getFirstSeen = ({
   };
 };
 
-export const getIOSMissingFeatures = (canIUseData: CIU | null) => {
+export const parseCanIUseData = (canIUseData: CIU | null) => {
+  console.log(canIUseData);
   if (!canIUseData) return [];
   // TODO: Make sure this is memorized?
   const { data, agents } = canIUseData;
@@ -87,7 +82,7 @@ export const getIOSMissingFeatures = (canIUseData: CIU | null) => {
       return getCompareBrowserSupport({
         agents,
         stats: v.stats,
-      }).some(({ moreThanIOSSafari }) => moreThanIOSSafari);
+      }).some(({ betterSupport }) => betterSupport);
     })
     .map(([k, v]) => {
       // Find first time fully supported
@@ -109,29 +104,49 @@ export const getIOSMissingFeatures = (canIUseData: CIU | null) => {
         getCompareBrowserSupport({
           agents,
           stats: v.stats,
-        }).map(({ key, support, moreThanIOSSafari }) => [
+        }).map(({ key, support, betterSupport }) => [
           key,
-          { support, moreThanIOSSafari },
+          { support: support.slice(0, 1) as SupportType, betterSupport },
         ])
       );
 
       const desktopSafariStat = v.stats.safari[safariVersion];
       const iOSWebkitStat = v.stats[ios_saf][iosVersion];
-      return {
-        ...v,
-        desktopSafariStat,
-        key: k,
+
+      const notes = Object.entries(v.notes_by_num)
+        .map(([num, note]) => {
+          if (
+            !iOSWebkitStat
+              .replaceAll(' ', '')
+              .replaceAll(/a|n|y/gi, '')
+              .split('#')
+              .includes(num)
+          )
+            return undefined;
+          return note;
+        })
+        .filter((v) => v);
+
+      // Not all props are getting passed through
+      // for not ignoring: categories, chrome_id, links, notes, parent, stats, ucprefix, usage_perc_a, usage_perc_y
+
+      const res: MissingFeatureType = {
+        title: v.title,
+        description: v.description,
+        notes,
+        specUrl: v.spec,
+        specKey: v.status,
+        iOSWebkitStat: iOSWebkitStat.slice(0, 1) as SupportType,
+        desktopSafariStat: desktopSafariStat.slice(0, 1) as SupportType,
+        id: k,
         firstSeen,
-        noBrowserFullSupport, // TODO: make a note that no browser full supports this feature
-        iOSWebkitStat,
         browsers,
+        source: 'caniuse',
+        sourceUrl: `https://caniuse.com/${k}`,
       };
+
+      return res;
     })
-    .filter((v) => v.firstSeen.length > 0) // needs to have been supported at some time
-    .map((v, i) => {
-      return { ...v, index: i };
-    });
+    .filter((v) => v.firstSeen.length > 0); // needs to have been supported at some time
   return safariDoesNotSupport;
 };
-
-export type IOSMissingFeaturesType = ReturnType<typeof getIOSMissingFeatures>;

@@ -1,23 +1,25 @@
 'use client';
 
-import { CanIUseContextProvider } from '../hooks/useCanIUseContext';
+import { MainProvider } from '../hooks/useMainContext';
 import { Intro } from '../components/intro';
 import { useWindowSize } from '@uidotdev/usehooks';
 import styled from 'styled-components';
 import { Links } from '../components/links';
 import { Drawer } from '../components/drawer';
 import { useEffect } from 'react';
-import { verticalViewWidth } from '../utils/constants';
+import { tooltipId, verticalViewWidth } from '../utils/constants';
 import { Search } from '../components/search';
 import Features from '../components/features';
-import { ErrorModal } from '../components/errorModal';
+import { ErrorModal } from '../modals/errorModal';
 import { Filter } from '../components/filter';
-import { GlobalCss } from '../components/globalCss';
+import { GlobalCss } from '../css/global';
 import { useTelemetryDeck } from '../hooks/useTelemetryDeck';
 import { useBrowserFixes } from '../hooks/useBrowserFixes';
 import { DarkModeProvider } from '../hooks/useDarkMode';
 import { Pagination } from '../components/pagination';
-import { ThreeCanvas } from '@/components/threeCanvas';
+import { ThreeCanvas } from '@/3d/threeCanvas';
+import { ZoomContextProvider } from '@/hooks/useZoomContext';
+import { Tooltip } from 'react-tooltip';
 
 const DesktopFeaturesDiv = styled.div`
   text-align: left;
@@ -71,10 +73,8 @@ const LinksDiv = styled.div`
 `;
 
 const DesktopCanvasDiv = styled.div`
-  /* outline: 1px solid red; */
   position: sticky;
   overflow: visible;
-  /* pointer-events: none; */
   height: 100%;
   left: calc(50% - (var(--features-width) * 0.5));
   width: calc(var(--features-width) * 2); // little extra for padding
@@ -109,7 +109,7 @@ export default function Home() {
   // preload our images
   useEffect(() => {
     const images = [
-      '/sprites/spritesheet.jpg',
+      '/sprites/spritesheet.png',
       '/milkcarton-texture-bake-dark8.jpg',
       '/milkcarton-texture-bake-light5.jpg',
     ];
@@ -121,84 +121,86 @@ export default function Home() {
 
   if (width === null) return null;
 
-  // Vertical View
-  if (width && width < verticalViewWidth) {
-    return (
-      <CanIUseContextProvider verticalView>
-        <DarkModeProvider>
-          <GlobalCss />
-          <ErrorModal />
-          <MobileCanvasDiv style={{ bottom: closedHeight }}>
-            <ThreeCanvas />
-            <Pagination />
-          </MobileCanvasDiv>
-          <LinksDiv>
-            <Links />
-          </LinksDiv>
-          <Drawer
-            height={[openHeight, closedHeight]}
-            content={
-              <div
-                style={{
-                  padding: '2px 30px 20px',
-                  textAlign: 'left',
-                }}
-              >
-                <Features />
-              </div>
-            }
-            footer={
-              <div
-                style={{
-                  padding: '13px 25px 20px',
-                  borderTop: '1px solid var(--modalHr)',
-                }}
-              >
-                <Filter />
-                <div style={{ height: 8 }} />
-                <Search />
-              </div>
-            }
-          />
-        </DarkModeProvider>
-      </CanIUseContextProvider>
-    );
-  }
+  const verticalView = !!(width && width < verticalViewWidth);
 
-  // Horizontal View
   return (
-    <CanIUseContextProvider>
+    <MainProvider verticalView={verticalView}>
       <DarkModeProvider>
-        <GlobalCss />
-        <ErrorModal />
-        <DesktopCanvasDiv style={{ position: isFirefox ? 'fixed' : 'sticky' }}>
-          <div
-            style={{
-              width: '100vw',
-              position: 'absolute',
-              left: '50%',
-              transform: 'translateX(calc(-50% + 4vw))',
-              top: 0,
-              height: '100dvh',
-            }}
-          >
-            <ThreeCanvas />
-            <Pagination />
-          </div>
-        </DesktopCanvasDiv>
-        <DesktopIntroDiv>
-          <Intro />
-        </DesktopIntroDiv>
-        <DesktopFeaturesDiv>
-          <DesktopFeaturesStickyTopCover />
-          <Features />
-          {/* Gap at bottom of feature list (acts like padding) */}
-          <div style={{ height: 30 }} />
-        </DesktopFeaturesDiv>
-        <LinksDiv>
-          <Links />
-        </LinksDiv>
+        <ZoomContextProvider>
+          <>
+            <GlobalCss />
+            <ErrorModal />
+            {verticalView ? (
+              <>
+                {/* Mobile-like view */}
+                <MobileCanvasDiv style={{ bottom: closedHeight }}>
+                  <ThreeCanvas />
+                  <Pagination />
+                </MobileCanvasDiv>
+                <Drawer
+                  height={[openHeight, closedHeight]}
+                  content={
+                    <div
+                      style={{
+                        padding: '2px 30px 20px',
+                        textAlign: 'left',
+                      }}
+                    >
+                      <Features />
+                    </div>
+                  }
+                  footer={
+                    <div
+                      style={{
+                        padding: '13px 25px 20px',
+                        borderTop: '1px solid var(--modalHr)',
+                      }}
+                    >
+                      <Filter />
+                      <div style={{ height: 8 }} />
+                      <Search />
+                    </div>
+                  }
+                />
+              </>
+            ) : (
+              <>
+                {/* Desktop view */}
+                <DesktopCanvasDiv
+                  style={{ position: isFirefox ? 'fixed' : 'sticky' }}
+                >
+                  <div
+                    style={{
+                      width: '100vw',
+                      position: 'absolute',
+                      left: '50%',
+                      transform: 'translateX(calc(-50% + 4vw))',
+                      top: 0,
+                      height: '100dvh',
+                    }}
+                  >
+                    <ThreeCanvas />
+                    <Pagination />
+                  </div>
+                </DesktopCanvasDiv>
+                <DesktopIntroDiv>
+                  <Intro />
+                </DesktopIntroDiv>
+                <DesktopFeaturesDiv>
+                  <DesktopFeaturesStickyTopCover />
+                  <Features />
+                  {/* Gap at bottom of feature list (acts like padding) */}
+                  <div style={{ height: 30 }} />
+                </DesktopFeaturesDiv>
+              </>
+            )}
+            <LinksDiv>
+              <Links />
+            </LinksDiv>
+            <Tooltip id={tooltipId} />
+          </>
+        </ZoomContextProvider>
       </DarkModeProvider>
-    </CanIUseContextProvider>
+    </MainProvider>
   );
 }

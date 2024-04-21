@@ -1,10 +1,12 @@
 import React from 'react';
 import { MixerVerticalIcon, GlobeIcon } from '@radix-ui/react-icons';
-import useCanIUseContext from '../hooks/useCanIUseContext';
+import useMainContext from '../hooks/useMainContext';
 import styled, { keyframes } from 'styled-components';
-import { FilterModal } from './filterModal';
-import { FilterModalContentSpecs } from './filterModalContentSpecs';
-import { FilterModalContentBrowser, icons } from './filterModalContentBrowser';
+import { FilterModal } from '../modals/filterModal';
+import { FilterSpecs } from '../modals/filterSpecs';
+import { FilterBrowser } from '../modals/filterBrowser';
+import { typedEntries } from '@/utils/ts';
+import { browserIcons, dataTooltipIdProps } from '@/utils/constants';
 
 const height = 36;
 const radius = 10;
@@ -105,7 +107,7 @@ const Error = styled.div`
 `;
 
 export const Filter = () => {
-  const { filters, filteredData, loading } = useCanIUseContext();
+  const { filters, filteredData, loading } = useMainContext();
   const len = Object.keys(filters.statuses).length;
   const numChecked = Object.values(filters.statuses).filter((v) => v).length;
   const filterCount = len - numChecked;
@@ -129,7 +131,12 @@ export const Filter = () => {
       <div className="d-flex align-items-center" style={{ gap: 5 }}>
         <FilterModal
           button={
-            <Button aria-label="Filter" style={{ marginLeft: 4 }}>
+            <Button
+              {...dataTooltipIdProps}
+              data-tooltip-content="Filter by status"
+              aria-label="Filter"
+              style={{ marginLeft: 4 }}
+            >
               <MixerVerticalIcon width={iconSize} height={iconSize} />
               {filterCount !== 0 && numChecked !== 0 && (
                 <Indicator>{numChecked}</Indicator>
@@ -138,71 +145,75 @@ export const Filter = () => {
             </Button>
           }
         >
-          <FilterModalContentSpecs />
+          <FilterSpecs />
         </FilterModal>
         <Count>{count}</Count>
       </div>
       {!loading && (
-        <FilterModal
-          button={
-            <Button
-              aria-label="Comparison browsers"
-              style={{
-                // TODO: same order
-                color: 'var(--fg)',
-                flexShrink: 0,
-              }}
-            >
-              {!hasBrowsers && <Error />}
-              <div
+        <>
+          <FilterModal
+            button={
+              <Button
+                {...dataTooltipIdProps}
+                data-tooltip-content="Comparison browser(s)"
+                aria-label="Comparison browser(s)"
                 style={{
-                  width:
-                    browserLogoSize +
-                    browserOffset * Math.max(browserCount - 1, 0),
-                  height: browserLogoSize,
-                  position: 'relative',
+                  // TODO: same order
+                  color: 'var(--fg)',
+                  flexShrink: 0,
                 }}
               >
-                <Span key={'none'} style={{ opacity: hasBrowsers ? 0 : 1 }}>
-                  <GlobeIcon
-                    width={browserLogoSize}
-                    height={browserLogoSize}
-                    // TODO: Look into how to make this accessible... alt? title? etc --- not sure with Radix Icons
-                  />
-                </Span>
-                {/* Reversing so it goes Chrome, FF, then Safari, same order as in modal */}
-                {Object.entries(filterBrowsersReversed).map(([k, v], i) => {
-                  const before = Object.values(filterBrowsersReversed)
-                    .slice(0, i)
-                    .filter((on) => on).length;
-                  // @ts-ignore
-                  const Icon = icons[k];
-                  return (
-                    <Span
-                      key={k}
-                      style={{
-                        transform: v
-                          ? `translateX(${-browserOffset * before}px)`
-                          : `translateX(${
-                              -browserOffset * Math.max(before - 1, 0)
-                            }px)`,
-                        opacity: v ? 1 : 0,
-                      }}
-                    >
-                      <Icon
-                        width={browserLogoSize}
-                        height={browserLogoSize}
-                        title={k}
-                      />
-                    </Span>
-                  );
-                })}
-              </div>
-            </Button>
-          }
-        >
-          <FilterModalContentBrowser />
-        </FilterModal>
+                {!hasBrowsers && <Error />}
+                <div
+                  style={{
+                    width:
+                      browserLogoSize +
+                      browserOffset * Math.max(browserCount - 1, 0),
+                    height: browserLogoSize,
+                    position: 'relative',
+                  }}
+                >
+                  <Span key={'none'} style={{ opacity: hasBrowsers ? 0 : 1 }}>
+                    <GlobeIcon
+                      width={browserLogoSize}
+                      height={browserLogoSize}
+                      // TODO: Look into how to make this accessible... alt? title? etc --- not sure with Radix Icons
+                    />
+                  </Span>
+                  {/* Reversing so it goes Chrome, FF, then Safari, same order as in modal */}
+                  {typedEntries(filterBrowsersReversed).map(([k, v], i) => {
+                    const before = Object.values(filterBrowsersReversed)
+                      .slice(0, i)
+                      .filter((on) => on).length;
+                    // @ts-ignore
+                    const Icon = browserIcons[k];
+                    return (
+                      <Span
+                        key={k}
+                        style={{
+                          transform: v
+                            ? `translateX(${-browserOffset * before}px)`
+                            : `translateX(${
+                                -browserOffset * Math.max(before - 1, 0)
+                              }px)`,
+                          opacity: v ? 1 : 0,
+                        }}
+                      >
+                        <Icon
+                          width={browserLogoSize}
+                          height={browserLogoSize}
+                          title={k}
+                        />
+                      </Span>
+                    );
+                  })}
+                </div>
+              </Button>
+            }
+          >
+            <FilterBrowser />
+          </FilterModal>
+        </>
       )}
     </Div>
   );

@@ -1,8 +1,9 @@
 import { useEffect } from 'react';
-import useCanIUseContext, { buttonClass } from './useCanIUseContext';
+import useMainContext from './useMainContext';
+import { buttonClass } from '@/utils/constants';
 
 export const useScrollToActiveFeatureOnLoad = () => {
-  const { activeIndex } = useCanIUseContext();
+  const { activeIndex } = useMainContext();
 
   // On first load - bring active into view
   useEffect(() => {

@@ -8,3 +8,7 @@ export const typedValues = <T>(obj: T) => {
 export const typedKeys = <T>(obj: T) => {
   return Object.keys(obj!) as (keyof T)[];
 };
+
+export const typedFromEntries = <T>(entries: [keyof T, T[keyof T]][]) => {
+  return Object.fromEntries(entries) as T;
+};

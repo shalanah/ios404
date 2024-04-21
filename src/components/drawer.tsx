@@ -1,11 +1,11 @@
 // @ts-nocheck
 import React, { useState, useRef, useEffect } from 'react';
 import { animated } from '@react-spring/web';
-import { useDrag, useGesture } from '@use-gesture/react';
+import { useDrag } from '@use-gesture/react';
 import styled from 'styled-components';
 import { useSpring } from '@react-spring/web';
 import { useOnClickOutside } from 'usehooks-ts';
-import { DialogContentClassName } from './dialogStyles';
+import { DialogContentClassName } from '../modals/dialogStyles';
 
 const clamp = (value: number, min: number, max: number) => {
   return Math.min(Math.max(value, min), max);
