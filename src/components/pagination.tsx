@@ -1,8 +1,8 @@
 import React from 'react';
-import useCanIUseContext from '../hooks/useCanIUseContext';
+import useMainContext from '../hooks/useMainContext';
 import styled from 'styled-components';
 import { Arrow } from './arrow';
-import { ZoomInIcon, ZoomOutIcon } from '@radix-ui/react-icons';
+import { grabIgnoreClass } from '@/utils/constants';
 
 const Div = styled.div`
   position: absolute;
@@ -31,14 +31,14 @@ const Text = styled.span`
 export const Pagination = () => {
   const {
     setNextFeature,
-    iOSMissingFeatures,
+    missingFeatures,
     filteredData,
     activeIndex,
     position: pos,
     paginationHeight,
-  } = useCanIUseContext();
+  } = useMainContext();
 
-  const len = iOSMissingFeatures.length;
+  const len = missingFeatures.length;
   const filteredLen = filteredData.length;
 
   if (len === 0 || activeIndex === -1 || paginationHeight === null) return null;
@@ -63,7 +63,10 @@ export const Pagination = () => {
     : 'translate3D(-50%, 50%, 0)';
 
   return (
-    <Div style={{ height: buttonSize, bottom, transform }}>
+    <Div
+      style={{ height: buttonSize, bottom, transform }}
+      className={grabIgnoreClass}
+    >
       <div
         style={{ gap: 20 }}
         className="d-flex pos-center align-items-center"

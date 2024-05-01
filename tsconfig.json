@@ -28,7 +28,8 @@
     ".next/types/**/*.ts",
     "scripts/buildSpritessheet.js",
     "scripts/buildSpritessheet.js",
-    "scripts/fetchCanIUse.js"
+    "scripts/fetchCanIUse.js",
+    "scripts/mdnFeatureSummaries.js"
   ],
   "exclude": ["node_modules"]
 }

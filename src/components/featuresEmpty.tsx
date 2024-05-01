@@ -1,4 +1,4 @@
-import useCanIUseContext from '../hooks/useCanIUseContext';
+import useMainContext from '../hooks/useMainContext';
 import styled from 'styled-components';
 
 const Div = styled.div`
@@ -6,7 +6,7 @@ const Div = styled.div`
 `;
 
 export default function FeaturesEmpty() {
-  const { filteredData, search, filters, loading } = useCanIUseContext();
+  const { filteredData, search, filters, loading } = useMainContext();
 
   const matches = filteredData.length > 0;
   if (loading || matches) return null;

@@ -1,8 +1,9 @@
 import { useEffect } from 'react';
-import useCanIUseContext, { buttonClass } from './useCanIUseContext';
+import useMainContext from './useMainContext';
+import { buttonClass } from '../utils/constants';
 
 export const useArrowKeysFeatureProgression = () => {
-  const { setNextFeature } = useCanIUseContext();
+  const { setNextFeature } = useMainContext();
 
   // Use arrow keys to loop through features
   useEffect(() => {
