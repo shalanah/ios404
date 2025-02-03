@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Inter_Tight } from 'next/font/google';
+import Script from 'next/script';
 
 const inter = Inter_Tight({
   subsets: ['latin'],
@@ -69,6 +70,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>{children}</body>
+      {/* <!-- Self-hosted GDPR compliant hosting Plausible --> */}
+      <Script
+        defer
+        src="https://shalanah.store/js/script.js"
+        data-domain="ios404.com"
+      />
     </html>
   );
 }

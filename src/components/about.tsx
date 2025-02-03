@@ -56,7 +56,7 @@ const FAQ = [
   ],
   [
     'Do you track me?',
-    'iOS404 uses TelemetryDeck. TelemetryDeck does not collect any personally identifiable information. iOS404 sends a best guess on timezone and device type ("phone", "tablet" or "desktop") and on load sends which site feature and specification filters are active. This helps to understand how our users are using the website and how we can improve it. You can read more about [TelemetryDeck’s privacy policy](https://telemetrydeck.com/privacy)',
+    'iOS404 uses the community edition of [Plausible](https://plausible.io/data-policy) self-hosted in Frankfurt, Germany. Plausible does not collect any personally identifiable information. iOS404 sends referring website, page visited, country, OS, browser, and window size. This helps to understand how our users are using the website and how we can improve it. No cookies or IP addresses are stored and your city and user agent are not logged. This data is not sold or shared with third parties.',
   ],
   [
     'Who are you?',
