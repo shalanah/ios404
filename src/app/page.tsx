@@ -13,7 +13,6 @@ import Features from '../components/features';
 import { ErrorModal } from '../components/errorModal';
 import { Filter } from '../components/filter';
 import { GlobalCss } from '../components/globalCss';
-import { useTelemetryDeck } from '../hooks/useTelemetryDeck';
 import { useBrowserFixes } from '../hooks/useBrowserFixes';
 import { DarkModeProvider } from '../hooks/useDarkMode';
 import { Pagination } from '../components/pagination';
@@ -103,8 +102,6 @@ export default function Home() {
   const closedHeight = 55;
   const openHeight = Math.max((height || 0) - 350, (height || 0) * 0.66);
   const { isFirefox } = useBrowserFixes();
-
-  useTelemetryDeck();
 
   // preload our images
   useEffect(() => {
